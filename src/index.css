@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  /* Soft Green Palette */
+  --color-green-50: #f0fdf4;
+  --color-green-100: #dcfce7;
+  --color-green-200: #bbf7d0;
+  --color-green-300: #86efac;
+  --color-green-400: #4ade80;
+  --color-green-500: #22c55e;
+  --color-green-600: #16a34a;
+  --color-green-700: #15803d;
+  --color-green-800: #166534;
+  --color-green-900: #14532d;
+
+  /* Primary Brand Definitions mapped to palette */
+  --color-brand-light: var(--color-green-50);
+  --color-brand-soft: var(--color-green-200);
+  --color-brand-primary: var(--color-green-500);
+  --color-brand-dark: var(--color-green-800);
+
+  --font-sans: "Outfit", sans-serif;
+}
+
+body {
+  @apply font-sans antialiased bg-[#0f172a] text-white overflow-x-hidden;
+  margin: 0;
+}
