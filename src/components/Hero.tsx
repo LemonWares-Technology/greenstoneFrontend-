@@ -71,7 +71,7 @@ const Hero = () => {
                 </h1>
               </div>
               <p className="mt-4 md:mt-8 text-sm md:text-base lg:text-lg max-w-lg text-white/70 font-medium leading-relaxed drop-shadow-md border-l-[3px] border-brand-primary pl-4 md:pl-6 ml-1">
-                A tradition of building long-term relationships based on uncompromised integrity, superior performance, value, and absolute client satisfaction.
+                Building long-term relationships based on integrity, <br className="hidden md:block" /> performance, and clients' satisfaction.
               </p>
             </div>
 
