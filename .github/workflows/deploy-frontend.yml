@@ -40,8 +40,8 @@ jobs:
           switches: -avzr --delete --exclude=".htaccess"
           path: ./dist/
           # 2. FIX: Main domains in cPanel use public_html, not a named folder.
-          # (Hardcoded to 'jerrypiping' to prevent that hidden space crash from earlier)
-          remote_path: /home/leevomwv/floorenzo.leeveon.com
+          # (Hardcoded to 'jerrypiping' to prevent that hidden space crash from earlie)
+          remote_path: /home/leevomwv/greenstone.leeveon.com/
           remote_host: ${{ secrets.CPANEL_HOST }}
           remote_user: ${{ secrets.CPANEL_USERNAME }}
           remote_key: ${{ secrets.CPANEL_SSH_KEY }}
