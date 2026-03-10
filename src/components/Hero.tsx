@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
 import { Play, ArrowRight } from 'lucide-react';
-import heroBg1 from '../assets/beautiful-red-brick-house-with-decorative-lights.jpg';
-import heroBg2 from '../assets/photorealistic-wooden-house-with-timber-structure.jpg';
+import heroBg1 from '../assets/beautiful-red-brick-house-with-decorative-lights.webp';
+import heroBg2 from '../assets/photorealistic-wooden-house-with-timber-structure.webp';
 
 const backgroundImages = [heroBg1, heroBg2];
 
@@ -28,6 +28,8 @@ const Hero = () => {
             key={imgSrc}
             src={imgSrc} 
             alt={`Hero Background ${index + 1}`} 
+            {...(index === 0 ? { fetchPriority: "high" } : {})}
+            loading={index === 0 ? "eager" : "lazy"}
             className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 ease-in-out ${
               index === currentImageIndex ? 'opacity-100' : 'opacity-0'
             }`}

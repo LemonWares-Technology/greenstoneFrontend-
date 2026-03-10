@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, Target, Eye } from 'lucide-react';
 import visionImg from '../assets/about_vision_property.png';
-import heroThumb from '../assets/photorealistic-wooden-house-with-timber-structure.jpg';
+import heroThumb from '../assets/photorealistic-wooden-house-with-timber-structure.webp';
 
 const AboutVision = () => {
   return (
@@ -113,6 +113,7 @@ const AboutVision = () => {
               <img 
                 src={visionImg} 
                 alt="Greenstone Vision Architecture"
+                loading="lazy"
                 className="w-full h-full object-cover transform scale-100 group-hover:scale-105 transition-transform duration-[2000ms] ease-out"
               />
               {/* Floating green badge on image */}

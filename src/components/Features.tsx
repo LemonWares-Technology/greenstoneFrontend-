@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
-import aboutImage from '../assets/photorealistic-wooden-house-with-timber-structure.jpg';
+import aboutImage from '../assets/photorealistic-wooden-house-with-timber-structure.webp';
 
 const Features = () => {
   const perks = [

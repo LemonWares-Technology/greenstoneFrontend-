@@ -4,7 +4,7 @@ import { useToast } from './ui/Toast';
 import { leadService } from '../services/leads';
 import { validateLead } from '../utils/validators';
 import { sanitizeObject } from '../utils/sanitize';
-import contactBg from '../assets/waterfront-house-beach-with-beautiful-setting-sun-horizon.jpg';
+import contactBg from '../assets/waterfront-house-beach-with-beautiful-setting-sun-horizon.webp';
 import type { ValidationErrors } from '../types';
 
 const Contact: React.FC = () => {

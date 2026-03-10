@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Sun, Trees, Wind, Compass, ArrowUpRight } from 'lucide-react';
-import landscapeImg from '../assets/waterfront-house-beach-with-beautiful-setting-sun-horizon.jpg';
+import landscapeImg from '../assets/waterfront-house-beach-with-beautiful-setting-sun-horizon.webp';
 
 const Offerings = () => {
   return (

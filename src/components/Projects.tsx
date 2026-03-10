@@ -100,6 +100,7 @@ const Projects = () => {
             <img 
               src={activeProject.image} 
               alt={activeProject.name}
+              loading="lazy"
               className="w-full h-full object-cover transform scale-100 group-hover:scale-105 transition-transform duration-[2000ms] ease-out"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/30 to-transparent"></div>

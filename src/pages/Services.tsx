@@ -7,7 +7,7 @@ import { Building2, KeyRound, ShieldCheck, Landmark, Leaf } from 'lucide-react';
 import proj1 from '../assets/project_interior_1.png';
 import proj2 from '../assets/project_interior_2.png';
 import proj3 from '../assets/project_interior_3.png';
-import thumb1 from '../assets/photorealistic-wooden-house-with-timber-structure.jpg';
+import thumb1 from '../assets/photorealistic-wooden-house-with-timber-structure.webp';
 
 const servicesList = [
   {

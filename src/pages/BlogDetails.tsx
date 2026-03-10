@@ -3,8 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { ArrowLeft, Clock, User, Tag } from 'lucide-react';
-import blogImage1 from '../assets/beautiful-red-brick-house-with-decorative-lights.jpg';
-import blogImage2 from '../assets/3d-house-model-with-modern-architecture.jpg';
+import blogImage1 from '../assets/beautiful-red-brick-house-with-decorative-lights.webp';
+import blogImage2 from '../assets/3d-house-model-with-modern-architecture.webp';
 import blogImage3 from '../assets/project_interior_3.png';
 
 // Reusing our blog posts as the "database"

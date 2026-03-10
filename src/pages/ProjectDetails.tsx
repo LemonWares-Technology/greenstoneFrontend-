@@ -6,7 +6,7 @@ import { MapPin, ArrowLeft, Home, Calendar, Percent, CheckCircle } from 'lucide-
 import proj1 from '../assets/project_interior_1.png';
 import proj2 from '../assets/project_interior_2.png';
 import proj3 from '../assets/project_interior_3.png';
-import DefaultHeroThumb from '../assets/photorealistic-wooden-house-with-timber-structure.jpg';
+import DefaultHeroThumb from '../assets/photorealistic-wooden-house-with-timber-structure.webp';
 
 // Reusing our global project array as the "database"
 const allProjects = [

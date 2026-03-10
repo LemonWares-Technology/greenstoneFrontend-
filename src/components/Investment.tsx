@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
-import aboutImage from '../assets/beautiful-red-brick-house-with-decorative-lights.jpg'; // Using one of our high quality generated images
+import aboutImage from '../assets/beautiful-red-brick-house-with-decorative-lights.webp'; // Using one of our high quality generated images
 
 const Investment = () => {
   return (
