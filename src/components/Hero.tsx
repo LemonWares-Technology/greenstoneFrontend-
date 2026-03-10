@@ -66,9 +66,12 @@ const Hero = () => {
                 */}
                 <h1 className="text-5xl sm:text-6xl md:text-8xl xl:text-[9.5rem] font-bold leading-[0.85] tracking-[-0.03em] lowercase text-white mb-6 relative z-30">
                   <span className="drop-shadow-lg">building the</span>{' '}
+                  <span className="md:hidden text-brand-primary opacity-90 transition-all duration-1000 ease-in-out">
+                    future
+                  </span>
                   <span 
                     style={{ backgroundImage: `url(${backgroundImages[currentImageIndex]})` }} 
-                    className="text-brand-primary md:text-transparent md:bg-fixed md:bg-cover md:bg-center md:bg-clip-text md:mix-blend-screen opacity-90 transition-all duration-1000 ease-in-out"
+                    className="hidden md:inline text-transparent bg-fixed bg-cover bg-center bg-clip-text mix-blend-screen opacity-90 transition-all duration-1000 ease-in-out"
                   >
                     future
                   </span><br className="md:hidden" />
