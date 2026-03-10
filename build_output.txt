@@ -1,26 +1,7 @@
+Unknown command: "build"
 
-> greenstoneanti@0.0.0 build C:\Users\Victo\Desktop\greenstoneanti
-> vite build
 
-[36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
-transforming...
-[32m✓[39m 1905 modules transformed.
-rendering chunks...
-computing gzip size...
-[2mdist/[22m[32mindex.html                                                                      [39m[1m[2m  0.46 kB[22m[1m[22m[2m │ gzip:   0.30 kB[22m
-[2mdist/[22m[32massets/project_interior_2-CIWiAohS.png                                          [39m[1m[2m 49.37 kB[22m[1m[22m
-[2mdist/[22m[32massets/project_interior_3-Cki-gwbb.png                                          [39m[1m[2m 62.37 kB[22m[1m[22m
-[2mdist/[22m[32massets/project_interior_1-DF6WUvib.png                                          [39m[1m[2m 63.24 kB[22m[1m[22m
-[2mdist/[22m[32massets/about_vision_property-lbeowBtz.png                                       [39m[1m[2m 87.57 kB[22m[1m[22m
-[2mdist/[22m[32massets/waterfront-house-beach-with-beautiful-setting-sun-horizon-_1IWnGX1.webp  [39m[1m[2m154.44 kB[22m[1m[22m
-[2mdist/[22m[32massets/3d-house-model-with-modern-architecture-BPRKA0yP.webp                    [39m[1m[2m238.87 kB[22m[1m[22m
-[2mdist/[22m[32massets/beautiful-red-brick-house-with-decorative-lights-CM9EW33W.webp           [39m[1m[2m259.35 kB[22m[1m[22m
-[2mdist/[22m[32massets/photorealistic-wooden-house-with-timber-structure-jmJK34JU.webp          [39m[1m[2m277.01 kB[22m[1m[22m
-[2mdist/[22m[35massets/index-D9BG46ZD.css                                                       [39m[1m[2m100.45 kB[22m[1m[22m[2m │ gzip:  14.45 kB[22m
-[2mdist/[22m[36massets/index-CYOl0SpJ.js                                                        [39m[1m[33m891.67 kB[39m[22m[2m │ gzip: 262.47 kB[22m
-[33m
-(!) Some chunks are larger than 500 kB after minification. Consider:
-- Using dynamic import() to code-split the application
-- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
-- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
-[32m✓ built in 39.56s[39m
+Did you mean this?
+  npm run build # run the "build" package script
+To see a list of supported npm commands, run:
+  npm help
