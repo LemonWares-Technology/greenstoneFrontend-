@@ -35,11 +35,11 @@ const Hero = () => {
             }`}
           />
         ))}
-        {/* Dark overlay for contrast - Green on mobile */}
-        <div className="absolute inset-0 bg-[#012D01]/85 md:bg-black/30"></div>
+        {/* Dark overlay for contrast */}
+        <div className="absolute inset-0 bg-black/30"></div>
         {/* Bottom fading shadow to blend text and buttons */}
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#012D01] via-[#012D01]/60 to-transparent md:from-black/80 md:via-black/30 md:to-transparent"></div>
-        {/* Right Side "Grassy Glass" Overlay */}
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+        {/* Right Side "Grassy Glass" Overlay - Hidden on mobile */}
         <div className="hidden md:block absolute top-0 right-0 w-[55%] h-full bg-[#122c1b]/30 backdrop-blur-xl mask-[linear-gradient(to_right,transparent,black_20%)] overflow-hidden z-0">
           <div className="absolute inset-0 bg-linear-to-bl from-white/10 to-transparent"></div>
         </div>
@@ -68,10 +68,10 @@ const Hero = () => {
                   <span className="drop-shadow-lg">building the</span>{' '}
                   <span 
                     style={{ backgroundImage: `url(${backgroundImages[currentImageIndex]})` }} 
-                    className="bg-fixed bg-cover bg-center bg-clip-text text-transparent mix-blend-screen opacity-90 transition-all duration-1000 ease-in-out"
+                    className="text-brand-primary md:text-transparent md:bg-fixed md:bg-cover md:bg-center md:bg-clip-text md:mix-blend-screen opacity-90 transition-all duration-1000 ease-in-out"
                   >
                     future
-                  </span><br />
+                  </span><br className="md:hidden" />
                   <span className="drop-shadow-lg"><span className="text-brand-primary italic font-light pr-2">of</span> real estate</span>
                 </h1>
               </div>
