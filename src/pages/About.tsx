@@ -1,58 +1,66 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import CoreValues from '../components/CoreValues';
-import aboutBg from '../assets/about_vision_property.png';
-
-const allTeamMembers = [
-  { id: 1, name: 'Dr. Yemi Osindero', role: 'Chairman Board of Directors', bio: 'Founder and Managing Partner of Uhuru Investment Partners. Decades of investment banking, private equity and operating experience. Holds a BEng and PhD in Chemical Engineering from Bath University.' },
-  { id: 2, name: 'Mr. Emeka Nweze', role: 'Chief Executive Officer', bio: 'Set up Greenstone Developments Ltd in 2002. Expert in business development, complex project management, and technical design with vast experience in construction.' },
-  { id: 3, name: 'Engr. Oluyemi Utsheoritshelaju', role: 'General Project Manager', bio: 'COREN certified (B.Eng Civil Engineering). Wealth of experience in project initiation, organization, supervision, management and delivery.' },
-  { id: 4, name: 'Ms. Ayanlere Oluwatobi .B.', role: 'Senior Manager', bio: 'Dynamic professional with 5+ years driving operational efficiency. Certified in QAQC, HRM, and CSRM.' },
-  { id: 5, name: 'Mr. Olaogun Ayodele', role: 'Executive Assistant to the C.E.O', bio: 'Distinguished insurance professional and certified member of CIIN, bringing business acumen and leadership capabilities.' },
-  { id: 6, name: 'Engr. Abdelrazzak Kannouj', role: 'Technical Director', bio: 'Seasoned Engineer with vast local and international experience, currently lead engineer for Green Court Residence Maitama.' },
-  { id: 7, name: 'Mr Funmi Olubajo', role: 'Director', bio: 'Civil Engineer (Bsc Hons) with a diploma in Project Management from Pro-consult LLC (USA).' },
-  { id: 8, name: 'Engr. Tosin Aborisade', role: 'Site Engineer', bio: 'Architect with over 20 years of experience and proven track records managing infrastructural projects.' },
-  { id: 9, name: 'Engr. Olugbenga.O. Osoba', role: 'Site Engineer', bio: '18 years experience in civil/structural engineering. Member of COREN and ACEN.' },
-  { id: 10, name: 'Engr. Pierro Mjally', role: 'Civil Structural Engineer', bio: 'Over 16 years experience ensuring trouble-free installation and quality project delivery. COREN Registered.' },
-  { id: 11, name: 'Engr. Da Ojochide Gad', role: 'Civil Engineer', bio: 'Over 20 years experience successfully managing large-scale infrastructural projects. Corporate member NSE & COREN.' },
-  { id: 12, name: 'Engr. Olusegun Olatunji', role: 'Civil Engineer', bio: 'Highly experienced in site coordination, Bill of Quantities, and effective management of concrete production.' },
-];
+import { teamService } from '../services/team';
+import LoadingSpinner from '../components/ui/LoadingSpinner';
+import type { TeamMember } from '../types';
+import aboutBg from '../assets/about-grand-mansion.jpg';
 
 const About = () => {
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [teamLoading, setTeamLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTeam = async () => {
+      try {
+        const res = await teamService.getAll();
+        setTeamMembers(res.data);
+      } catch (err) {
+        console.error('Failed to load team members:', err);
+      } finally {
+        setTeamLoading(false);
+      }
+    };
+    fetchTeam();
+  }, []);
   return (
     <div className="bg-[#050505] min-h-screen text-white font-sans flex flex-col selection:bg-brand-primary selection:text-black">
-      <Navbar />
       
-      {/* Hero Section */}
-      <div className="relative w-full h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden">
+      {/* Hero Section — Navbar overlays the image */}
+      <div className="relative w-full min-h-[60vh] md:min-h-[70vh] flex flex-col overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img src={aboutBg} alt="Greenstone About" className="w-full h-full object-cover opacity-30" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent"></div>
+          <div className="absolute inset-0 bg-linear-to-t from-[#050505] via-[#050505]/60 to-transparent"></div>
         </div>
-        <div className="relative z-10 text-center px-6">
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="w-1.5 h-1.5 bg-brand-primary rounded-full shadow-[0_0_8px_var(--color-brand-primary)]"></div>
-            <span className="text-[10px] tracking-[0.25em] text-brand-primary uppercase font-bold">Since 2002</span>
-            <div className="w-1.5 h-1.5 bg-brand-primary rounded-full shadow-[0_0_8px_var(--color-brand-primary)]"></div>
+        <div className="relative z-10">
+          <Navbar />
+        </div>
+        <div className="relative z-10 flex-1 flex items-center justify-center text-center px-6">
+          <div>
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <div className="w-1.5 h-1.5 bg-brand-primary rounded-full shadow-[0_0_8px_var(--color-brand-primary)]"></div>
+              <span className="text-xs tracking-[0.25em] text-brand-primary uppercase font-bold">Since 2002</span>
+              <div className="w-1.5 h-1.5 bg-brand-primary rounded-full shadow-[0_0_8px_var(--color-brand-primary)]"></div>
+            </div>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-light tracking-tight mb-6">
+              Building <span className="font-bold">Legacies</span>
+            </h1>
+            <p className="text-sm md:text-base text-white/60 max-w-2xl mx-auto font-medium leading-relaxed">
+              Enhancing associations through ethical, socially conscious development. We turn ideas into reality with a tradition of building long-term relationships based on integrity, partnership, and performance.
+            </p>
           </div>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-light tracking-tight mb-6">
-            Building <span className="font-bold">Legacies</span>
-          </h1>
-          <p className="text-sm md:text-base text-white/60 max-w-2xl mx-auto font-medium leading-relaxed">
-            Enhancing associations through ethical, socially conscious development. We turn ideas into reality with a tradition of building long-term relationships based on integrity, partnership, and performance.
-          </p>
         </div>
       </div>
 
-      <div className="flex-grow pt-12 pb-24 px-6 md:px-12 lg:px-24 container mx-auto max-w-[1600px] flex flex-col gap-32">
+      <div className="grow pt-12 pb-24 px-6 md:px-12 lg:px-24 container mx-auto max-w-[1600px] flex flex-col gap-32">
         
         {/* History & Vision */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           <div>
             <h2 className="text-3xl md:text-4xl font-light mb-8">Our <span className="font-bold text-brand-primary">History</span></h2>
-            <div className="text-white/70 space-y-6 text-sm md:text-[15px] leading-relaxed font-medium">
+            <div className="text-white/70 space-y-6 text-base md:text-[15px] leading-relaxed font-medium">
               <p>
                 Greenstone Developments Limited was incorporated in 2002. The Company was formed to develop well designed, competitively priced real estate in Nigeria.
               </p>
@@ -70,12 +78,12 @@ const About = () => {
           <div>
             <h2 className="text-3xl md:text-4xl font-light mb-8">Vision & <span className="font-bold text-brand-primary">Mission</span></h2>
             <div className="bg-[#111] p-8 md:p-10 rounded-3xl border border-white/5 hover:border-brand-primary/30 transition-colors">
-              <h3 className="text-xl font-bold mb-4 uppercase tracking-widest text-brand-primary text-sm">Vision</h3>
-              <p className="text-white/70 text-sm leading-relaxed font-medium mb-8">
+              <h3 className="text-sm font-bold mb-4 uppercase tracking-widest text-brand-primary">Vision</h3>
+              <p className="text-white/70 text-base leading-relaxed font-medium mb-8">
                 To be a recognised leader in the Property Development/Management industry in Nigeria and then Africa; while maintaining our authentic level of services founded on basic core values of integrity and partnership as enshrined in our Corporate Objectives.
               </p>
-              <h3 className="text-xl font-bold mb-4 uppercase tracking-widest text-brand-primary text-sm">Core Values Overview</h3>
-              <p className="text-white/70 text-sm leading-relaxed font-medium">
+              <h3 className="text-sm font-bold mb-4 uppercase tracking-widest text-brand-primary">Core Values Overview</h3>
+              <p className="text-white/70 text-base leading-relaxed font-medium">
                 We turn ideas into reality with a tradition of building long-term relationships based on integrity, partnership, performance, value and client's satisfaction through delivering exceptional and innovative client services.
               </p>
             </div>
@@ -90,7 +98,7 @@ const About = () => {
         {/* Corporate Objectives */}
         <div>
            <div className="flex flex-col md:items-center text-center mb-16">
-            <span className="text-[10px] tracking-[0.25em] text-brand-primary uppercase font-bold mb-4">The Foundation</span>
+            <span className="text-xs tracking-[0.25em] text-brand-primary uppercase font-bold mb-4">The Foundation</span>
             <h2 className="text-4xl md:text-5xl font-light tracking-tight">
               Corporate <span className="font-bold text-brand-primary">Objectives</span>
             </h2>
@@ -105,7 +113,7 @@ const About = () => {
               <div key={i} className="bg-[#0a0a0a] border border-white/10 rounded-3xl p-8 hover:bg-white/5 hover:border-brand-primary/50 transition-all duration-300">
                 <div className="text-brand-primary font-mono text-sm mb-6">0{i + 1}</div>
                 <h3 className="text-lg font-bold mb-4">{obj.title}</h3>
-                <p className="text-xs text-white/50 leading-relaxed font-medium">{obj.desc}</p>
+                <p className="text-sm text-white/50 leading-relaxed font-medium">{obj.desc}</p>
               </div>
             ))}
           </div>
@@ -117,7 +125,7 @@ const About = () => {
             <h2 className="text-4xl md:text-5xl font-light tracking-tight">
               Company <span className="font-bold text-brand-primary">Organogram</span>
             </h2>
-            <p className="text-white/40 text-sm mt-4">Structural hierarchy of Greenstone Developments Limited</p>
+            <p className="text-white/60 text-base mt-4">Structural hierarchy of Greenstone Developments Limited</p>
           </div>
           
           <div className="bg-[#111] border border-white/10 rounded-3xl p-8 md:p-16 overflow-x-auto relative">
@@ -211,20 +219,28 @@ const About = () => {
             <h2 className="text-4xl md:text-5xl font-light tracking-tight">
               The Management <span className="font-bold text-brand-primary">Team</span>
             </h2>
-            <p className="text-white/40 text-sm mt-4">Qualified and tested professionals well versed in handling various projects.</p>
+            <p className="text-white/60 text-base mt-4">Qualified and tested professionals well versed in handling various projects.</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {allTeamMembers.map((member, idx) => (
-              <Link to={`/team/${member.id}`} key={idx} className="bg-[#0a0a0a] border border-white/5 rounded-3xl p-8 hover:bg-white/5 transition-colors group block">
-                <h3 className="text-xl font-bold mb-1 text-white group-hover:text-brand-primary transition-colors">{member.name}</h3>
-                <p className="text-xs tracking-widest text-[#012d01] font-bold uppercase mb-4 bg-brand-primary/80 inline-block px-3 py-1 rounded-full">{member.role}</p>
-                <p className="text-sm text-white/50 leading-relaxed font-medium">
-                  {member.bio}
-                </p>
-              </Link>
-            ))}
-          </div>
+          {teamLoading ? (
+            <div className="flex items-center justify-center py-16">
+              <LoadingSpinner size="lg" label="Loading team..." />
+            </div>
+          ) : teamMembers.length === 0 ? (
+            <p className="text-center text-white/50 py-12 text-lg">No team members found.</p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {teamMembers.map((member) => (
+                <Link to={`/team/${member.id}`} key={member.id} className="bg-[#0a0a0a] border border-white/5 rounded-3xl p-8 hover:bg-white/5 transition-colors group block">
+                  <h3 className="text-xl font-bold mb-1 text-white group-hover:text-brand-primary transition-colors">{member.name}</h3>
+                  <p className="text-xs tracking-widest text-[#012d01] font-bold uppercase mb-4 bg-brand-primary/80 inline-block px-3 py-1 rounded-full">{member.role}</p>
+                  <p className="text-base text-white/50 leading-relaxed font-medium">
+                    {member.bio}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
 
       </div>

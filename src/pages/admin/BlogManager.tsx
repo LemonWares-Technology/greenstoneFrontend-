@@ -97,6 +97,7 @@ const AdminBlog: React.FC = () => {
       image: formData.image,
       excerpt: formData.excerpt,
       content: formData.content,
+      ...(sendNewsletter && !currentPost ? { sendNewsletter: true } : {}),
     };
 
     try {
@@ -104,8 +105,8 @@ const AdminBlog: React.FC = () => {
         await blogService.update(currentPost.id, payload);
         showToast('Blog post updated successfully!', 'success');
       } else {
-        await blogService.create(payload);
-        showToast('Blog post published!', 'success');
+        const res = await blogService.create(payload);
+        showToast(res.message || 'Blog post published!', 'success');
       }
       closeModal();
       fetchBlogs(); // Refresh list

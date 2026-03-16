@@ -1,106 +1,197 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
-import { Play, ArrowRight } from 'lucide-react';
-import heroBg1 from '../assets/beautiful-red-brick-house-with-decorative-lights.webp';
-import heroBg2 from '../assets/photorealistic-wooden-house-with-timber-structure.webp';
+import { ArrowRight, MapPin, Building2 } from 'lucide-react';
+import heroBg1 from '../assets/hero-modern-villa-dusk.jpg';
+import heroBg2 from '../assets/hero-luxury-villa-aerial.jpg';
+import heroBg3 from '../assets/hero-modern-duplex-night.jpg';
 
-const backgroundImages = [heroBg1, heroBg2];
+const SLIDE_DURATION = 6000;
+
+const slides = [
+  { image: heroBg1, location: 'Lekki Phase 1', type: 'Residential' },
+  { image: heroBg2, location: 'Maitama, Abuja', type: 'Mixed-Use' },
+  { image: heroBg3, location: 'Victoria Island', type: 'Waterfront' },
+];
 
 const Hero = () => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [current, setCurrent] = useState(0);
+  const [progress, setProgress] = useState(0);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % backgroundImages.length);
-    }, 5000); // Slide every 5 seconds
-
-    return () => clearInterval(interval);
+  const goToSlide = useCallback((index: number) => {
+    setCurrent(index);
+    setProgress(0);
   }, []);
 
+  useEffect(() => {
+    let elapsed = 0;
+    const tick = 80;
+
+    const interval = setInterval(() => {
+      elapsed += tick;
+      setProgress((elapsed / SLIDE_DURATION) * 100);
+
+      if (elapsed >= SLIDE_DURATION) {
+        setCurrent((prev) => (prev + 1) % slides.length);
+        elapsed = 0;
+        setProgress(0);
+      }
+    }, tick);
+
+    return () => clearInterval(interval);
+  }, [current]);
+
   return (
-    <div className="relative min-h-screen w-full font-sans text-white">
-      {/* Background Section */}
-      <div className="absolute inset-0 z-0 bg-black">
-        {/* Render all background images and use opacity to transition between them smoothly */}
-        {backgroundImages.map((imgSrc, index) => (
-          <img 
-            key={imgSrc}
-            src={imgSrc} 
-            alt={`Hero Background ${index + 1}`} 
-            {...(index === 0 ? { fetchPriority: "high" } : {})}
-            loading={index === 0 ? "eager" : "lazy"}
-            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 ease-in-out ${
-              index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+    <div className="relative h-screen min-h-[600px] max-h-[1200px] w-full font-sans text-white overflow-hidden">
+
+      {/* === BACKGROUND LAYER === */}
+      <div className="absolute inset-0 z-0 bg-[#070707]">
+        {slides.map((slide, i) => (
+          <div
+            key={i}
+            className={`absolute inset-0 transition-all duration-[1.8s] ease-out ${
+              i === current
+                ? 'opacity-100 scale-100'
+                : 'opacity-0 scale-[1.06]'
             }`}
-          />
+          >
+            <img
+              src={slide.image}
+              alt=""
+              {...(i === 0 ? { fetchPriority: 'high' as const } : {})}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              className="w-full h-full object-cover"
+            />
+          </div>
         ))}
-        {/* Dark overlay for contrast */}
-        <div className="absolute inset-0 bg-black/30"></div>
-        {/* Bottom fading shadow to blend text and buttons */}
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
-        {/* Right Side "Grassy Glass" Overlay - Hidden on mobile */}
-        <div className="hidden md:block absolute top-0 right-0 w-[55%] h-full bg-[#122c1b]/30 backdrop-blur-xl mask-[linear-gradient(to_right,transparent,black_20%)] overflow-hidden z-0">
-          <div className="absolute inset-0 bg-linear-to-bl from-white/10 to-transparent"></div>
-        </div>
+
+        <div className="absolute inset-0 bg-[#070707]/55" />
+        <div className="absolute inset-0 bg-linear-to-t from-[#070707] via-[#070707]/30 to-[#070707]/40" />
+        <div className="absolute inset-0 bg-linear-to-r from-[#070707]/80 via-[#070707]/20 to-transparent" />
       </div>
 
-      <div className="relative z-10 flex flex-col min-h-screen px-6 md:px-12 lg:px-16 overflow-hidden">
+      {/* === CONTENT LAYER === */}
+      <div className="relative z-10 flex flex-col h-full">
         <Navbar />
 
-        {/* Main Content */}
-        <div className="flex-1 flex flex-col justify-end pb-12 pt-16 relative w-full max-w-[1600px] mx-auto">
-          
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end w-full">
-            
+        {/* Main Content — pushed to bottom for grounded editorial feel */}
+        <div className="flex-1 min-h-0 overflow-hidden flex items-end px-6 md:px-12 lg:px-16 pb-0">
+          <div className="max-w-[1600px] mx-auto w-full pb-6 md:pb-10">
 
-            {/* Left Box (Main Heading) */}
-            <div className="lg:col-span-12 order-1 flex flex-col justify-end text-left relative z-20 pb-12 w-full">
-              <div className="relative inline-block w-full max-w-[1200px]">
-                {/* 
-                  Using background-clip: text with background-attachment: fixed matches the viewport 
-                  background exactly. This gives the illusion that the word "future" is a completely 
-                  transparent window through the glass overlay. 
-                  Shadows are kept on solid text to preserve contrast, but removed from the cutout.
-                  A green text-stroke is added to "future" per user request.
-                */}
-                <h1 className="text-5xl sm:text-6xl md:text-8xl xl:text-[9.5rem] font-bold leading-[0.85] tracking-[-0.03em] lowercase text-white mb-6 relative z-30">
-                  <span className="drop-shadow-lg">building the</span>{' '}
-                  <span className="md:hidden text-brand-primary opacity-90 transition-all duration-1000 ease-in-out">
-                    future
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-10 lg:gap-16 items-end">
+              {/* Left: Typography stack */}
+              <div className="lg:col-span-7 xl:col-span-8">
+                {/* Eyebrow */}
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="w-8 h-px bg-brand-primary" aria-hidden />
+                  <span className="text-xs tracking-[0.35em] uppercase font-bold text-brand-primary">
+                    Est. 2002
                   </span>
-                  <span 
-                    style={{ backgroundImage: `url(${backgroundImages[currentImageIndex]})` }} 
-                    className="hidden md:inline text-transparent bg-fixed bg-cover bg-center bg-clip-text mix-blend-screen opacity-90 transition-all duration-1000 ease-in-out"
-                  >
-                    future
-                  </span><br className="md:hidden" />
-                  <span className="drop-shadow-lg"><span className="text-brand-primary italic font-light pr-2">of</span> real estate</span>
-                </h1>
-              </div>
-              <p className="mt-4 text-base md:text-lg max-w-lg text-white/90 font-medium drop-shadow-md border-l-[3px] border-brand-gold pl-5 ml-2">
-                Building long-term relationships based on integrity, performance, and clients' satisfaction.
-              </p>
-            </div>
-
-            {/* Right Box (CTAs) - Absolutely positioned on large screens to avoid pushing text aligned with bottom text */}
-            <div className="lg:absolute lg:right-0 lg:bottom-16 order-2 flex flex-col sm:flex-row lg:flex-col gap-4 w-full sm:w-auto lg:w-[280px] relative z-30 pt-8 lg:pt-0">
-              
-              <Link to="/projects" className="group flex items-center justify-between gap-4 bg-brand-primary hover:bg-brand-primary/90 text-white px-6 py-4 rounded-full font-semibold transition-all duration-300 shadow-[0_0_20px_rgba(1,45,1,0.4)] hover:shadow-[0_0_30px_rgba(1,45,1,0.6)] backdrop-blur-md w-full">
-                <span>Explore Projects</span>
-                <div className="bg-white/20 p-2 rounded-full group-hover:bg-white group-hover:text-brand-primary transition-colors duration-300">
-                  <ArrowRight size={18} strokeWidth={2.5} />
                 </div>
-              </Link>
 
-              
+                {/* Headline: stacked, weight + opacity contrast */}
+                <h1 className="text-[clamp(2.8rem,7.5vw,7.5rem)] font-extrabold leading-[0.88] tracking-[-0.04em] mb-6 md:mb-8">
+                  <span className="block">Building</span>
+                  <span className="block font-extralight italic text-white/75">the future</span>
+                  <span className="block">
+                    <span className="text-brand-primary font-light not-italic">of </span>
+                    Real Estate
+                  </span>
+                </h1>
+
+                {/* Subtitle */}
+                <p className="text-lg text-white/85 font-medium leading-relaxed max-w-lg border-l-2 border-brand-primary/60 pl-4">
+                  Building long-term relationships based on integrity, performance, and clients' satisfaction — shaping Nigeria's property landscape for over two decades.
+                </p>
+              </div>
+
+              {/* Right: CTAs + current slide context */}
+              <div className="lg:col-span-5 xl:col-span-4 flex flex-col gap-6 lg:items-end">
+                {/* Slide location tag */}
+                <div className="flex items-center gap-2 text-white/60 lg:self-end">
+                  <MapPin size={12} className="text-brand-primary" />
+                  <span className="text-xs tracking-widest uppercase font-bold">
+                    {slides[current].location}
+                  </span>
+                  <span className="text-white/50 mx-1">·</span>
+                  <span className="text-xs tracking-widest uppercase font-medium text-brand-primary/70">
+                    {slides[current].type}
+                  </span>
+                </div>
+
+                {/* CTA buttons */}
+                <div className="flex flex-col sm:flex-row lg:flex-col gap-3 w-full sm:w-auto lg:w-full">
+                  <Link
+                    to="/projects"
+                    className="group flex items-center justify-between gap-4 bg-brand-primary text-white px-6 py-4 rounded-full font-bold text-sm tracking-wide transition-all duration-300 hover:shadow-[0_0_30px_rgba(34,197,94,0.3)]"
+                  >
+                    <span>Explore Projects</span>
+                    <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-brand-primary transition-colors duration-300">
+                      <ArrowRight size={15} strokeWidth={2.5} />
+                    </div>
+                  </Link>
+                  <Link
+                    to="/contact"
+                    className="flex items-center justify-center gap-2 text-sm font-bold text-white/70 hover:text-white transition-colors border border-white/15 hover:border-white/40 px-6 py-4 rounded-full backdrop-blur-sm"
+                  >
+                    Get in Touch
+                  </Link>
+                </div>
+              </div>
             </div>
 
           </div>
-
-          {/* Bottom container removed */}
-          
         </div>
+
+        {/* === BOTTOM BAR === grounding strip with stats + slide progress */}
+        <div className="border-t border-white/20 bg-[#070707]/80 backdrop-blur-md shrink-0">
+          <div className="max-w-[1600px] mx-auto w-full px-6 md:px-12 lg:px-16 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+
+            {/* Micro stats */}
+            <div className="flex items-center gap-5 md:gap-8 text-sm font-bold text-white/90">
+              <div className="flex items-center gap-2">
+                <Building2 size={14} className="text-brand-primary" />
+                <span>20+ Years</span>
+              </div>
+              <span className="w-px h-4 bg-white/20" aria-hidden />
+              <div className="flex items-center gap-2">
+                <MapPin size={14} className="text-brand-primary" />
+                <span>Lagos · Abuja</span>
+              </div>
+              <span className="w-px h-4 bg-white/20 hidden sm:block" aria-hidden />
+              <span className="hidden sm:inline text-white/70 font-semibold">
+                Greenstone Developments Ltd
+              </span>
+            </div>
+
+            {/* Slide progress indicators */}
+            <div className="flex items-center gap-5">
+              {slides.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => goToSlide(i)}
+                  className="flex items-center gap-2.5 group cursor-pointer"
+                  aria-label={`Go to slide ${i + 1}`}
+                >
+                  <span className={`text-xs font-bold tabular-nums transition-colors duration-300 ${
+                    i === current ? 'text-white' : 'text-white/60 group-hover:text-white/80'
+                  }`}>
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <div className="relative w-12 h-1 bg-white/20 rounded-full overflow-hidden">
+                    <div
+                      className="absolute inset-y-0 left-0 bg-brand-primary rounded-full transition-[width] duration-100 ease-linear"
+                      style={{
+                        width: i === current ? `${progress}%` : i < current ? '100%' : '0%',
+                      }}
+                    />
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );

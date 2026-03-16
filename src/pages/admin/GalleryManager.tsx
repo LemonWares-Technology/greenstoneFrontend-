@@ -1,81 +1,107 @@
-import React, { useState } from 'react';
-import { Plus, Trash2, X, Image as ImageIcon, Check } from 'lucide-react';
-
-import proj1 from '../../assets/project_interior_1.png';
-import proj2 from '../../assets/project_interior_2.png';
-import proj3 from '../../assets/project_interior_3.png';
-
-// Mock Data
-const initialGallery = [
-  { id: 1, url: proj1, category: 'Interior', title: 'Maitama Living Room' },
-  { id: 2, url: proj2, category: 'Architecture', title: 'F.O Terraces Facade' },
-  { id: 3, url: proj3, category: 'Interior', title: 'Panache Bedroom' },
-  { id: 4, url: proj1, category: 'Construction', title: 'Site Overview Phase 1' },
-  { id: 5, url: proj2, category: 'Landscape', title: 'Guzape Gardens' },
-  { id: 6, url: proj3, category: 'Architecture', title: 'Bourdillon Aerial' },
-];
+import React, { useState, useEffect } from 'react';
+import { Plus, Trash2, X, Image as ImageIcon, Check, Loader2 } from 'lucide-react';
+import { galleryService } from '../../services/gallery';
+import type { GalleryImage } from '../../types';
 
 const categories = ['All', 'Interior', 'Architecture', 'Construction', 'Landscape'];
 
 const AdminGallery = () => {
-  const [images, setImages] = useState(initialGallery);
+  const [images, setImages] = useState<GalleryImage[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('All');
-  const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
-  // Upload Form State
   const [formData, setFormData] = useState({
     title: '',
     category: 'Interior',
-    // In a real app, 'file' would hold the object to upload
+    url: '',
   });
+
+  const fetchImages = async () => {
+    try {
+      const res = await galleryService.getAll();
+      setImages(res.data || []);
+    } catch {
+      console.error('Failed to load gallery images');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { fetchImages(); }, []);
 
   const openUploadModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleUploadSubmit = (e) => {
+  const handleUploadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Mocking upload by taking one of our static images
-    const newImage = {
-      id: Date.now(),
-      url: proj1, // Mock generated URL
-      title: formData.title || 'New Upload',
-      category: formData.category
-    };
-    
-    setImages([newImage, ...images]);
-    closeModal();
-    setFormData({ title: '', category: 'Interior' });
+    if (!formData.url) return;
+    setSaving(true);
+    try {
+      const res = await galleryService.create({
+        url: formData.url,
+        title: formData.title || 'Untitled',
+        category: formData.category,
+      });
+      setImages([res.data, ...images]);
+      closeModal();
+      setFormData({ title: '', category: 'Interior', url: '' });
+    } catch {
+      alert('Failed to upload image. Please try again.');
+    } finally {
+      setSaving(false);
+    }
   };
 
-  const toggleImageSelection = (id) => {
-    setSelectedImages(prev => 
+  const toggleImageSelection = (id: string) => {
+    setSelectedImages(prev =>
       prev.includes(id) ? prev.filter(imgId => imgId !== id) : [...prev, id]
     );
   };
 
-  const deleteSelected = () => {
-    if (window.confirm(`Are you sure you want to delete ${selectedImages.length} image(s)?`)) {
+  const deleteSelected = async () => {
+    if (!window.confirm(`Are you sure you want to delete ${selectedImages.length} image(s)?`)) return;
+    setSaving(true);
+    try {
+      await Promise.all(selectedImages.map(id => galleryService.remove(id)));
       setImages(images.filter(img => !selectedImages.includes(img.id)));
       setSelectedImages([]);
+    } catch {
+      alert('Failed to delete some images.');
+    } finally {
+      setSaving(false);
     }
   };
 
-  const deleteSingle = (id) => {
-    if (window.confirm('Delete this image?')) {
+  const deleteSingle = async (id: string) => {
+    if (!window.confirm('Delete this image?')) return;
+    try {
+      await galleryService.remove(id);
       setImages(images.filter(img => img.id !== id));
       setSelectedImages(selectedImages.filter(imgId => imgId !== id));
+    } catch {
+      alert('Failed to delete image.');
     }
   };
 
   const filteredImages = activeCategory === 'All' 
     ? images 
     : images.filter(img => img.category === activeCategory);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-32">
+        <Loader2 size={36} className="animate-spin text-[#012D01]" />
+      </div>
+    );
+  }
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
@@ -143,7 +169,7 @@ const AdminGallery = () => {
                 />
                 
                 {/* Overlay gradient */}
-                <div className={`absolute inset-0 bg-gradient-to-t from-[#012D01]/90 via-[#012D01]/20 to-transparent transition-opacity duration-300 ${isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}></div>
+                <div className={`absolute inset-0 bg-linear-to-t from-[#012D01]/90 via-[#012D01]/20 to-transparent transition-opacity duration-300 ${isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}></div>
 
                 {/* Selection Checkbox (Top Left) */}
                 <button 
@@ -207,29 +233,26 @@ const AdminGallery = () => {
 
             <form onSubmit={handleUploadSubmit} className="p-6 space-y-6">
               
-              {/* Drag & Drop Area */}
               <div>
-                <div className="mt-1 flex justify-center px-6 pt-10 pb-12 border-2 border-[#012D01]/10 border-dashed rounded-2xl hover:bg-[#E3F9F5]/30 transition-colors cursor-pointer group bg-white">
-                  <div className="space-y-2 text-center">
-                    <div className="w-16 h-16 bg-[#E3F9F5] rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                      <Plus className="h-8 w-8 text-[#012D01]" />
-                    </div>
-                    <div className="flex text-sm justify-center">
-                      <label className="relative cursor-pointer rounded-md font-bold text-brand-primary-dark hover:text-brand-primary focus-within:outline-none">
-                        <span>Click to browse</span>
-                        <input type="file" className="sr-only" accept="image/*" />
-                      </label>
-                      <p className="pl-1 text-[#012D01]/70">or drag and drop</p>
-                    </div>
-                    <p className="text-xs text-[#012D01]/40 font-medium">
-                      High-res JPG, PNG, WEBP (Max 10MB)
-                    </p>
+                <label className="block text-xs font-bold text-[#012D01]/70 uppercase tracking-widest mb-2">Image URL *</label>
+                <input
+                  type="url"
+                  name="url"
+                  value={formData.url}
+                  onChange={handleInputChange}
+                  placeholder="https://example.com/image.jpg"
+                  required
+                  className="w-full bg-[#E3F9F5]/30 border border-[#012D01]/10 rounded-xl py-3 px-4 text-[#012D01] focus:outline-none focus:border-brand-primary transition-colors"
+                />
+                {formData.url && (
+                  <div className="mt-3 rounded-xl overflow-hidden border border-[#012D01]/10 h-32">
+                    <img src={formData.url} alt="Preview" className="w-full h-full object-cover" onError={(e) => (e.currentTarget.style.display = 'none')} />
                   </div>
-                </div>
+                )}
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#012D01]/70 uppercase tracking-widest mb-2">Image Title (Optional)</label>
+                <label className="block text-xs font-bold text-[#012D01]/70 uppercase tracking-widest mb-2">Image Title</label>
                 <input 
                   type="text" 
                   name="title"
@@ -263,10 +286,12 @@ const AdminGallery = () => {
                   Cancel
                 </button>
                 <button 
-                  type="submit" 
-                  className="bg-[#012D01] text-brand-primary hover:bg-brand-primary hover:text-[#012D01] transition-colors px-6 py-3 rounded-xl font-bold shadow-lg shadow-[#012D01]/10"
+                  type="submit"
+                  disabled={saving || !formData.url}
+                  className="bg-[#012D01] text-brand-primary hover:bg-brand-primary hover:text-[#012D01] transition-colors px-6 py-3 rounded-xl font-bold shadow-lg shadow-[#012D01]/10 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
-                  Upload & Save
+                  {saving && <Loader2 size={16} className="animate-spin" />}
+                  {saving ? 'Saving...' : 'Save Image'}
                 </button>
               </div>
             </form>

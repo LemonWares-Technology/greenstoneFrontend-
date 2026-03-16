@@ -1,7 +1,8 @@
-import React from 'react';
-import { TrendingUp, ShieldCheck, Building, Landmark, BadgeDollarSign, ArrowUpRight, Home, HardHat, FileCheck, Truck } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, TrendingUp, ShieldCheck, Building, Landmark, BadgeDollarSign } from 'lucide-react';
+import propertyImg from '../assets/invest-pool-villa.jpg';
 
-const investReasons = [
+const reasons = [
   {
     icon: TrendingUp,
     title: 'High ROI',
@@ -29,175 +30,131 @@ const investReasons = [
   },
 ];
 
-const processSteps = [
-  { icon: TrendingUp, title: 'Consultation', desc: 'Define needs and preferences.', row: 1 },
-  { icon: Home, title: 'Choosing a model', desc: 'Select house size and layout.', row: 1 },
-  { icon: HardHat, title: 'Construction', desc: '6-8 months under full supervision.', row: 1 },
-  { icon: FileCheck, title: 'Contract', desc: 'Finalise design and legal agreements.', row: 2 },
-  { icon: Truck, title: 'Delivery', desc: 'Final inspection and key handover.', row: 2 },
+const stats = [
+  { value: '25%', label: 'Annual property appreciation in Lagos' },
+  { value: '200+', label: 'Homes delivered on time & budget' },
+  { value: '3x', label: 'Land value growth in our corridors' },
 ];
 
 const WhyInvest = () => {
-  const topRow = processSteps.filter(s => s.row === 1);
-  const bottomRow = processSteps.filter(s => s.row === 2);
-
   return (
-    <section id="why-invest" className="relative w-full bg-[#f0f0f0] text-[#070707] py-24 md:py-32 font-sans overflow-hidden">
-      
-      <div className="container mx-auto px-6 md:px-12 lg:px-24 relative z-10 max-w-[1400px]">
+    <section id="why-invest" className="relative w-full bg-[#f5f5f0] text-[#070707] font-sans overflow-hidden">
 
-        {/* ============================================ */}
-        {/* WHY INVEST — Investor-Focused Content        */}
-        {/* ============================================ */}
-        <div className="mb-28">
-          {/* Label */}
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-1.5 h-1.5 bg-brand-primary rounded-full shadow-[0_0_8px_var(--color-brand-primary)]"></div>
-            <span className="text-[10px] tracking-[0.25em] text-brand-primary uppercase font-bold">For Investors</span>
-          </div>
-
-          {/* Headline + Paragraph */}
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.05]">
-              Why <span className="font-bold text-brand-primary">Invest</span><br/>
-              with Greenstone?
+      {/* ===== Top: Header + Stats band ===== */}
+      <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-16 pt-24 md:pt-32">
+        <div className="flex items-center gap-3 mb-5">
+          <span className="w-8 h-px bg-brand-primary" aria-hidden />
+          <span className="text-xs tracking-[0.35em] uppercase font-bold text-brand-primary">
+            For Investors
+          </span>
+        </div>
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14 md:mb-16">
+          <div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.1]">
+              Why Invest with <span className="font-bold text-brand-primary">Greenstone</span>
             </h2>
-            <p className="text-sm text-[#070707]/50 max-w-md leading-relaxed font-medium lg:text-right">
-              Lagos is one of Africa's fastest-growing real estate markets.
-              Greenstone positions you at the centre of that growth with secure,
-              high-return developments built to international standards.
+            <p className="mt-3 text-base md:text-lg text-[#070707]/70 font-medium max-w-lg">
+              Lagos is one of Africa's fastest-growing real estate markets. We position you at the centre of that growth with secure, high-return developments.
             </p>
           </div>
-
-          {/* Investor Reason Cards — horizontal row with icons */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
-            {investReasons.map((reason, idx) => {
-              const Icon = reason.icon;
-              return (
-                <div 
-                  key={idx}
-                  className="bg-white rounded-2xl p-6 flex flex-col gap-4 border border-[#070707]/5 hover:border-brand-primary/40 transition-all duration-500 group cursor-pointer hover:-translate-y-1 hover:shadow-lg"
-                >
-                  <div className="w-12 h-12 rounded-full bg-brand-primary flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-md border-2 border-brand-primary/30">
-                    <Icon size={20} className="text-white" strokeWidth={1.8} />
-                  </div>
-                  <h4 className="text-sm font-bold text-[#070707] tracking-tight group-hover:text-brand-primary transition-colors">
-                    {reason.title}
-                  </h4>
-                  <p className="text-xs text-[#070707]/40 font-medium leading-relaxed">
-                    {reason.desc}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
+          <Link
+            to="/contact"
+            className="inline-flex items-center gap-3 self-start lg:self-auto bg-[#070707] text-white text-sm font-bold px-6 py-3.5 rounded-full transition-all duration-300 hover:bg-brand-primary group shrink-0"
+          >
+            Start Investing
+            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
         </div>
 
-        {/* ============================================ */}
-        {/* FROM VISION TO REALITY — Process Section     */}
-        {/* ============================================ */}
-
-        {/* Centered Title */}
-        <div className="text-center mb-20 md:mb-28">
-          <h2 className="text-4xl md:text-5xl lg:text-[4.5rem] font-light tracking-tight leading-[1.05] mb-4">
-            From <span className="italic font-normal">Vision</span> to<br/>
-            <span className="font-bold">Reality</span>
-          </h2>
+        {/* Stats strip */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-0 rounded-2xl overflow-hidden mb-16 md:mb-20">
+          {stats.map((s, i) => (
+            <div
+              key={i}
+              className={`flex items-center gap-5 p-6 md:p-8 ${
+                i === 0 ? 'bg-[#070707] text-white' : 'bg-white'
+              } ${i > 0 ? 'border-l border-[#070707]/5' : ''}`}
+            >
+              <span className={`text-4xl md:text-5xl font-black leading-none tracking-tight tabular-nums ${
+                i === 0 ? 'text-brand-primary' : 'text-brand-primary'
+              }`}>
+                {s.value}
+              </span>
+              <span className={`text-sm font-medium leading-snug ${
+                i === 0 ? 'text-white/70' : 'text-[#070707]/60'
+              }`}>
+                {s.label}
+              </span>
+            </div>
+          ))}
         </div>
-
-        {/* Process Cards — Staggered Rows */}
-        <div className="flex flex-col gap-6 mb-16">
-
-          {/* Top Row — 3 cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:ml-8">
-            {topRow.map((step, idx) => {
-              const Icon = step.icon;
-              const isEven = idx % 2 === 0;
-              return (
-                <div key={idx} className="flex items-center gap-4 group cursor-pointer">
-                  {isEven && (
-                    <div className="w-14 h-14 rounded-full bg-brand-primary flex items-center justify-center shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300 border-2 border-brand-primary/30">
-                      <Icon size={22} className="text-white" strokeWidth={1.8} />
-                    </div>
-                  )}
-                  <div className="bg-white rounded-2xl p-5 flex-1 shadow-sm group-hover:shadow-lg transition-shadow duration-300">
-                    <h4 className="text-base font-bold text-[#070707] mb-1 tracking-tight group-hover:text-brand-primary transition-colors">
-                      {step.title}
-                    </h4>
-                    <p className="text-xs text-[#070707]/40 font-medium leading-relaxed">
-                      {step.desc}
-                    </p>
-                  </div>
-                  {!isEven && (
-                    <div className="w-14 h-14 rounded-full bg-brand-primary flex items-center justify-center shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300 border-2 border-brand-primary/30">
-                      <Icon size={22} className="text-white" strokeWidth={1.8} />
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Bottom Row — 2 cards, offset */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:mr-8">
-            <div className="hidden lg:block"></div>
-            {bottomRow.map((step, idx) => {
-              const Icon = step.icon;
-              const isEven = idx % 2 === 0;
-              return (
-                <div key={idx} className="flex items-center gap-4 group cursor-pointer">
-                  {isEven && (
-                    <div className="w-14 h-14 rounded-full bg-brand-primary flex items-center justify-center shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300 border-2 border-brand-primary/30">
-                      <Icon size={22} className="text-white" strokeWidth={1.8} />
-                    </div>
-                  )}
-                  <div className="bg-white rounded-2xl p-5 flex-1 shadow-sm group-hover:shadow-lg transition-shadow duration-300">
-                    <h4 className="text-base font-bold text-[#070707] mb-1 tracking-tight group-hover:text-brand-primary transition-colors">
-                      {step.title}
-                    </h4>
-                    <p className="text-xs text-[#070707]/40 font-medium leading-relaxed">
-                      {step.desc}
-                    </p>
-                  </div>
-                  {!isEven && (
-                    <div className="w-14 h-14 rounded-full bg-brand-primary flex items-center justify-center shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300 border-2 border-brand-primary/30">
-                      <Icon size={22} className="text-white" strokeWidth={1.8} />
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Bottom Stats Bar */}
-        <div className="border-t border-[#070707]/10 pt-14">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-1.5 h-1.5 bg-brand-primary rounded-full shadow-[0_0_8px_var(--color-brand-primary)]"></div>
-            <span className="text-[10px] tracking-[0.25em] text-brand-primary uppercase font-bold">Property Appreciations</span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { stat: '25%', label: 'Average annual property appreciation in Lagos over the last decade.' },
-              { stat: '200+', label: 'Bespoke homes delivered on time and within budget across Lagos.' },
-              { stat: '3x', label: 'Average land value growth in Greenstone development corridors.' },
-            ].map((item, idx) => (
-              <div key={idx} className="flex items-start gap-4 group cursor-pointer">
-                <span className="text-3xl md:text-4xl font-bold text-brand-primary shrink-0 group-hover:scale-110 transition-transform origin-left">
-                  {item.stat}
-                </span>
-                <div className="border-l border-[#070707]/10 pl-4">
-                  <p className="text-sm text-[#070707]/50 font-medium leading-relaxed">
-                    {item.label}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
       </div>
+
+      {/* ===== Main: Image + Reason list ===== */}
+      <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-16 pb-24 md:pb-32">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+
+          {/* Left: Property image — tall, sticky */}
+          <div className="lg:col-span-5 relative lg:sticky lg:top-24">
+            <div className="rounded-2xl overflow-hidden shadow-xl border border-[#070707]/5 aspect-3/4 group">
+              <img
+                src={propertyImg}
+                alt=""
+                loading="lazy"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[2s] ease-out"
+              />
+              <div className="absolute inset-0 bg-linear-to-t from-[#070707]/60 via-transparent to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                <span className="text-xs tracking-widest uppercase font-bold text-brand-primary block mb-1">
+                  Investment-Grade
+                </span>
+                <span className="text-2xl md:text-3xl font-extrabold text-white leading-none tracking-tight">
+                  Properties
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Reason rows */}
+          <div className="lg:col-span-7">
+            <div className="flex flex-col">
+              {reasons.map((reason, i) => {
+                const Icon = reason.icon;
+                return (
+                  <div
+                    key={i}
+                    className={`group flex gap-5 md:gap-6 py-7 md:py-8 ${
+                      i < reasons.length - 1 ? 'border-b border-[#070707]/6' : ''
+                    }`}
+                  >
+                    {/* Number + icon */}
+                    <div className="flex flex-col items-center gap-3 pt-1">
+                      <span className="text-xs font-black text-[#070707]/10 tabular-nums select-none">
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                      <div className="w-10 h-10 rounded-xl bg-[#070707]/4 flex items-center justify-center group-hover:bg-brand-primary/10 transition-colors duration-300">
+                        <Icon size={18} className="text-[#070707]/60 group-hover:text-brand-primary transition-colors duration-300" />
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xl md:text-2xl font-bold tracking-tight text-[#070707] mb-2 group-hover:text-brand-primary transition-colors duration-300">
+                        {reason.title}
+                      </h3>
+                      <p className="text-base text-[#070707]/70 leading-relaxed font-medium max-w-md">
+                        {reason.desc}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </section>
   );
 };

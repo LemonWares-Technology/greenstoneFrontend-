@@ -16,7 +16,7 @@ const NotFound: React.FC = () => {
         </p>
 
         <div className="relative z-10">
-          <span className="text-[10px] tracking-[0.3em] text-brand-primary uppercase font-bold flex items-center justify-center gap-3 mb-6 bg-brand-primary/10 px-5 py-2.5 rounded-full border border-brand-primary/20 mx-auto w-max">
+          <span className="text-xs tracking-[0.3em] text-brand-primary uppercase font-bold flex items-center justify-center gap-3 mb-6 bg-brand-primary/10 px-5 py-2.5 rounded-full border border-brand-primary/20 mx-auto w-max">
             [ PAGE NOT FOUND ]
           </span>
 
@@ -24,7 +24,7 @@ const NotFound: React.FC = () => {
             Lost in <span className="font-bold text-brand-primary">Space</span>
           </h1>
 
-          <p className="text-white/40 text-sm md:text-base font-medium leading-relaxed mb-10 max-w-md mx-auto">
+          <p className="text-white/60 text-base font-medium leading-relaxed mb-10 max-w-md mx-auto">
             The page you're looking for doesn't exist or has been moved. Let us guide you back to familiar territory.
           </p>
 

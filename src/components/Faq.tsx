@@ -53,7 +53,7 @@ const FaqItem = ({ faq, isOpen, onToggle }) => {
         </div>
       </button>
       <div className={`overflow-hidden transition-all duration-500 ease-out ${isOpen ? 'max-h-[300px] pb-6' : 'max-h-0'}`}>
-        <p className="text-sm text-[#070707]/50 leading-relaxed font-medium max-w-2xl pl-0 md:pl-1">
+        <p className="text-base text-[#070707]/70 leading-relaxed font-medium max-w-2xl pl-0 md:pl-1">
           {faq.answer}
         </p>
       </div>
@@ -82,12 +82,12 @@ const Faq = () => {
           <div className="lg:col-span-4 lg:sticky lg:top-32 lg:self-start">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-1.5 h-1.5 bg-brand-primary rounded-full shadow-[0_0_8px_var(--color-brand-primary)]"></div>
-              <span className="text-[10px] tracking-[0.25em] text-brand-primary uppercase font-bold">Support</span>
+              <span className="text-xs tracking-[0.25em] text-brand-primary uppercase font-bold">Support</span>
             </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.05] mb-6">
               Frequently<br/><span className="font-bold text-brand-primary">Asked</span>
             </h2>
-            <p className="text-sm text-[#070707]/40 leading-relaxed font-medium max-w-sm">
+            <p className="text-base text-[#070707]/60 leading-relaxed font-medium max-w-sm">
               Everything you need to know about buying, investing, and building with Greenstone. Can't find your answer? Reach out to our team.
             </p>
 

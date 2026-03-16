@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import proj1 from '../assets/project_interior_1.png';
-import proj2 from '../assets/project_interior_2.png';
-import proj3 from '../assets/project_interior_3.png';
-import aboutImg from '../assets/about_vision_property.png';
+import proj1 from '../assets/project-luxury-apartments.jpg';
+import proj2 from '../assets/project-classic-residence.jpg';
+import proj3 from '../assets/project-duplex-terrace.jpg';
+import aboutImg from '../assets/about-grand-mansion.jpg';
 
 const Footer = () => {
   return (
@@ -34,18 +34,19 @@ const Footer = () => {
 
           {/* Center — Navigation Links */}
           <div className="lg:col-span-3">
-            <h4 className="text-[10px] tracking-widest uppercase text-white/30 font-bold mb-6">Navigate</h4>
+            <h4 className="text-xs tracking-widest uppercase text-white/50 font-bold mb-6">Navigate</h4>
             <ul className="flex flex-col gap-3">
               {[
                 { name: 'Home', path: '/' },
                 { name: 'About Us', path: '/about' },
                 { name: 'Services', path: '/services' },
                 { name: 'Projects', path: '/projects' },
+                { name: 'Gallery', path: '/gallery' },
                 { name: 'Blog', path: '/blog' },
                 { name: 'Contact Us', path: '/contact' }
               ].map((link, idx) => (
                 <li key={idx}>
-                  <Link to={link.path} className="text-sm text-white/60 hover:text-brand-primary transition-colors font-medium">
+                  <Link to={link.path} className="text-base text-white/70 hover:text-brand-primary transition-colors font-medium">
                     {link.name}
                   </Link>
                 </li>
@@ -55,11 +56,11 @@ const Footer = () => {
 
           {/* Socials */}
           <div className="lg:col-span-2">
-            <h4 className="text-[10px] tracking-widest uppercase text-white/30 font-bold mb-6">Social</h4>
+            <h4 className="text-xs tracking-widest uppercase text-white/50 font-bold mb-6">Social</h4>
             <ul className="flex flex-col gap-3">
               {['Instagram', 'Facebook', 'Twitter', 'LinkedIn'].map((social, idx) => (
                 <li key={idx}>
-                  <a href="#" className="text-sm text-white/60 hover:text-brand-primary transition-colors font-medium">
+                  <a href="#" className="text-base text-white/70 hover:text-brand-primary transition-colors font-medium">
                     {social}
                   </a>
                 </li>
@@ -69,15 +70,15 @@ const Footer = () => {
 
           {/* Contact */}
           <div className="lg:col-span-3">
-            <h4 className="text-[10px] tracking-widest uppercase text-white/30 font-bold mb-6">Contact</h4>
+            <h4 className="text-xs tracking-widest uppercase text-white/50 font-bold mb-6">Contact</h4>
             <ul className="flex flex-col gap-3">
-              <li className="text-sm text-white/60 font-medium">(+234) 08033040403<br/>(+234) 08160278752</li>
+              <li className="text-base text-white/70 font-medium">(+234) 08033040403<br/>(+234) 08160278752</li>
               <li>
-                <a href="mailto:info@greenstoneltd.com" className="text-sm text-white/60 hover:text-brand-primary transition-colors font-medium">
+                <a href="mailto:info@greenstoneltd.com" className="text-base text-white/70 hover:text-brand-primary transition-colors font-medium">
                   info@greenstoneltd.com
                 </a>
               </li>
-              <li className="text-sm text-white/40 font-medium leading-relaxed mt-2">
+              <li className="text-base text-white/60 font-medium leading-relaxed mt-2">
                 6, Boyle Street (4th Floor),<br/>Onikan, Lagos Nigeria.
               </li>
             </ul>
@@ -95,7 +96,7 @@ const Footer = () => {
             alt="Greenstone Development"
             className="w-full h-full object-cover object-center opacity-40"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/60 to-[#0a0a0a]/90"></div>
+          <div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a] via-[#0a0a0a]/60 to-[#0a0a0a]/90"></div>
         </div>
 
         {/* Giant brand text */}
@@ -108,12 +109,12 @@ const Footer = () => {
         {/* Bottom bar — absolute positioned at bottom */}
         <div className="absolute bottom-0 left-0 right-0 z-20">
           <div className="container mx-auto px-6 md:px-12 lg:px-24 max-w-[1600px] py-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-white/10">
-            <p className="text-xs text-white/30 font-medium">
+            <p className="text-xs text-white/50 font-medium">
               Copyright © {new Date().getFullYear()} Greenstone Developments. All Rights Reserved.
             </p>
             <div className="flex items-center gap-6">
-              <a href="#" className="text-xs text-white/30 hover:text-brand-primary transition-colors font-medium">Terms & Conditions</a>
-              <a href="#" className="text-xs text-white/30 hover:text-brand-primary transition-colors font-medium">Privacy Policy</a>
+              <a href="#" className="text-xs text-white/50 hover:text-brand-primary transition-colors font-medium">Terms & Conditions</a>
+              <a href="#" className="text-xs text-white/50 hover:text-brand-primary transition-colors font-medium">Privacy Policy</a>
             </div>
           </div>
         </div>

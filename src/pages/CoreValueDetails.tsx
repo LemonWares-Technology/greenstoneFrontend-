@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { ArrowLeft, Shield, Handshake, Award, Users, Lightbulb, Crown } from 'lucide-react';
-import aboutBg from '../assets/about_vision_property.png';
+import aboutBg from '../assets/about-grand-mansion.jpg';
 
 const valuesData = [
   {
@@ -88,19 +88,21 @@ const CoreValueDetails = () => {
 
   return (
     <div className="bg-[#050505] min-h-screen text-white font-sans flex flex-col selection:bg-brand-primary selection:text-black">
-      <Navbar />
       
-      {/* Header Section */}
-      <div className="relative w-full pt-32 pb-16 px-6 md:px-12 lg:px-24 overflow-hidden border-b border-white/5">
+      {/* Header Section — Navbar overlays */}
+      <div className="relative w-full pb-16 overflow-hidden border-b border-white/5">
         <div className="absolute inset-0 z-0 opacity-10 blur-2xl">
           <img src={aboutBg} alt="Background" className="w-full h-full object-cover" />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-[#050505]/90 to-[#050505]"></div>
+        <div className="absolute inset-0 bg-linear-to-b from-[#050505] via-[#050505]/90 to-[#050505]"></div>
+        <div className="relative z-10">
+          <Navbar />
+        </div>
         
-        <div className="container mx-auto max-w-[1000px] relative z-10 flex flex-col md:flex-row items-center md:items-end gap-10">
+        <div className="container mx-auto max-w-[1000px] relative z-10 flex flex-col md:flex-row items-center md:items-end gap-10 px-6 md:px-12 lg:px-24 pt-8">
           
           <div className="flex-1 text-center md:text-left">
-            <Link to="/about" className="inline-flex items-center gap-2 text-white/40 hover:text-brand-primary transition-colors text-[10px] font-bold uppercase tracking-widest mb-8">
+            <Link to="/about" className="inline-flex items-center gap-2 text-white/50 hover:text-brand-primary transition-colors text-xs font-bold uppercase tracking-widest mb-8">
               <ArrowLeft size={14} /> Back to Core Values
             </Link>
             
@@ -122,7 +124,7 @@ const CoreValueDetails = () => {
       </div>
 
       {/* Extended Content Section */}
-      <div className="flex-grow container mx-auto px-6 md:px-12 lg:px-24 max-w-[1000px] py-16">
+      <div className="grow container mx-auto px-6 md:px-12 lg:px-24 max-w-[1000px] py-16">
         <div className="bg-[#0a0a0a] border border-white/10 rounded-3xl p-8 md:p-12 relative overflow-hidden">
           
           {/* Subtle glow effect */}
@@ -146,7 +148,7 @@ const CoreValueDetails = () => {
 
         {/* Quick link to other values */}
         <div className="mt-16 text-center">
-            <p className="text-white/40 text-sm mb-6">Explore our other core principles</p>
+            <p className="text-white/60 text-base mb-6">Explore our other core principles</p>
             <div className="flex flex-wrap justify-center gap-3">
               {valuesData.filter(v => v.id !== valueItem.id).map(v => (
                 <Link key={v.id} to={`/core-values/${v.id}`} className="flex items-center gap-2 bg-[#111] border border-white/5 hover:border-brand-primary/30 px-4 py-2 rounded-full transition-colors text-xs font-bold uppercase tracking-wider text-white/50 hover:text-white">

@@ -3,10 +3,10 @@ import { useParams, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { MapPin, ArrowLeft, Home, Calendar, Percent, CheckCircle } from 'lucide-react';
-import proj1 from '../assets/project_interior_1.png';
-import proj2 from '../assets/project_interior_2.png';
-import proj3 from '../assets/project_interior_3.png';
-import DefaultHeroThumb from '../assets/photorealistic-wooden-house-with-timber-structure.webp';
+import proj1 from '../assets/project-luxury-apartments.jpg';
+import proj2 from '../assets/project-classic-residence.jpg';
+import proj3 from '../assets/project-duplex-terrace.jpg';
+import DefaultHeroThumb from '../assets/hero-modern-villa-dusk.jpg';
 
 // Reusing our global project array as the "database"
 const allProjects = [
@@ -105,17 +105,19 @@ const ProjectDetails = () => {
 
   return (
     <div className="bg-[#050505] min-h-screen text-white font-sans flex flex-col selection:bg-brand-primary selection:text-black">
-      <Navbar />
       
-      {/* Hero Image Header */}
-      <div className="relative w-full h-[50vh] min-h-[400px]">
+      {/* Hero Image Header — Navbar overlays */}
+      <div className="relative w-full min-h-[50vh]">
         <img 
           src={project.image} 
           alt={project.name} 
-          className="w-full h-full object-cover object-center"
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-transparent to-transparent"></div>
+        <div className="absolute inset-0 bg-linear-to-t from-[#050505] via-[#050505]/60 to-transparent"></div>
+        <div className="absolute inset-0 bg-linear-to-r from-[#050505] via-transparent to-transparent"></div>
+        <div className="relative z-10">
+          <Navbar />
+        </div>
         
         <div className="absolute bottom-0 left-0 w-full z-10">
           <div className="container mx-auto px-6 md:px-12 lg:px-24 max-w-[1600px] pb-12">
@@ -123,10 +125,10 @@ const ProjectDetails = () => {
               <ArrowLeft size={14} /> Back to Portfolio
             </Link>
             <div className="flex flex-wrap items-center gap-3 mb-4">
-               <span className="text-[10px] tracking-widest text-black bg-brand-primary uppercase font-bold px-3 py-1.5 rounded-full">
+               <span className="text-xs tracking-widest text-black bg-brand-primary uppercase font-bold px-3 py-1.5 rounded-full">
                  {project.type}
                </span>
-               <span className={`text-[10px] tracking-widest uppercase font-bold px-3 py-1.5 rounded-full border ${isCompleted ? 'border-green-500 text-green-400' : 'border-brand-primary/30 text-brand-primary/80'}`}>
+               <span className={`text-xs tracking-widest uppercase font-bold px-3 py-1.5 rounded-full border ${isCompleted ? 'border-green-500 text-green-400' : 'border-brand-primary/30 text-brand-primary/80'}`}>
                  {project.status}
                </span>
             </div>
@@ -139,7 +141,7 @@ const ProjectDetails = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-grow container mx-auto px-6 md:px-12 lg:px-24 max-w-[1600px] py-16 md:py-24">
+      <div className="grow container mx-auto px-6 md:px-12 lg:px-24 max-w-[1600px] py-16 md:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
           
           {/* Left Column: Details */}
@@ -174,21 +176,21 @@ const ProjectDetails = () => {
               
               <div className="flex flex-col gap-6">
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0 text-white/50">
+                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0 text-white/60">
                     <MapPin size={18} />
                   </div>
                   <div>
-                    <span className="block text-[10px] text-white/40 uppercase tracking-widest font-bold mb-1">Location</span>
+                    <span className="block text-xs text-white/50 uppercase tracking-widest font-bold mb-1">Location</span>
                     <span className="text-sm font-medium text-white">{project.location}</span>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0 text-white/50">
+                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0 text-white/60">
                     <Home size={18} />
                   </div>
                   <div>
-                    <span className="block text-[10px] text-white/40 uppercase tracking-widest font-bold mb-1">Development Type</span>
+                    <span className="block text-xs text-white/50 uppercase tracking-widest font-bold mb-1">Development Type</span>
                     <span className="text-sm font-medium text-white">{project.type}</span>
                   </div>
                 </div>
@@ -198,7 +200,7 @@ const ProjectDetails = () => {
                     {isCompleted ? <CheckCircle size={18} className="text-green-500" /> : <Percent size={18} />}
                   </div>
                   <div>
-                    <span className="block text-[10px] text-white/40 uppercase tracking-widest font-bold mb-1">Status</span>
+                    <span className="block text-xs text-white/50 uppercase tracking-widest font-bold mb-1">Status</span>
                     <span className="text-sm font-medium text-white">{project.status}</span>
                   </div>
                 </div>

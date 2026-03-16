@@ -8,6 +8,7 @@ const navLinks = [
   { name: 'About', path: '/about' },
   { name: 'Services', path: '/services' },
   { name: 'Projects', path: '/projects' },
+  { name: 'Gallery', path: '/gallery' },
   { name: 'Blog', path: '/blog' },
   { name: 'Contact', path: '/contact' }
 ];
@@ -35,7 +36,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="flex items-center justify-between py-6 relative z-100">
+      <nav className="flex items-center justify-between py-6 px-6 md:px-12 lg:px-16 relative z-100">
         <Link to="/" className="text-2xl font-black tracking-tight flex items-center gap-2">
           <span>Green</span>
           <span className="text-brand-primary">stone</span>
@@ -88,7 +89,7 @@ const Navbar = () => {
               className={`text-3xl sm:text-4xl font-bold tracking-tight uppercase transition-all duration-500 ${
                 location.pathname === link.path 
                   ? 'text-brand-primary translate-x-2' 
-                  : 'text-white/50 hover:text-white hover:translate-x-2'
+                  : 'text-white/70 hover:text-white hover:translate-x-2'
               }`}
               style={{
                 transitionDelay: isMenuOpen ? `${index * 50}ms` : '0ms',

@@ -1,158 +1,169 @@
-import React from 'react';
-import { ArrowUpRight } from 'lucide-react';
-import aboutImage from '../assets/beautiful-red-brick-house-with-decorative-lights.webp'; // Using one of our high quality generated images
+import { Link } from 'react-router-dom';
+import { ArrowRight, Award, Leaf, Clock, ThumbsUp, Building } from 'lucide-react';
+import propertyImg from '../assets/invest-pool-villa.jpg';
+import interiorImg from '../assets/project-classic-residence.jpg';
+
+const stats = [
+  { value: '20+', label: 'Years of Industry Experience', icon: Clock },
+  { value: '100%', label: 'Client Satisfaction Rate', icon: ThumbsUp },
+  { value: '500+', label: 'Premium Units Delivered', icon: Building },
+];
+
+const guarantees = [
+  { label: 'Premium Material Selection', pct: 100 },
+  { label: 'Sustainable Building Practices', pct: 100 },
+  { label: 'On-Time Project Delivery', pct: 95 },
+];
 
 const Investment = () => {
   return (
-    <section id="investment" className="relative w-full min-h-screen bg-[#070707] text-white py-24 font-sans overflow-hidden">
-      
-      {/* Background Dark grid lines */}
-      <div className="absolute inset-0 pointer-events-none opacity-20 z-0 flex justify-center">
-        <div className="w-px h-full bg-white/10 absolute left-1/4"></div>
-        <div className="w-px h-full bg-white/10 absolute left-1/2"></div>
-        <div className="w-px h-full bg-white/10 absolute left-3/4"></div>
-      </div>
+    <section id="investment" className="relative w-full bg-[#070707] text-white font-sans overflow-hidden">
 
-      <div className="container mx-auto px-6 md:px-12 lg:px-24 flex flex-col relative z-10 w-full max-w-[1600px] gap-12">
-        
-        {/* Top Split Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-          
-          {/* Left Large Image */}
-          <div className="w-full h-[500px] md:h-[700px] rounded-[3rem] overflow-hidden shadow-2xl relative border border-white/5 group">
-            <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10 pointer-events-none"></div>
-            <img 
-              src={aboutImage}
-              alt="Greenstone Investment Property" 
-              className="w-full h-full object-cover transform scale-100 group-hover:scale-105 transition-transform duration-[2000ms] ease-out object-center"
-            />
+      {/* ===== TOP: Statement + Image ===== */}
+      <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-16 pt-24 md:pt-32 pb-16 md:pb-24">
+
+        {/* Eyebrow */}
+        <div className="flex items-center gap-3 mb-12 md:mb-16">
+          <span className="w-8 h-px bg-brand-primary" aria-hidden />
+          <span className="text-xs tracking-[0.35em] uppercase font-bold text-brand-primary">
+            Our Standard
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+
+          {/* Left: headline + paragraph + CTA */}
+          <div className="lg:col-span-6 xl:col-span-5">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.1] text-white mb-4">
+              Exceptional <span className="font-bold text-brand-primary">Service</span>
+            </h2>
+            <p className="text-base md:text-lg text-white/70 font-medium max-w-md mb-4">
+              Service excellence isn't a goal — it's our standard on every project.
+            </p>
+
+            <p className="text-base text-white/80 leading-relaxed font-medium max-w-md mb-8">
+              Our comprehensive service portfolio and integrated team approach ensure that
+              every project fully addresses design, lifestyle, and investment parameters —
+              from the initial planning stages through to handover.
+            </p>
+
+            <Link
+              to="/services"
+              className="inline-flex items-center gap-3 bg-brand-primary text-white text-sm font-bold px-6 py-3.5 rounded-full transition-all duration-300 hover:shadow-[0_0_30px_rgba(34,197,94,0.25)] group"
+            >
+              View Our Craft
+              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
           </div>
 
-          {/* Right Content Area */}
-          <div className="flex flex-col pt-8 lg:pr-12 h-full">
-            
-            {/* Introductory Text with Orb */}
-            {/* Introductory Text with Orb */}
-            <h3 className="text-xl md:text-2xl lg:text-3xl font-[300] leading-tight mb-20 text-white/90 max-w-xl">
-              We turn ideas into reality with a tradition of building long-term relationships based on integrity, performance, value and client's
-              <span className="inline-flex relative items-center justify-center w-6 h-6 mx-3 -translate-y-1">
-                <span className="absolute inset-0 bg-brand-primary blur-[10px] opacity-80 rounded-full"></span>
-                <span className="relative w-3 h-3 bg-brand-primary rounded-full shadow-[0_0_15px_var(--color-brand-primary)]"></span>
-              </span>
-              satisfaction.
-            </h3>
-
-            {/* Section Label */}
-            <div className="flex items-center gap-4 mb-6 relative z-20">
-              <span className="text-[10px] tracking-[0.3em] text-white/40 uppercase font-bold flex items-center gap-3">
-                <span className="text-white/20">[</span>
-                OUR STANDARD
-                <span className="text-white/20">]</span>
-              </span>
-            </div>
-
-            {/* Huge Title and Circular Video Btn */}
-            <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-8 mb-16 relative w-full">
-              
-              <h2 className="text-6xl md:text-[5.5rem] lg:text-[6.5rem] font-bold tracking-tighter leading-[0.85] flex flex-col uppercase relative z-20">
-                <span className="text-brand-primary">EXCEPTIONAL</span>
-                <span className="text-white">SERVICE</span>
-              </h2>
-              
-              {/* Circular Video Play Button - Positioned absolute on huge screens to overlap nicely */}
-              <div className="relative xl:absolute xl:-right-12 xl:top-1/2 xl:-translate-y-1/2 flex items-center justify-center w-32 h-32 md:w-40 md:h-40 shrink-0 group cursor-pointer z-30">
-                <div className="absolute inset-0 bg-white/10 rounded-full blur-xl group-hover:bg-brand-primary/20 transition-colors duration-500"></div>
-                <div className="relative w-24 h-24 md:w-32 md:h-32 bg-[#1a1a1a] rounded-full flex flex-col items-center justify-center border border-white/10 hover:border-brand-primary transition-colors duration-300 z-10 shadow-2xl">
-                   <ArrowUpRight size={18} className="text-white mb-2 group-hover:text-brand-primary transition-colors duration-300" />
-                   <span className="text-[9px] tracking-widest uppercase text-white/70 text-center leading-tight">View<br/>Craftsmanship</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Paragraph and mini image row */}
-            <div className="flex flex-col sm:flex-row items-end gap-8 justify-between w-full mt-auto">
-              <p className="text-xs md:text-sm text-white/50 leading-relaxed max-w-[300px] font-medium tracking-wide">
-                Our comprehensive service portfolio and integrated team approach to development ensure that our projects fully address all design and lifestyle parameters.
-              </p>
-              <div className="w-[180px] h-[120px] rounded-2xl overflow-hidden shrink-0 border border-white/5 opacity-80 hover:opacity-100 transition-opacity">
-                <img 
-                  src={aboutImage}
-                  alt="Modern Interior Preview" 
-                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-                  onError={(e) => {
-                    e.target.src = 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
-                  }}
+          {/* Right: overlapping image composition */}
+          <div className="lg:col-span-6 xl:col-span-7 relative">
+            <div className="relative">
+              {/* Main image */}
+              <div className="rounded-2xl overflow-hidden shadow-2xl border border-white/5 aspect-4/3 group">
+                <img
+                  src={propertyImg}
+                  alt=""
+                  loading="lazy"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[2s] ease-out"
                 />
+                <div className="absolute inset-0 bg-linear-to-t from-[#070707]/50 via-transparent to-transparent" />
+              </div>
+
+              {/* Floating interior preview — overlaps bottom-left */}
+              <div className="absolute -bottom-6 -left-4 md:-bottom-8 md:-left-8 w-[45%] max-w-[220px] rounded-xl overflow-hidden shadow-xl border-2 border-[#070707] z-10 group">
+                <div className="aspect-4/3">
+                  <img
+                    src={interiorImg}
+                    alt=""
+                    loading="lazy"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1.5s] ease-out"
+                  />
+                </div>
+              </div>
+
+              {/* Quality badge — top right */}
+              <div className="absolute -top-4 -right-3 md:-top-5 md:-right-5 z-10 bg-brand-primary text-[#070707] px-4 py-3 rounded-xl shadow-lg">
+                <Award size={20} className="mb-1" />
+                <span className="text-xs tracking-widest uppercase font-extrabold block leading-none">
+                  Quality
+                </span>
+                <span className="text-xs tracking-widest uppercase font-extrabold block leading-none">
+                  Assured
+                </span>
               </div>
             </div>
-
           </div>
         </div>
-
-        {/* Bottom Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8 pt-12 border-t border-white/5">
-          
-          {/* Progress Bars */}
-          <div className="col-span-1 sm:col-span-2 lg:col-span-1 flex flex-col justify-end pb-4 lg:pr-8 lg:border-r border-white/10">
-            <h4 className="text-xl md:text-2xl font-light mb-8">Greenstone Guarantee:</h4>
-            
-            <div className="flex flex-col gap-6">
-              <div>
-                <div className="flex justify-between text-[9px] tracking-widest text-white/50 uppercase mb-3 font-semibold">
-                  <span>Premium Material Selection</span>
-                  <span>100%</span>
-                </div>
-                <div className="w-full h-0.5 bg-white/10 relative">
-                  <div className="absolute left-0 top-0 h-full bg-brand-primary w-[100%] shadow-[0_0_10px_var(--color-brand-primary)]"></div>
-                </div>
-              </div>
-              <div>
-                <div className="flex justify-between text-[9px] tracking-widest text-white/50 uppercase mb-3 font-semibold">
-                  <span>Sustainable Practices</span>
-                  <span>100%</span>
-                </div>
-                <div className="w-full h-0.5 bg-white/10 relative">
-                  <div className="absolute left-0 top-0 h-full bg-brand-primary w-[100%] shadow-[0_0_10px_var(--color-brand-primary)]"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Stat Card 1 */}
-          <div className="col-span-1 bg-[#111] rounded-3xl p-6 md:p-8 flex flex-col justify-between border border-white/5 hover:border-brand-primary/50 transition-colors group">
-            <p className="text-[10px] tracking-wider text-white/50 font-medium leading-relaxed">Years Industry Experience</p>
-            <div className="flex items-end justify-between mt-12">
-              <h3 className="text-5xl md:text-6xl font-light text-white group-hover:text-brand-primary transition-colors">20+</h3>
-              <span className="text-[10px] text-white/30 font-mono">[ 01 ]</span>
-            </div>
-          </div>
-
-          {/* Stat Card 2 */}
-          <div className="col-span-1 bg-[#111] rounded-3xl p-6 md:p-8 flex flex-col justify-between border border-white/5 hover:border-brand-primary/50 transition-colors group">
-            <p className="text-[10px] tracking-wider text-white/50 font-medium line-clamp-2">Client Satisfaction</p>
-            <div className="flex items-end justify-between mt-12">
-              <h3 className="text-5xl md:text-6xl font-light text-white group-hover:text-brand-primary transition-colors">100%</h3>
-              <span className="text-[10px] text-white/30 font-mono">[ 02 ]</span>
-            </div>
-          </div>
-
-          {/* Stat Card 3 */}
-          <div className="col-span-1 bg-[#111] rounded-3xl p-6 md:p-8 flex flex-col justify-between border border-white/5 hover:border-brand-primary/50 transition-colors group cursor-pointer relative overflow-hidden">
-            <div className="flex justify-between items-start relative z-10">
-              <p className="text-[10px] tracking-wider text-white/50 font-medium max-w-[120px]">Luxury Units Developed</p>
-              <div className="w-6 h-6 rounded-full bg-white text-black flex items-center justify-center shrink-0 group-hover:bg-brand-primary group-hover:text-white transition-colors shadow-lg">
-                 <ArrowUpRight size={14} strokeWidth={2.5} />
-              </div>
-            </div>
-            <div className="flex items-end justify-between mt-12 relative z-10">
-              <h3 className="text-5xl md:text-6xl font-light text-white group-hover:text-brand-primary transition-colors">500+</h3>
-              <span className="text-[10px] text-white/30 font-mono">[ 03 ]</span>
-            </div>
-          </div>
-
-        </div>
-
       </div>
+
+      {/* ===== MIDDLE: Stats strip ===== */}
+      <div className="border-y border-white/5">
+        <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-16">
+          <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/5">
+            {stats.map((stat) => (
+              <div
+                key={stat.label}
+                className="flex items-center gap-5 py-8 md:py-10 sm:px-8 first:sm:pl-0 last:sm:pr-0 group"
+              >
+                <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-brand-primary/15 transition-colors duration-300">
+                  <stat.icon size={20} className="text-brand-primary" />
+                </div>
+                <div>
+                  <span className="text-4xl md:text-5xl font-black text-white leading-none block tracking-tight group-hover:text-brand-primary transition-colors duration-300">
+                    {stat.value}
+                  </span>
+                  <span className="text-sm text-white/70 font-medium tracking-wide mt-1 block">
+                    {stat.label}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ===== BOTTOM: Guarantee bars ===== */}
+      <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-16 py-16 md:py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+
+          {/* Left: label */}
+          <div className="lg:col-span-4">
+            <div className="flex items-center gap-2 mb-3">
+              <Leaf size={14} className="text-brand-primary" />
+              <span className="text-xs tracking-[0.3em] uppercase font-bold text-brand-primary">
+                The Greenstone Guarantee
+              </span>
+            </div>
+            <p className="text-base text-white/70 leading-relaxed font-medium max-w-sm">
+              Every project is held to these benchmarks — no exceptions, no compromises.
+            </p>
+          </div>
+
+          {/* Right: progress bars */}
+          <div className="lg:col-span-8 flex flex-col gap-6">
+            {guarantees.map((g) => (
+              <div key={g.label} className="group">
+                <div className="flex items-center justify-between mb-2.5">
+                  <span className="text-sm font-bold text-white/80 group-hover:text-white transition-colors">
+                    {g.label}
+                  </span>
+                  <span className="text-sm font-black text-brand-primary tabular-nums">
+                    {g.pct}%
+                  </span>
+                </div>
+                <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-brand-primary rounded-full transition-all duration-1000 ease-out"
+                    style={{ width: `${g.pct}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
     </section>
   );
 };

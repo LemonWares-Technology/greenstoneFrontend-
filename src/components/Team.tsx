@@ -63,9 +63,9 @@ const Team: React.FC = () => {
           <div>
             <div className="flex items-center gap-3 mb-6">
               <div className="w-1.5 h-1.5 bg-brand-primary rounded-full shadow-[0_0_8px_var(--color-brand-primary)]"></div>
-              <span className="text-[10px] tracking-[0.25em] text-brand-primary uppercase font-bold">Leadership</span>
+              <span className="text-xs tracking-[0.25em] text-brand-primary uppercase font-bold">Leadership</span>
             </div>
-            <h2 className="text-3xl md:text-5xl lg:text-[4rem] font-light tracking-tight leading-[1.05]">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.05]">
               Meet the <span className="font-bold">Visionaries</span>
             </h2>
           </div>
@@ -82,17 +82,17 @@ const Team: React.FC = () => {
               <div className="relative z-10 flex flex-col h-full bg-transparent">
                 <div className="mb-6">
                   <h3 className="text-xl font-bold tracking-tight text-[#070707] mb-1 group-hover:text-brand-primary transition-colors">{member.name}</h3>
-                  <p className="text-[11px] uppercase tracking-widest font-bold text-brand-primary">{member.role}</p>
+                  <p className="text-xs uppercase tracking-widest font-bold text-brand-primary">{member.role}</p>
                 </div>
                 <div className="h-px w-12 bg-black/10 mb-6 group-hover:w-full group-hover:bg-brand-primary/30 transition-all duration-500"></div>
-                <p className="text-sm text-[#070707]/60 leading-relaxed font-medium flex-1">{member.bio}</p>
+                <p className="text-base text-[#070707]/70 leading-relaxed font-medium flex-1">{member.bio}</p>
               </div>
             </div>
           ))}
         </div>
 
         {teamMembers.length === 0 && (
-          <div className="text-center py-16 text-[#070707]/40">
+          <div className="text-center py-16 text-[#070707]/60">
             <p className="text-lg font-medium">No team members found.</p>
           </div>
         )}
@@ -102,7 +102,7 @@ const Team: React.FC = () => {
             <div className="flex items-center gap-3">
               <span className="text-xl font-bold font-mono text-[#070707]">0{currentPage + 1}</span>
               <span className="text-xl text-[#070707]/20 font-light">/</span>
-              <span className="text-sm font-bold font-mono text-[#070707]/40">0{totalPages}</span>
+              <span className="text-sm font-bold font-mono text-[#070707]/60">0{totalPages}</span>
             </div>
             <div className="flex gap-4">
               <button 

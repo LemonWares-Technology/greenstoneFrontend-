@@ -1,79 +1,75 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronDown, ArrowUpRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { blogService } from '../services/blogs';
 import LoadingSpinner from './ui/LoadingSpinner';
 import ErrorMessage from './ui/ErrorMessage';
 import type { Blog } from '../types';
 
-const BlogCard: React.FC<{ post: Blog }> = ({ post }) => {
-  const [expanded, setExpanded] = useState(false);
+const formatDate = (dateStr?: string) => {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+};
 
-  return (
-    <div className="bg-white rounded-3xl overflow-hidden shadow-lg border border-[#070707]/5 hover:shadow-2xl transition-all duration-500 flex flex-col group">
-      
-      {/* Image Section with green overlay */}
-      <div className="relative h-[280px] md:h-[320px] overflow-hidden">
-        {post.image ? (
-          <img 
-            src={post.image} 
-            alt={post.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[2000ms]"
-          />
-        ) : (
-          <div className="w-full h-full bg-gradient-to-br from-brand-primary/20 to-brand-primary/5 flex items-center justify-center">
-            <span className="text-brand-primary/40 text-6xl font-black">{post.title.charAt(0)}</span>
-          </div>
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-brand-primary/80 via-brand-primary/20 to-transparent"></div>
+const BlogCard: React.FC<{ post: Blog; index: number }> = ({ post, index }) => (
+  <Link to={`/blog/${post.id}`} className="group flex flex-col h-full bg-white rounded-2xl p-4 pb-6 shadow-sm hover:shadow-xl transition-shadow duration-500">
 
-        <div className="absolute bottom-5 left-6 z-10">
-          <p className="text-white font-bold text-sm">{post.author}</p>
-          <p className="text-white/70 text-xs font-medium">{post.role}</p>
+    {/* Image */}
+    <div className="relative rounded-xl overflow-hidden mb-6 aspect-4/3">
+      {post.image ? (
+        <img
+          src={post.image}
+          alt={post.title}
+          loading="lazy"
+          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+        />
+      ) : (
+        <div className="w-full h-full bg-[#070707]/5 flex items-center justify-center">
+          <span className="text-[#070707]/10 text-7xl font-black select-none">
+            {String(index + 1).padStart(2, '0')}
+          </span>
         </div>
+      )}
+    </div>
 
-        <Link to={`/blog/${post.id}`} className="absolute bottom-5 right-6 z-10 bg-white text-[#070707] text-xs font-bold px-5 py-2.5 rounded-full flex items-center gap-2 hover:bg-brand-primary hover:text-white transition-all duration-300 shadow-lg group/btn">
-          Read Article
-          <ArrowUpRight size={12} className="group-hover/btn:rotate-45 transition-transform" />
-        </Link>
+    {/* Meta row: tag + date */}
+    <div className="flex items-center gap-3 mb-4">
+      {post.tags && post.tags[0] && (
+        <>
+          <span className="text-xs font-bold tracking-widest uppercase text-brand-primary">
+            {post.tags[0]}
+          </span>
+          <span className="w-1 h-1 rounded-full bg-[#070707]/20" aria-hidden />
+        </>
+      )}
+      <span className="text-sm text-[#070707]/50 font-medium">
+        {formatDate(post.createdAt)}
+      </span>
+    </div>
+
+    {/* Title */}
+    <h3 className="text-xl md:text-2xl font-bold text-[#070707] leading-snug tracking-tight mb-3 group-hover:text-brand-primary transition-colors duration-300 line-clamp-2">
+      {post.title}
+    </h3>
+
+    {/* Excerpt */}
+    <p className="text-base text-[#070707]/60 leading-relaxed font-medium line-clamp-3 mb-6 flex-1">
+      {post.excerpt}
+    </p>
+
+    {/* Author */}
+    <div className="flex items-center gap-3 mt-auto">
+      <div className="w-10 h-10 rounded-full bg-brand-primary/10 flex items-center justify-center shrink-0">
+        <span className="text-sm font-bold text-brand-primary">{post.author.charAt(0)}</span>
       </div>
-
-      {/* Content Section */}
-      <div className="p-6 md:p-8 flex flex-col flex-1">
-        <Link to={`/blog/${post.id}`}>
-          <h3 className="text-lg md:text-xl font-bold text-[#070707] leading-snug mb-4 tracking-tight hover:text-brand-primary transition-colors cursor-pointer">
-            {post.title}
-          </h3>
-        </Link>
-
-        <div className="flex flex-wrap gap-2 mb-5">
-          {(post.tags || []).map((tag, idx) => (
-            <span 
-              key={idx} 
-              className="text-[10px] font-bold tracking-wider uppercase text-[#070707]/40 bg-[#f5f5f5] px-3 py-1.5 rounded-full border border-[#070707]/5 hover:border-brand-primary/30 hover:text-brand-primary transition-colors cursor-pointer"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-
-        <p className={`text-sm text-[#070707]/50 leading-relaxed font-medium transition-all duration-500 ${expanded ? '' : 'line-clamp-3'}`}>
-          {post.excerpt}
-        </p>
-
-        <button 
-          onClick={() => setExpanded(!expanded)}
-          className="mt-5 flex items-center justify-center w-full pt-4 border-t border-[#070707]/5 group/expand"
-        >
-          <ChevronDown 
-            size={20} 
-            className={`text-[#070707]/20 group-hover/expand:text-brand-primary transition-all duration-300 ${expanded ? 'rotate-180' : ''}`} 
-          />
-        </button>
+      <div className="min-w-0">
+        <p className="text-sm font-bold text-[#070707] truncate">{post.author}</p>
+        <p className="text-xs text-[#070707]/50 font-medium truncate">{post.role}</p>
       </div>
     </div>
-  );
-};
+  </Link>
+);
 
 const Blog: React.FC = () => {
   const [posts, setPosts] = useState<Blog[]>([]);
@@ -97,7 +93,7 @@ const Blog: React.FC = () => {
 
   if (loading) {
     return (
-      <section id="blog" className="relative w-full bg-[#f5f5f5] text-[#070707] py-24 md:py-32 font-sans overflow-hidden">
+      <section id="blog" className="relative w-full bg-[#f5f5f0] text-[#070707] py-24 md:py-32 font-sans">
         <div className="flex items-center justify-center py-20">
           <LoadingSpinner size="lg" label="Loading articles..." />
         </div>
@@ -107,7 +103,7 @@ const Blog: React.FC = () => {
 
   if (error) {
     return (
-      <section id="blog" className="relative w-full bg-[#f5f5f5] text-[#070707] py-24 md:py-32 font-sans overflow-hidden">
+      <section id="blog" className="relative w-full bg-[#f5f5f0] text-[#070707] py-24 md:py-32 font-sans">
         <div className="flex items-center justify-center py-20">
           <ErrorMessage message={error} onRetry={() => window.location.reload()} />
         </div>
@@ -116,38 +112,46 @@ const Blog: React.FC = () => {
   }
 
   return (
-    <section id="blog" className="relative w-full bg-[#f5f5f5] text-[#070707] py-24 md:py-32 font-sans overflow-hidden">
-      
-      <div className="container mx-auto px-6 md:px-12 lg:px-24 relative z-10 max-w-[1600px]">
+    <section id="blog" className="relative w-full bg-[#f5f5f0] text-[#070707] py-24 md:py-32 font-sans">
+      <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-16">
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14 md:mb-20">
           <div>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-1.5 h-1.5 bg-brand-primary rounded-full shadow-[0_0_8px_var(--color-brand-primary)]"></div>
-              <span className="text-[10px] tracking-[0.25em] text-brand-primary uppercase font-bold">Insights & Stories</span>
+            <div className="flex items-center gap-3 mb-5">
+              <span className="w-8 h-px bg-brand-primary" aria-hidden />
+              <span className="text-xs tracking-[0.35em] uppercase font-bold text-brand-primary">
+                Insights & Stories
+              </span>
             </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.05]">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight leading-[1.1]">
               From the <span className="font-bold text-brand-primary">Blog</span>
             </h2>
+            <p className="mt-3 text-base md:text-lg text-[#070707]/70 font-medium max-w-lg">
+              Industry insights, project updates, and expert perspectives on Nigerian real estate.
+            </p>
           </div>
-          <Link to="/blog" className="text-sm font-bold text-[#070707]/50 hover:text-brand-primary transition-colors flex items-center gap-2 group">
-            View All Articles 
-            <ArrowUpRight size={14} className="group-hover:rotate-45 transition-transform" />
+
+          <Link
+            to="/blog"
+            className="inline-flex items-center gap-3 self-start md:self-auto bg-[#070707] text-white text-sm font-bold px-6 py-3.5 rounded-full transition-all duration-300 hover:bg-brand-primary group"
+          >
+            View All Articles
+            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
 
-        {/* Blog Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {posts.slice(0, 3).map((post) => (
-            <BlogCard key={post.id} post={post} />
-          ))}
-        </div>
-
-        {posts.length === 0 && (
-          <div className="text-center py-16 text-[#070707]/40">
-            <p className="text-lg font-medium">No blog posts yet.</p>
-            <p className="text-sm mt-2">Check back soon for our latest insights.</p>
+        {/* Cards — 3 equal columns */}
+        {posts.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+            {posts.slice(0, 3).map((post, i) => (
+              <BlogCard key={post.id} post={post} index={i} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16 text-[#070707]/60">
+            <p className="text-xl font-medium">No blog posts yet.</p>
+            <p className="text-base mt-2">Check back soon for our latest insights.</p>
           </div>
         )}
 

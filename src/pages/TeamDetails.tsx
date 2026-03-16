@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { ArrowLeft, Briefcase, Award, ChevronRight } from 'lucide-react';
-import aboutBg from '../assets/about_vision_property.png';
+import aboutBg from '../assets/about-grand-mansion.jpg';
 
 export const allTeamMembers = [
   { id: 1, name: 'Dr. Yemi Osindero', role: 'Chairman Board of Directors', bio: 'Founder and Managing Partner of Uhuru Investment Partners. Decades of investment banking, private equity and operating experience. Holds a BEng and PhD in Chemical Engineering from Bath University.', fullBio: 'Dr. Yemi Osindero serves as the visionary Chairman of the Board of Directors. As the Founder and Managing Partner of Uhuru Investment Partners, he brings decades of invaluable experience spanning investment banking, private equity, and executive operations. His strategic oversight guides Greenstone\'s high-level growth trajectories. He holds both a Bachelor of Engineering (BEng) and a PhD in Chemical Engineering from the prestigious Bath University.' },
@@ -44,19 +44,21 @@ const TeamDetails = () => {
 
   return (
     <div className="bg-[#050505] min-h-screen text-white font-sans flex flex-col selection:bg-brand-primary selection:text-black">
-      <Navbar />
       
-      {/* Profile Header */}
-      <div className="relative w-full pt-32 pb-16 px-6 md:px-12 lg:px-24 overflow-hidden border-b border-white/5">
+      {/* Profile Header — Navbar overlays */}
+      <div className="relative w-full pb-16 overflow-hidden border-b border-white/5">
         <div className="absolute inset-0 z-0 opacity-10 blur-xl">
           <img src={aboutBg} alt="Background" className="w-full h-full object-cover" />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-[#050505]/90 to-[#050505]"></div>
+        <div className="absolute inset-0 bg-linear-to-b from-[#050505] via-[#050505]/90 to-[#050505]"></div>
+        <div className="relative z-10">
+          <Navbar />
+        </div>
         
-        <div className="container mx-auto max-w-[1000px] relative z-10 flex flex-col lg:flex-row items-center lg:items-end gap-10">
+        <div className="container mx-auto max-w-[1000px] relative z-10 flex flex-col lg:flex-row items-center lg:items-end gap-10 px-6 md:px-12 lg:px-24 pt-8">
           
           <div className="flex-1 text-center lg:text-left">
-            <Link to="/about" className="inline-flex items-center gap-2 text-white/40 hover:text-brand-primary transition-colors text-[10px] font-bold uppercase tracking-widest mb-8">
+            <Link to="/about" className="inline-flex items-center gap-2 text-white/50 hover:text-brand-primary transition-colors text-xs font-bold uppercase tracking-widest mb-8">
               <ArrowLeft size={14} /> Back to Management Team
             </Link>
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">{member.name}</h1>
@@ -69,7 +71,7 @@ const TeamDetails = () => {
       </div>
 
       {/* Profile Content */}
-      <div className="flex-grow container mx-auto px-6 md:px-12 lg:px-24 max-w-[1000px] py-16">
+      <div className="grow container mx-auto px-6 md:px-12 lg:px-24 max-w-[1000px] py-16">
         <div className="bg-[#0a0a0a] border border-white/10 rounded-3xl p-8 md:p-12 relative overflow-hidden">
           
           <div className="absolute -top-32 -right-32 w-64 h-64 bg-brand-primary/10 blur-[100px] rounded-full pointer-events-none"></div>
@@ -84,14 +86,14 @@ const TeamDetails = () => {
           </p>
 
           <div className="mt-12 pt-8 border-t border-white/10 flex items-center gap-4">
-            <Award className="text-white/30" size={24} />
-            <p className="text-xs text-white/40 uppercase tracking-widest font-bold">Greenstone Developments Ltd. Executive</p>
+            <Award className="text-white/50" size={24} />
+            <p className="text-xs text-white/60 uppercase tracking-widest font-bold">Greenstone Developments Ltd. Executive</p>
           </div>
         </div>
 
         {/* Quick link to other team members */}
         <div className="mt-16 text-center">
-            <p className="text-white/40 text-sm mb-6">Discover more of our leadership</p>
+            <p className="text-white/60 text-base mb-6">Discover more of our leadership</p>
             <div className="flex flex-wrap justify-center gap-3">
               {allTeamMembers.filter(m => m.id !== member.id).slice(0, 3).map(m => (
                 <Link key={m.id} to={`/team/${m.id}`} className="flex items-center gap-2 bg-[#111] border border-white/5 hover:border-brand-primary/30 px-4 py-3 rounded-xl transition-colors text-sm font-medium text-white/70 hover:text-white group">

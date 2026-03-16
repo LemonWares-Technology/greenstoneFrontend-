@@ -6,6 +6,7 @@ import Investment from '../components/Investment'
 import WhyInvest from '../components/WhyInvest'
 import Offerings from '../components/Offerings'
 import Projects from '../components/Projects'
+import GalleryPreview from '../components/GalleryPreview'
 import CoreValues from '../components/CoreValues'
 import Team from '../components/Team'
 import Blog from '../components/Blog'
@@ -24,6 +25,7 @@ const Home = () => {
       <Investment />
       <Offerings />
       <Projects />
+      <GalleryPreview />
       <CoreValues />
       <Team />
       <WhyInvest />

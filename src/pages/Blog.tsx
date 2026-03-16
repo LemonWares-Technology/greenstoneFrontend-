@@ -6,6 +6,7 @@ import { Mail } from 'lucide-react';
 import { newsletterService } from '../services/newsletter';
 import { validateNewsletter } from '../utils/validators';
 import { useToast } from '../components/ui/Toast';
+import heroBg from '../assets/hero-blog.jpg';
 
 const Blog: React.FC = () => {
   const { showToast } = useToast();
@@ -36,19 +37,33 @@ const Blog: React.FC = () => {
 
   return (
     <div className="bg-[#050505] min-h-screen text-white font-sans flex flex-col selection:bg-brand-primary selection:text-black">
-      <Navbar />
       
-      {/* Quick Hero */}
-      <div className="pt-24 pb-8 px-6 md:px-12 lg:px-24 container mx-auto max-w-[1600px] flex flex-col items-center text-center">
-        <span className="text-[10px] tracking-[0.3em] text-brand-primary uppercase font-bold flex items-center justify-center gap-3 mb-6 bg-brand-primary/10 px-5 py-2.5 rounded-full border border-brand-primary/20">
-          [ INSIGHTS ]
-        </span>
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-light text-white tracking-tight">
-          News & <span className="font-bold">Perspectives</span>
-        </h1>
-        <p className="mt-8 text-white/60 max-w-2xl text-sm md:text-base font-medium leading-relaxed">
-          Stay updated with the latest trends in luxury real estate, market analyses, and news from Greenstone Developments Ltd.
-        </p>
+      {/* Hero — Navbar overlays background image */}
+      <div className="relative w-full min-h-[50vh] md:min-h-[55vh] flex flex-col overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img src={heroBg} alt="Greenstone Blog" className="w-full h-full object-cover opacity-25" />
+          <div className="absolute inset-0 bg-linear-to-t from-[#050505] via-[#050505]/70 to-[#050505]/40"></div>
+        </div>
+        <div className="relative z-10">
+          <Navbar />
+        </div>
+        <div className="relative z-10 flex-1 flex items-end pb-16 md:pb-20 px-6 md:px-12 lg:px-24">
+          <div className="container mx-auto max-w-[1600px]">
+            <div className="max-w-3xl">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-1.5 h-1.5 bg-brand-primary rounded-full shadow-[0_0_8px_var(--color-brand-primary)]" />
+                <span className="text-xs tracking-[0.25em] text-brand-primary uppercase font-bold">Insights</span>
+              </div>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light text-white tracking-tight leading-[1.08]">
+                News & <span className="font-bold">Perspectives</span>
+              </h1>
+              <p className="mt-8 text-white/60 max-w-2xl text-base md:text-lg font-medium leading-relaxed">
+                Stay updated with the latest trends in luxury real estate, market analyses,
+                and news from Greenstone Developments.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Main Blog Component content */}
@@ -63,13 +78,13 @@ const Blog: React.FC = () => {
 
             <div className="max-w-xl relative z-10 w-full lg:w-auto text-center lg:text-left">
               <h2 className="text-3xl md:text-4xl font-light mb-4 text-white">Subscribe to our <span className="font-bold text-brand-primary">Newsletter</span></h2>
-              <p className="text-white/50 text-sm font-medium leading-relaxed">Join our exclusive mailing list to receive early access to new developments, investment opportunities, and industry insights directly in your inbox.</p>
+              <p className="text-white/50 text-base font-medium leading-relaxed">Join our exclusive mailing list to receive early access to new developments, investment opportunities, and industry insights directly in your inbox.</p>
             </div>
             
             <div className="w-full lg:w-auto flex-1 max-w-xl relative z-10">
               <form className="flex flex-col sm:flex-row w-full gap-4" onSubmit={handleSubscribe}>
                 <div className="relative flex-1">
-                  <Mail size={18} className="absolute left-6 top-1/2 -translate-y-1/2 text-white/40" />
+                  <Mail size={18} className="absolute left-6 top-1/2 -translate-y-1/2 text-white/60" />
                   <input 
                     type="email" 
                     value={email}

@@ -78,6 +78,7 @@ export interface BlogPayload {
   tags?: string[];
   excerpt: string;
   content: string;
+  sendNewsletter?: boolean;
 }
 
 // ─── Team ────────────────────────────────────────────────
@@ -141,6 +142,46 @@ export interface ExecutiveSummaryPayload {
   loc: string;
   status: string;
   val?: string;
+  order?: number;
+}
+
+// ─── Service ────────────────────────────────────────────
+export interface Service {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  image?: string;
+  highlights: string[];
+  order?: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface ServicePayload {
+  title: string;
+  description: string;
+  icon?: string;
+  image?: string;
+  highlights?: string[];
+  order?: number;
+}
+
+// ─── Gallery ────────────────────────────────────────────
+export interface GalleryImage {
+  id: string;
+  url: string;
+  title: string;
+  category: string;
+  order?: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface GalleryImagePayload {
+  url: string;
+  title: string;
+  category: string;
   order?: number;
 }
 

@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import ScrollToTop from './components/ScrollToTop'
 import Home from './pages/Home'
 import Projects from './pages/Projects'
 import ProjectDetails from './pages/ProjectDetails'
@@ -9,6 +10,7 @@ import Services from './pages/Services'
 import TeamDetails from './pages/TeamDetails'
 import CoreValueDetails from './pages/CoreValueDetails'
 import Contact from './pages/Contact'
+import Gallery from './pages/Gallery'
 import AdminLayout from './layouts/AdminLayout'
 import AdminDashboard from './pages/admin/Dashboard'
 import AdminProjects from './pages/admin/ProjectsManager'
@@ -23,6 +25,7 @@ import NotFound from './pages/NotFound'
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -33,6 +36,7 @@ function App() {
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:id" element={<BlogDetails />} />
         <Route path="/core-values/:id" element={<CoreValueDetails />} />
+        <Route path="/gallery" element={<Gallery />} />
         <Route path="/contact" element={<Contact />} />
 
         {/* Admin Routes */}
