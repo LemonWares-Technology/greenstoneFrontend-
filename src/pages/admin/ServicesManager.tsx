@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, X, Save, Building2, ShieldCheck, KeyRound, Landmark, Leaf, Sun, Wind, Trees, Compass } from 'lucide-react';
+import AdminImageUpload from '../../components/admin/ImageUpload';
 import { serviceService } from '../../services/services';
 import { useToast } from '../../components/ui/Toast';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
@@ -128,14 +129,14 @@ const AdminServices: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-light text-[#012D01] tracking-tight">
+          <h1 className="text-3xl font-light text-green-800 tracking-tight">
             Manage <span className="font-bold">Services</span>
           </h1>
-          <p className="text-[#012D01]/50 mt-1">Configure the core capabilities offered by Greenstone.</p>
+          <p className="text-green-800/50 mt-1">Configure the core capabilities offered by Greenstone.</p>
         </div>
         <button
           onClick={() => openModal()}
-          className="bg-[#012D01] text-brand-primary hover:bg-brand-primary hover:text-[#012D01] transition-colors px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-[#012D01]/10"
+          className="bg-green-800 text-brand-primary hover:bg-brand-primary hover:text-green-800 transition-colors px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-green-800/10"
         >
           <Plus size={18} /> Add Service
         </button>
@@ -147,26 +148,26 @@ const AdminServices: React.FC = () => {
           services.map((service) => {
             const IconComponent = IconMap[service.icon] || Building2;
             return (
-              <div key={service.id} className="bg-white rounded-3xl p-8 border border-[#012D01]/5 shadow-xl shadow-[#012D01]/2 flex flex-col hover:border-brand-primary/50 transition-colors group relative overflow-hidden">
+              <div key={service.id} className="bg-white rounded-3xl p-8 border border-green-800/5 shadow-xl shadow-green-800/2 flex flex-col hover:border-brand-primary/50 transition-colors group relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none transition-transform group-hover:scale-150 duration-700" />
 
                 <div className="flex justify-between items-start mb-6 relative z-10">
-                  <div className="w-14 h-14 bg-[#E3F9F5] rounded-2xl flex items-center justify-center border border-brand-primary/30 group-hover:bg-brand-primary group-hover:border-brand-primary transition-colors text-[#012D01]">
+                  <div className="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center border border-brand-primary/30 group-hover:bg-brand-primary group-hover:border-brand-primary transition-colors text-green-800">
                     <IconComponent size={24} />
                   </div>
                   <div className="flex items-center gap-2">
-                    <button onClick={() => openModal(service)} className="p-2 text-[#012D01]/30 hover:text-brand-primary hover:bg-[#E3F9F5] rounded-lg transition-colors" title="Edit"><Edit2 size={16} /></button>
-                    <button onClick={() => handleDelete(service.id)} className="p-2 text-[#012D01]/30 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Delete"><Trash2 size={16} /></button>
+                    <button onClick={() => openModal(service)} className="p-2 text-green-800/30 hover:text-brand-primary hover:bg-green-50 rounded-lg transition-colors" title="Edit"><Edit2 size={16} /></button>
+                    <button onClick={() => handleDelete(service.id)} className="p-2 text-green-800/30 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Delete"><Trash2 size={16} /></button>
                   </div>
                 </div>
 
                 <div className="relative z-10 flex-1">
-                  <h3 className="text-xl font-bold text-[#012D01] mb-3 tracking-tight">{service.title}</h3>
-                  <p className="text-sm text-[#012D01]/60 leading-relaxed font-medium line-clamp-3">{service.description}</p>
+                  <h3 className="text-xl font-bold text-green-800 mb-3 tracking-tight">{service.title}</h3>
+                  <p className="text-sm text-green-800/60 leading-relaxed font-medium line-clamp-3">{service.description}</p>
                   {service.highlights && service.highlights.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 mt-4">
                       {service.highlights.slice(0, 3).map((h, i) => (
-                        <span key={i} className="bg-[#E3F9F5] text-[#012D01] px-2 py-0.5 rounded text-[10px] font-bold border border-brand-primary/30 uppercase tracking-wider">{h}</span>
+                        <span key={i} className="bg-green-50 text-green-800 px-2 py-0.5 rounded text-[10px] font-bold border border-brand-primary/30 uppercase tracking-wider">{h}</span>
                       ))}
                     </div>
                   )}
@@ -175,8 +176,8 @@ const AdminServices: React.FC = () => {
             );
           })
         ) : (
-          <div className="col-span-full py-16 text-center bg-white rounded-3xl border border-[#012D01]/5">
-            <p className="text-[#012D01]/50 mb-4">No services defined yet.</p>
+          <div className="col-span-full py-16 text-center bg-white rounded-3xl border border-green-800/5">
+            <p className="text-green-800/50 mb-4">No services defined yet.</p>
             <button onClick={() => openModal()} className="text-brand-primary-dark font-bold hover:underline">Create your first service offering</button>
           </div>
         )}
@@ -185,27 +186,27 @@ const AdminServices: React.FC = () => {
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-60 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
-          <div className="fixed inset-0 bg-[#012D01]/40 backdrop-blur-sm" onClick={closeModal} />
+          <div className="fixed inset-0 bg-green-800/40 backdrop-blur-sm" onClick={closeModal} />
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-xl relative z-10">
-            <div className="flex items-center justify-between p-6 border-b border-[#012D01]/10 bg-white rounded-t-3xl">
-              <h2 className="text-xl font-bold text-[#012D01]">{currentService ? 'Edit Service' : 'Add New Service'}</h2>
-              <button onClick={closeModal} className="p-2 rounded-full text-[#012D01]/50 hover:bg-[#E3F9F5] hover:text-[#012D01] transition-colors"><X size={20} /></button>
+            <div className="flex items-center justify-between p-6 border-b border-green-800/10 bg-white rounded-t-3xl">
+              <h2 className="text-xl font-bold text-green-800">{currentService ? 'Edit Service' : 'Add New Service'}</h2>
+              <button onClick={closeModal} className="p-2 rounded-full text-green-800/50 hover:bg-green-50 hover:text-green-800 transition-colors"><X size={20} /></button>
             </div>
 
             <div className="p-6">
               <form id="service-form" onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label className="block text-xs font-bold text-[#012D01]/70 uppercase tracking-widest mb-2">Service Title</label>
-                  <input type="text" name="title" value={formData.title} onChange={handleInputChange} required placeholder="e.g., Property Management" className="w-full bg-[#E3F9F5]/30 border border-[#012D01]/10 rounded-xl py-3 px-4 text-[#012D01] focus:outline-none focus:border-brand-primary transition-colors" />
+                  <label className="block text-xs font-bold text-green-800/70 uppercase tracking-widest mb-2">Service Title</label>
+                  <input type="text" name="title" value={formData.title} onChange={handleInputChange} required placeholder="e.g., Property Management" className="w-full bg-green-50/30 border border-green-800/10 rounded-xl py-3 px-4 text-green-800 focus:outline-none focus:border-brand-primary transition-colors" />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-[#012D01]/70 uppercase tracking-widest mb-3">Icon</label>
+                  <label className="block text-xs font-bold text-green-800/70 uppercase tracking-widest mb-3">Icon</label>
                   <div className="flex flex-wrap gap-3">
                     {availableIcons.map((iconName) => {
                       const IC = IconMap[iconName];
                       return (
-                        <button key={iconName} type="button" onClick={() => setFormData((prev) => ({ ...prev, icon: iconName }))} className={`w-12 h-12 rounded-xl flex items-center justify-center border transition-all ${formData.icon === iconName ? 'bg-brand-primary border-brand-primary text-[#012D01] ring-4 ring-brand-primary/20 scale-110' : 'bg-white border-[#012D01]/10 text-[#012D01]/40 hover:border-brand-primary/50'}`}>
+                        <button key={iconName} type="button" onClick={() => setFormData((prev) => ({ ...prev, icon: iconName }))} className={`w-12 h-12 rounded-xl flex items-center justify-center border transition-all ${formData.icon === iconName ? 'bg-brand-primary border-brand-primary text-green-800 ring-4 ring-brand-primary/20 scale-110' : 'bg-white border-green-800/10 text-green-800/40 hover:border-brand-primary/50'}`}>
                           <IC size={20} />
                         </button>
                       );
@@ -214,25 +215,26 @@ const AdminServices: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-[#012D01]/70 uppercase tracking-widest mb-2">Description</label>
-                  <textarea name="description" value={formData.description} onChange={handleInputChange} required rows={4} placeholder="Describe what this service entails..." className="w-full bg-[#E3F9F5]/30 border border-[#012D01]/10 rounded-xl py-3 px-4 text-[#012D01] focus:outline-none focus:border-brand-primary transition-colors resize-none" />
+                  <label className="block text-xs font-bold text-green-800/70 uppercase tracking-widest mb-2">Description</label>
+                  <textarea name="description" value={formData.description} onChange={handleInputChange} required rows={4} placeholder="Describe what this service entails..." className="w-full bg-green-50/30 border border-green-800/10 rounded-xl py-3 px-4 text-green-800 focus:outline-none focus:border-brand-primary transition-colors resize-none" />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-[#012D01]/70 uppercase tracking-widest mb-2">Highlights (comma separated)</label>
-                  <input type="text" name="highlights" value={formData.highlights} onChange={handleInputChange} placeholder="e.g., Land banking, Mixed-use developments" className="w-full bg-[#E3F9F5]/30 border border-[#012D01]/10 rounded-xl py-3 px-4 text-[#012D01] focus:outline-none focus:border-brand-primary transition-colors" />
+                  <label className="block text-xs font-bold text-green-800/70 uppercase tracking-widest mb-2">Highlights (comma separated)</label>
+                  <input type="text" name="highlights" value={formData.highlights} onChange={handleInputChange} placeholder="e.g., Land banking, Mixed-use developments" className="w-full bg-green-50/30 border border-green-800/10 rounded-xl py-3 px-4 text-green-800 focus:outline-none focus:border-brand-primary transition-colors" />
                 </div>
 
-                <div>
-                  <label className="block text-xs font-bold text-[#012D01]/70 uppercase tracking-widest mb-2">Image URL (optional)</label>
-                  <input type="text" name="image" value={formData.image} onChange={handleInputChange} placeholder="https://example.com/image.jpg" className="w-full bg-[#E3F9F5]/30 border border-[#012D01]/10 rounded-xl py-3 px-4 text-[#012D01] focus:outline-none focus:border-brand-primary transition-colors" />
-                </div>
+                <AdminImageUpload
+                  label="Image (optional)"
+                  value={formData.image}
+                  onChange={(url) => setFormData((prev) => ({ ...prev, image: url }))}
+                />
               </form>
             </div>
 
-            <div className="p-6 border-t border-[#012D01]/10 bg-[#E3F9F5]/50 rounded-b-3xl flex justify-end gap-3">
-              <button type="button" onClick={closeModal} className="px-6 py-3 rounded-xl font-bold text-[#012D01]/70 hover:bg-white hover:shadow-sm transition-all">Cancel</button>
-              <button type="submit" form="service-form" disabled={saving} className="bg-[#012D01] text-brand-primary hover:bg-brand-primary hover:text-[#012D01] transition-colors px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-[#012D01]/10 disabled:opacity-50 disabled:cursor-not-allowed">
+            <div className="p-6 border-t border-green-800/10 bg-green-50/50 rounded-b-3xl flex justify-end gap-3">
+              <button type="button" onClick={closeModal} className="px-6 py-3 rounded-xl font-bold text-green-800/70 hover:bg-white hover:shadow-sm transition-all">Cancel</button>
+              <button type="submit" form="service-form" disabled={saving} className="bg-green-800 text-brand-primary hover:bg-brand-primary hover:text-green-800 transition-colors px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-green-800/10 disabled:opacity-50 disabled:cursor-not-allowed">
                 {saving ? <div className="w-5 h-5 border-2 border-brand-primary/20 border-t-brand-primary rounded-full animate-spin" /> : <Save size={18} />}
                 {currentService ? 'Save Changes' : 'Create Service'}
               </button>

@@ -36,7 +36,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="flex items-center justify-between py-6 px-6 md:px-12 lg:px-16 relative z-100">
+      <nav className="flex items-center justify-between py-6 px-6 md:px-12 lg:px-16 relative z-[50]">
         <Link to="/" className="text-2xl font-black tracking-tight flex items-center gap-2">
           <span>Green</span>
           <span className="text-brand-primary">stone</span>
@@ -63,7 +63,7 @@ const Navbar = () => {
 
         {/* Mobile Hamburger Button */}
         <button 
-          className="lg:hidden p-2 text-white hover:text-brand-primary transition-colors z-110 relative"
+          className="lg:hidden p-2 text-white hover:text-brand-primary transition-colors relative z-[60]"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle Menu"
         >
@@ -73,7 +73,7 @@ const Navbar = () => {
 
       {/* Mobile Menu Overlay */}
       <div 
-        className={`fixed inset-0 bg-[#050505] z-90 flex flex-col justify-center items-center px-6 transition-all duration-500 ease-in-out lg:hidden ${
+        className={`fixed inset-0 bg-[#050505] z-[60] flex flex-col justify-center items-center px-6 transition-all duration-500 ease-in-out lg:hidden ${
           isMenuOpen ? 'opacity-100 visible pointer-events-auto' : 'opacity-0 invisible pointer-events-none'
         }`}
       >

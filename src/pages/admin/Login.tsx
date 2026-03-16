@@ -51,7 +51,7 @@ const AdminLogin: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#012D01] flex items-center justify-center p-6 font-sans relative overflow-hidden">
+    <div className="min-h-screen bg-green-800 flex items-center justify-center p-6 font-sans relative overflow-hidden">
       {/* Background decorations */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-primary/5 rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-brand-primary/5 rounded-full blur-[120px] pointer-events-none" />
@@ -59,7 +59,7 @@ const AdminLogin: React.FC = () => {
       <div className="w-full max-w-md relative z-10">
         {/* Logo */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-brand-primary text-[#012D01] font-black text-2xl mb-5 shadow-lg shadow-brand-primary/30">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-brand-primary text-green-800 font-black text-2xl mb-5 shadow-lg shadow-brand-primary/30">
             G
           </div>
           <h1 className="text-3xl font-light text-white tracking-tight">
@@ -123,10 +123,10 @@ const AdminLogin: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-brand-primary text-[#012D01] font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-brand-primary/20"
+            className="w-full bg-brand-primary text-green-800 font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-brand-primary/20"
           >
             {loading ? (
-              <div className="w-5 h-5 border-2 border-[#012D01]/20 border-t-[#012D01] rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-green-800/20 border-t-[#012D01] rounded-full animate-spin" />
             ) : (
               <>
                 Sign In

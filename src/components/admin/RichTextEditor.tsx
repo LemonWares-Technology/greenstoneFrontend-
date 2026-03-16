@@ -86,10 +86,10 @@ const MenuBar = ({ editor }) => {
   ];
 
   return (
-    <div className="border-b border-[#012D01]/10 bg-[#E3F9F5]/30 p-2 flex flex-wrap gap-1 items-center sticky top-0 z-10 rounded-t-xl">
+    <div className="border-b border-green-800/10 bg-green-50/30 p-2 flex flex-wrap gap-1 items-center sticky top-0 z-10 rounded-t-xl">
       {buttons.map((btn, index) => {
         if (btn.divider) {
-          return <div key={`divider-${index}`} className="w-px h-6 bg-[#012D01]/10 mx-1"></div>;
+          return <div key={`divider-${index}`} className="w-px h-6 bg-green-800/10 mx-1"></div>;
         }
         
         return (
@@ -102,8 +102,8 @@ const MenuBar = ({ editor }) => {
             disabled={btn.disabled}
             className={`p-2 rounded-lg flex items-center justify-center transition-colors ${
               btn.isActive 
-                ? 'bg-[#012D01] text-brand-primary' 
-                : 'text-[#012D01]/70 hover:bg-[#012D01]/5 hover:text-[#012D01]'
+                ? 'bg-green-800 text-brand-primary' 
+                : 'text-green-800/70 hover:bg-green-800/5 hover:text-green-800'
             } ${btn.disabled ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}`}
             type="button"
           >
@@ -127,7 +127,7 @@ const RichTextEditor = ({ content, onChange, placeholder = "Write something amaz
     content: content,
     editorProps: {
       attributes: {
-        class: 'prose prose-sm sm:prose-base focus:outline-none min-h-[300px] p-4 lg:p-6 text-[#012D01] max-w-none',
+        class: 'prose prose-sm sm:prose-base focus:outline-none min-h-[300px] p-4 lg:p-6 text-green-800 max-w-none',
       },
     },
     onUpdate: ({ editor }) => {
@@ -136,7 +136,7 @@ const RichTextEditor = ({ content, onChange, placeholder = "Write something amaz
   });
 
   return (
-    <div className="border border-[#012D01]/10 rounded-xl overflow-hidden bg-white focus-within:border-brand-primary focus-within:ring-1 focus-within:ring-brand-primary transition-colors hover:border-[#012D01]/20">
+    <div className="border border-green-800/10 rounded-xl overflow-hidden bg-white focus-within:border-brand-primary focus-within:ring-1 focus-within:ring-brand-primary transition-colors hover:border-green-800/20">
       <MenuBar editor={editor} />
       <div className="bg-white">
         <EditorContent editor={editor} />

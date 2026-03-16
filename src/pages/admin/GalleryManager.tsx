@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, X, Image as ImageIcon, Check, Loader2 } from 'lucide-react';
 import { galleryService } from '../../services/gallery';
+import AdminImageUpload from '../../components/admin/ImageUpload';
 import type { GalleryImage } from '../../types';
 
 const categories = ['All', 'Interior', 'Architecture', 'Construction', 'Landscape'];
@@ -16,7 +17,7 @@ const AdminGallery = () => {
   const [formData, setFormData] = useState({
     title: '',
     category: 'Interior',
-    url: '',
+    url: '' as string,
   });
 
   const fetchImages = async () => {
@@ -98,7 +99,7 @@ const AdminGallery = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-32">
-        <Loader2 size={36} className="animate-spin text-[#012D01]" />
+        <Loader2 size={36} className="animate-spin text-green-800" />
       </div>
     );
   }
@@ -109,10 +110,10 @@ const AdminGallery = () => {
       {/* Header & Actions */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-light text-[#012D01] tracking-tight">
+          <h1 className="text-3xl font-light text-green-800 tracking-tight">
             Manage <span className="font-bold">Gallery</span>
           </h1>
-          <p className="text-[#012D01]/50 mt-1">Upload and organize property showcase images.</p>
+          <p className="text-green-800/50 mt-1">Upload and organize property showcase images.</p>
         </div>
         
         <div className="flex items-center gap-3">
@@ -126,7 +127,7 @@ const AdminGallery = () => {
           )}
           <button 
             onClick={openUploadModal}
-            className="bg-[#012D01] text-brand-primary hover:bg-brand-primary hover:text-[#012D01] transition-colors px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-[#012D01]/10"
+            className="bg-green-800 text-brand-primary hover:bg-brand-primary hover:text-green-800 transition-colors px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-green-800/10"
           >
             <Plus size={18} /> Upload Image
           </button>
@@ -141,8 +142,8 @@ const AdminGallery = () => {
             onClick={() => setActiveCategory(category)}
             className={`px-5 py-2 rounded-full text-sm font-bold transition-all ${
               activeCategory === category 
-                ? 'bg-brand-primary text-[#012D01] shadow-lg shadow-brand-primary/20 scale-105' 
-                : 'bg-white text-[#012D01]/60 border border-[#012D01]/10 hover:border-brand-primary hover:text-[#012D01]'
+                ? 'bg-brand-primary text-green-800 shadow-lg shadow-brand-primary/20 scale-105' 
+                : 'bg-white text-green-800/60 border border-green-800/10 hover:border-brand-primary hover:text-green-800'
             }`}
           >
             {category}
@@ -169,14 +170,14 @@ const AdminGallery = () => {
                 />
                 
                 {/* Overlay gradient */}
-                <div className={`absolute inset-0 bg-linear-to-t from-[#012D01]/90 via-[#012D01]/20 to-transparent transition-opacity duration-300 ${isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}></div>
+                <div className={`absolute inset-0 bg-linear-to-t from-green-800/90 via-green-800/20 to-transparent transition-opacity duration-300 ${isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}></div>
 
                 {/* Selection Checkbox (Top Left) */}
                 <button 
                   onClick={() => toggleImageSelection(image.id)}
                   className={`absolute top-4 left-4 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all z-10 ${
                     isSelected 
-                      ? 'bg-brand-primary border-brand-primary text-[#012D01]' 
+                      ? 'bg-brand-primary border-brand-primary text-green-800' 
                       : 'border-white/50 bg-black/20 text-transparent hover:border-white'
                   }`}
                 >
@@ -196,7 +197,7 @@ const AdminGallery = () => {
 
                 {/* Info (Bottom) */}
                 <div className={`absolute bottom-0 left-0 right-0 p-4 transition-transform duration-300 z-10 ${isSelected ? 'translate-y-0' : 'translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100'}`}>
-                  <span className="text-[10px] uppercase tracking-widest font-bold text-brand-primary bg-[#012D01]/60 backdrop-blur-sm px-2 py-1 rounded-md mb-2 inline-block">
+                  <span className="text-[10px] uppercase tracking-widest font-bold text-brand-primary bg-green-800/60 backdrop-blur-sm px-2 py-1 rounded-md mb-2 inline-block">
                     {image.category}
                   </span>
                   <h3 className="text-white font-bold text-sm tracking-tight truncate">{image.title}</h3>
@@ -205,9 +206,9 @@ const AdminGallery = () => {
             );
           })
         ) : (
-          <div className="col-span-full py-20 text-center bg-white rounded-3xl border border-[#012D01]/5 flex flex-col items-center justify-center">
-            <ImageIcon className="w-16 h-16 text-[#012D01]/20 mb-4" />
-            <p className="text-[#012D01]/50 mb-4">No images found in this category.</p>
+          <div className="col-span-full py-20 text-center bg-white rounded-3xl border border-green-800/5 flex flex-col items-center justify-center">
+            <ImageIcon className="w-16 h-16 text-green-800/20 mb-4" />
+            <p className="text-green-800/50 mb-4">No images found in this category.</p>
             <button 
               onClick={openUploadModal}
               className="text-brand-primary-dark font-bold hover:underline"
@@ -221,55 +222,43 @@ const AdminGallery = () => {
       {/* Upload Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="fixed inset-0 bg-[#012D01]/40 backdrop-blur-sm" onClick={closeModal}></div>
+          <div className="fixed inset-0 bg-green-800/40 backdrop-blur-sm" onClick={closeModal}></div>
           
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg relative z-10 animate-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between p-6 border-b border-[#012D01]/10">
-              <h2 className="text-xl font-bold text-[#012D01]">Upload Image</h2>
-              <button onClick={closeModal} className="p-2 rounded-full text-[#012D01]/50 hover:bg-[#E3F9F5]">
+            <div className="flex items-center justify-between p-6 border-b border-green-800/10">
+              <h2 className="text-xl font-bold text-green-800">Upload Image</h2>
+              <button onClick={closeModal} className="p-2 rounded-full text-green-800/50 hover:bg-green-50">
                 <X size={20} />
               </button>
             </div>
 
             <form onSubmit={handleUploadSubmit} className="p-6 space-y-6">
-              
-              <div>
-                <label className="block text-xs font-bold text-[#012D01]/70 uppercase tracking-widest mb-2">Image URL *</label>
-                <input
-                  type="url"
-                  name="url"
-                  value={formData.url}
-                  onChange={handleInputChange}
-                  placeholder="https://example.com/image.jpg"
-                  required
-                  className="w-full bg-[#E3F9F5]/30 border border-[#012D01]/10 rounded-xl py-3 px-4 text-[#012D01] focus:outline-none focus:border-brand-primary transition-colors"
-                />
-                {formData.url && (
-                  <div className="mt-3 rounded-xl overflow-hidden border border-[#012D01]/10 h-32">
-                    <img src={formData.url} alt="Preview" className="w-full h-full object-cover" onError={(e) => (e.currentTarget.style.display = 'none')} />
-                  </div>
-                )}
-              </div>
+              <AdminImageUpload
+                label="Image"
+                value={formData.url}
+                onChange={(url) => setFormData((prev) => ({ ...prev, url }))}
+                required
+              />
 
               <div>
-                <label className="block text-xs font-bold text-[#012D01]/70 uppercase tracking-widest mb-2">Image Title</label>
+                <label className="block text-xs font-bold text-green-800/70 uppercase tracking-widest mb-2">Image Title</label>
                 <input 
                   type="text" 
                   name="title"
                   value={formData.title}
                   onChange={handleInputChange}
                   placeholder="E.g., Maitama Evening View"
-                  className="w-full bg-[#E3F9F5]/30 border border-[#012D01]/10 rounded-xl py-3 px-4 text-[#012D01] focus:outline-none focus:border-brand-primary transition-colors"
+                  className="w-full bg-green-50/30 border border-green-800/10 rounded-xl py-3 px-4 text-green-800 focus:outline-none focus:border-brand-primary transition-colors"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#012D01]/70 uppercase tracking-widest mb-2">Category</label>
+                <label className="block text-xs font-bold text-green-800/70 uppercase tracking-widest mb-2">Category</label>
                 <select 
                   name="category"
                   value={formData.category}
                   onChange={handleInputChange}
-                  className="w-full bg-[#E3F9F5]/30 border border-[#012D01]/10 rounded-xl py-3 px-4 text-[#012D01] focus:outline-none focus:border-brand-primary transition-colors appearance-none"
+                  className="w-full bg-green-50/30 border border-green-800/10 rounded-xl py-3 px-4 text-green-800 focus:outline-none focus:border-brand-primary transition-colors appearance-none"
                 >
                   {categories.filter(c => c !== 'All').map(c => (
                     <option key={c} value={c}>{c}</option>
@@ -281,14 +270,14 @@ const AdminGallery = () => {
                 <button 
                   type="button" 
                   onClick={closeModal}
-                  className="px-6 py-3 rounded-xl font-bold text-[#012D01]/70 hover:bg-[#012D01]/5 transition-colors"
+                  className="px-6 py-3 rounded-xl font-bold text-green-800/70 hover:bg-green-800/5 transition-colors"
                 >
                   Cancel
                 </button>
                 <button 
                   type="submit"
                   disabled={saving || !formData.url}
-                  className="bg-[#012D01] text-brand-primary hover:bg-brand-primary hover:text-[#012D01] transition-colors px-6 py-3 rounded-xl font-bold shadow-lg shadow-[#012D01]/10 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="bg-green-800 text-brand-primary hover:bg-brand-primary hover:text-green-800 transition-colors px-6 py-3 rounded-xl font-bold shadow-lg shadow-green-800/10 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                   {saving && <Loader2 size={16} className="animate-spin" />}
                   {saving ? 'Saving...' : 'Save Image'}

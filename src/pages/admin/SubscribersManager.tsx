@@ -78,44 +78,44 @@ const AdminSubscribers: React.FC = () => {
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-light text-[#012D01] tracking-tight">Manage <span className="font-bold">Subscribers</span></h1>
-          <p className="text-[#012D01]/50 mt-1">View email list and broadcast newsletters.</p>
+          <h1 className="text-3xl font-light text-green-800 tracking-tight">Manage <span className="font-bold">Subscribers</span></h1>
+          <p className="text-green-800/50 mt-1">View email list and broadcast newsletters.</p>
         </div>
-        <button onClick={openComposeModal} className="bg-[#012D01] text-brand-primary hover:bg-brand-primary hover:text-[#012D01] transition-colors px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-[#012D01]/10">
+        <button onClick={openComposeModal} className="bg-green-800 text-brand-primary hover:bg-brand-primary hover:text-green-800 transition-colors px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-green-800/10">
           <Mail size={18} /> Compose Newsletter
         </button>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white rounded-3xl p-6 border border-[#012D01]/5 shadow-xl shadow-[#012D01]/2 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-[#E3F9F5] flex items-center justify-center text-[#012D01]"><Users size={24} /></div>
+        <div className="bg-white rounded-3xl p-6 border border-green-800/5 shadow-xl shadow-green-800/2 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-2xl bg-green-50 flex items-center justify-center text-green-800"><Users size={24} /></div>
           <div>
-            <p className="text-[#012D01]/50 text-xs font-bold uppercase tracking-wider mb-1">Total Subscribers</p>
-            <p className="text-2xl font-bold text-[#012D01]">{subscribers.length}</p>
+            <p className="text-green-800/50 text-xs font-bold uppercase tracking-wider mb-1">Total Subscribers</p>
+            <p className="text-2xl font-bold text-green-800">{subscribers.length}</p>
           </div>
         </div>
-        <div className="bg-white rounded-3xl p-6 border border-[#012D01]/5 shadow-xl shadow-[#012D01]/2 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-brand-primary/20 flex items-center justify-center text-[#012D01]"><Send size={24} /></div>
+        <div className="bg-white rounded-3xl p-6 border border-green-800/5 shadow-xl shadow-green-800/2 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-2xl bg-brand-primary/20 flex items-center justify-center text-green-800"><Send size={24} /></div>
           <div>
-            <p className="text-[#012D01]/50 text-xs font-bold uppercase tracking-wider mb-1">Newsletters Sent</p>
-            <p className="text-2xl font-bold text-[#012D01]">—</p>
+            <p className="text-green-800/50 text-xs font-bold uppercase tracking-wider mb-1">Newsletters Sent</p>
+            <p className="text-2xl font-bold text-green-800">—</p>
           </div>
         </div>
       </div>
 
-      <div className="bg-white p-4 rounded-2xl border border-[#012D01]/5 shadow-sm mb-8">
+      <div className="bg-white p-4 rounded-2xl border border-green-800/5 shadow-sm mb-8">
         <div className="relative flex-1">
-          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#012D01]/40" />
-          <input type="text" placeholder="Search email addresses..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full bg-[#E3F9F5]/30 border border-[#012D01]/10 rounded-xl py-3 pl-12 pr-4 text-[#012D01] focus:outline-none focus:border-brand-primary transition-colors" />
+          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-green-800/40" />
+          <input type="text" placeholder="Search email addresses..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full bg-green-50/30 border border-green-800/10 rounded-xl py-3 pl-12 pr-4 text-green-800 focus:outline-none focus:border-brand-primary transition-colors" />
         </div>
       </div>
 
-      <div className="bg-white rounded-3xl border border-[#012D01]/5 shadow-xl shadow-[#012D01]/2 overflow-hidden">
+      <div className="bg-white rounded-3xl border border-green-800/5 shadow-xl shadow-green-800/2 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse min-w-[600px]">
             <thead>
-              <tr className="bg-[#E3F9F5]/50 border-b border-[#012D01]/5 text-xs uppercase tracking-widest text-[#012D01]/50 font-bold">
+              <tr className="bg-green-50/50 border-b border-green-800/5 text-xs uppercase tracking-widest text-green-800/50 font-bold">
                 <th className="py-4 px-6">Email Address</th>
                 <th className="py-4 px-6 w-48">Date Subscribed</th>
                 <th className="py-4 px-6 text-right w-32">Actions</th>
@@ -123,17 +123,17 @@ const AdminSubscribers: React.FC = () => {
             </thead>
             <tbody>
               {filteredSubscribers.length > 0 ? filteredSubscribers.map((sub) => (
-                <tr key={sub.id} className="border-b border-[#012D01]/5 hover:bg-[#E3F9F5]/20 transition-colors group">
-                  <td className="py-4 px-6 text-sm font-bold text-[#012D01]">{sub.email}</td>
-                  <td className="py-4 px-6 text-sm text-[#012D01]/70">{sub.createdAt ? new Date(sub.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '—'}</td>
+                <tr key={sub.id} className="border-b border-green-800/5 hover:bg-green-50/20 transition-colors group">
+                  <td className="py-4 px-6 text-sm font-bold text-green-800">{sub.email}</td>
+                  <td className="py-4 px-6 text-sm text-green-800/70">{sub.createdAt ? new Date(sub.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '—'}</td>
                   <td className="py-4 px-6">
                     <div className="flex items-center justify-end">
-                      <button onClick={() => handleDelete(sub.id)} className="p-2 text-[#012D01]/50 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Remove Subscriber"><Trash2 size={16} /></button>
+                      <button onClick={() => handleDelete(sub.id)} className="p-2 text-green-800/50 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Remove Subscriber"><Trash2 size={16} /></button>
                     </div>
                   </td>
                 </tr>
               )) : (
-                <tr><td colSpan={3} className="py-8 text-center text-[#012D01]/50">No subscribers found.</td></tr>
+                <tr><td colSpan={3} className="py-8 text-center text-green-800/50">No subscribers found.</td></tr>
               )}
             </tbody>
           </table>
@@ -142,31 +142,31 @@ const AdminSubscribers: React.FC = () => {
 
       {isModalOpen && (
         <div className="fixed inset-0 z-60 flex items-center justify-center p-4 sm:p-6 pb-20 sm:pb-6 overflow-y-auto">
-          <div className="fixed inset-0 bg-[#012D01]/40 backdrop-blur-sm" onClick={closeModal}></div>
+          <div className="fixed inset-0 bg-green-800/40 backdrop-blur-sm" onClick={closeModal}></div>
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl relative z-10 flex flex-col max-h-[90vh]">
-            <div className="flex items-center justify-between p-6 border-b border-[#012D01]/10 bg-white sticky top-0 rounded-t-3xl z-20 shrink-0">
-              <h2 className="text-xl font-bold text-[#012D01] flex items-center gap-2"><Mail size={20} className="text-brand-primary-dark" /> Compose Newsletter</h2>
-              <button onClick={closeModal} className="p-2 rounded-full text-[#012D01]/50 hover:bg-[#E3F9F5] hover:text-[#012D01] transition-colors"><X size={20} /></button>
+            <div className="flex items-center justify-between p-6 border-b border-green-800/10 bg-white sticky top-0 rounded-t-3xl z-20 shrink-0">
+              <h2 className="text-xl font-bold text-green-800 flex items-center gap-2"><Mail size={20} className="text-brand-primary-dark" /> Compose Newsletter</h2>
+              <button onClick={closeModal} className="p-2 rounded-full text-green-800/50 hover:bg-green-50 hover:text-green-800 transition-colors"><X size={20} /></button>
             </div>
 
             <div className="p-6 overflow-y-auto flex-1 custom-scrollbar">
               <form id="newsletter-form" onSubmit={handleSendNewsletter} className="space-y-6">
                 <div>
-                  <label className="block text-xs font-bold text-[#012D01]/70 uppercase tracking-widest mb-2">Email Subject Line</label>
-                  <input type="text" name="subject" value={formData.subject} onChange={handleInputChange} required placeholder="Enter an engaging subject line..." className="w-full bg-[#E3F9F5]/30 border border-[#012D01]/10 rounded-xl py-3 px-4 text-[#012D01] text-lg font-medium focus:outline-none focus:border-brand-primary transition-colors" />
+                  <label className="block text-xs font-bold text-green-800/70 uppercase tracking-widest mb-2">Email Subject Line</label>
+                  <input type="text" name="subject" value={formData.subject} onChange={handleInputChange} required placeholder="Enter an engaging subject line..." className="w-full bg-green-50/30 border border-green-800/10 rounded-xl py-3 px-4 text-green-800 text-lg font-medium focus:outline-none focus:border-brand-primary transition-colors" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-[#012D01]/70 uppercase tracking-widest mb-2">Newsletter Content</label>
+                  <label className="block text-xs font-bold text-green-800/70 uppercase tracking-widest mb-2">Newsletter Content</label>
                   <RichTextEditor content={formData.content} onChange={handleEditorChange} placeholder="Write your email broadcast here..." />
                 </div>
               </form>
             </div>
 
-            <div className="p-6 border-t border-[#012D01]/10 bg-white sticky bottom-0 rounded-b-3xl shrink-0 flex justify-between items-center z-20">
-              <div className="text-sm font-medium text-[#012D01]/50">Will be sent to <strong className="text-[#012D01]">{subscribers.length}</strong> recipients.</div>
+            <div className="p-6 border-t border-green-800/10 bg-white sticky bottom-0 rounded-b-3xl shrink-0 flex justify-between items-center z-20">
+              <div className="text-sm font-medium text-green-800/50">Will be sent to <strong className="text-green-800">{subscribers.length}</strong> recipients.</div>
               <div className="flex gap-3">
-                <button type="button" onClick={closeModal} className="px-6 py-3 rounded-xl font-bold text-[#012D01]/70 hover:bg-[#012D01]/5 transition-colors">Cancel</button>
-                <button type="submit" form="newsletter-form" className="bg-[#012D01] text-brand-primary hover:bg-brand-primary hover:text-[#012D01] transition-colors px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-[#012D01]/10">
+                <button type="button" onClick={closeModal} className="px-6 py-3 rounded-xl font-bold text-green-800/70 hover:bg-green-800/5 transition-colors">Cancel</button>
+                <button type="submit" form="newsletter-form" className="bg-green-800 text-brand-primary hover:bg-brand-primary hover:text-green-800 transition-colors px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-green-800/10">
                   <Send size={18} /> Send Broadcast
                 </button>
               </div>

@@ -104,85 +104,85 @@ const AdminTeam: React.FC = () => {
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-light text-[#012D01] tracking-tight">Manage <span className="font-bold">Team</span></h1>
-          <p className="text-[#012D01]/50 mt-1">Add, edit, or remove executives and engineers.</p>
+          <h1 className="text-3xl font-light text-green-800 tracking-tight">Manage <span className="font-bold">Team</span></h1>
+          <p className="text-green-800/50 mt-1">Add, edit, or remove executives and engineers.</p>
         </div>
-        <button onClick={() => openModal()} className="bg-[#012D01] text-brand-primary hover:bg-brand-primary hover:text-[#012D01] transition-colors px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-[#012D01]/10">
+        <button onClick={() => openModal()} className="bg-green-800 text-brand-primary hover:bg-brand-primary hover:text-green-800 transition-colors px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-green-800/10">
           <Plus size={18} /> Add Member
         </button>
       </div>
 
-      <div className="bg-white p-4 rounded-2xl border border-[#012D01]/5 shadow-sm mb-8 flex items-center gap-4">
+      <div className="bg-white p-4 rounded-2xl border border-green-800/5 shadow-sm mb-8 flex items-center gap-4">
         <div className="relative flex-1">
-          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#012D01]/40" />
-          <input type="text" placeholder="Search team members by name or role..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full bg-[#E3F9F5]/30 border border-[#012D01]/10 rounded-xl py-3 pl-12 pr-4 text-[#012D01] focus:outline-none focus:border-brand-primary transition-colors" />
+          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-green-800/40" />
+          <input type="text" placeholder="Search team members by name or role..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full bg-green-50/30 border border-green-800/10 rounded-xl py-3 pl-12 pr-4 text-green-800 focus:outline-none focus:border-brand-primary transition-colors" />
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {filteredTeam.length > 0 ? filteredTeam.map((member) => (
-          <div key={member.id} className="bg-white rounded-3xl border border-[#012D01]/5 p-6 shadow-xl shadow-[#012D01]/2 hover:border-[#012D01]/10 transition-all flex flex-col">
+          <div key={member.id} className="bg-white rounded-3xl border border-green-800/5 p-6 shadow-xl shadow-green-800/2 hover:border-green-800/10 transition-all flex flex-col">
             <div className="flex justify-between items-start mb-4">
-              <div className="w-16 h-16 rounded-full bg-[#E3F9F5] flex items-center justify-center text-[#012D01] font-bold text-xl border-2 border-brand-primary">
+              <div className="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center text-green-800 font-bold text-xl border-2 border-brand-primary">
                 {member.name.charAt(0)}
               </div>
               <div className="flex items-center gap-2">
-                <button onClick={() => openModal(member)} className="p-2 text-[#012D01]/50 hover:text-brand-primary hover:bg-[#E3F9F5] rounded-lg transition-colors" title="Edit"><Edit2 size={16} /></button>
-                <button onClick={() => handleDelete(member.id)} className="p-2 text-[#012D01]/50 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Delete"><Trash2 size={16} /></button>
+                <button onClick={() => openModal(member)} className="p-2 text-green-800/50 hover:text-brand-primary hover:bg-green-50 rounded-lg transition-colors" title="Edit"><Edit2 size={16} /></button>
+                <button onClick={() => handleDelete(member.id)} className="p-2 text-green-800/50 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Delete"><Trash2 size={16} /></button>
               </div>
             </div>
             <div className="mb-4">
-              <h3 className="text-xl font-bold tracking-tight text-[#012D01] mb-1">{member.name}</h3>
+              <h3 className="text-xl font-bold tracking-tight text-green-800 mb-1">{member.name}</h3>
               <p className="text-xs uppercase tracking-widest font-bold text-brand-primary-dark">{member.role}</p>
             </div>
-            <p className="text-sm text-[#012D01]/70 leading-relaxed font-medium flex-1 line-clamp-4">{member.bio}</p>
+            <p className="text-sm text-green-800/70 leading-relaxed font-medium flex-1 line-clamp-4">{member.bio}</p>
           </div>
         )) : (
-          <div className="col-span-full py-12 text-center text-[#012D01]/50 bg-white rounded-3xl border border-[#012D01]/5">No team members found.</div>
+          <div className="col-span-full py-12 text-center text-green-800/50 bg-white rounded-3xl border border-green-800/5">No team members found.</div>
         )}
       </div>
 
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 pb-20 sm:pb-6 overflow-y-auto">
-          <div className="fixed inset-0 bg-[#012D01]/40 backdrop-blur-sm" onClick={closeModal}></div>
+          <div className="fixed inset-0 bg-green-800/40 backdrop-blur-sm" onClick={closeModal}></div>
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl relative z-10 flex flex-col max-h-[90vh]">
-            <div className="flex items-center justify-between p-6 border-b border-[#012D01]/10 bg-white sticky top-0 rounded-t-3xl z-20 shrink-0">
-              <h2 className="text-xl font-bold text-[#012D01]">{currentMember ? 'Edit Team Member' : 'Add Team Member'}</h2>
-              <button onClick={closeModal} className="p-2 rounded-full text-[#012D01]/50 hover:bg-[#E3F9F5] hover:text-[#012D01] transition-colors"><X size={20} /></button>
+            <div className="flex items-center justify-between p-6 border-b border-green-800/10 bg-white sticky top-0 rounded-t-3xl z-20 shrink-0">
+              <h2 className="text-xl font-bold text-green-800">{currentMember ? 'Edit Team Member' : 'Add Team Member'}</h2>
+              <button onClick={closeModal} className="p-2 rounded-full text-green-800/50 hover:bg-green-50 hover:text-green-800 transition-colors"><X size={20} /></button>
             </div>
 
             <div className="p-6 overflow-y-auto flex-1 custom-scrollbar">
               <form id="team-form" onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-xs font-bold text-[#012D01]/70 uppercase tracking-widest mb-2">Full Name</label>
-                    <input type="text" name="name" value={formData.name} onChange={handleInputChange} required placeholder="e.g., Dr. Yemi Osindero" className="w-full bg-[#E3F9F5]/30 border border-[#012D01]/10 rounded-xl py-3 px-4 text-[#012D01] focus:outline-none focus:border-brand-primary transition-colors" />
+                    <label className="block text-xs font-bold text-green-800/70 uppercase tracking-widest mb-2">Full Name</label>
+                    <input type="text" name="name" value={formData.name} onChange={handleInputChange} required placeholder="e.g., Dr. Yemi Osindero" className="w-full bg-green-50/30 border border-green-800/10 rounded-xl py-3 px-4 text-green-800 focus:outline-none focus:border-brand-primary transition-colors" />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-[#012D01]/70 uppercase tracking-widest mb-2">Role / Title</label>
-                    <input type="text" name="role" value={formData.role} onChange={handleInputChange} required placeholder="e.g., Technical Director" className="w-full bg-[#E3F9F5]/30 border border-[#012D01]/10 rounded-xl py-3 px-4 text-[#012D01] focus:outline-none focus:border-brand-primary transition-colors" />
+                    <label className="block text-xs font-bold text-green-800/70 uppercase tracking-widest mb-2">Role / Title</label>
+                    <input type="text" name="role" value={formData.role} onChange={handleInputChange} required placeholder="e.g., Technical Director" className="w-full bg-green-50/30 border border-green-800/10 rounded-xl py-3 px-4 text-green-800 focus:outline-none focus:border-brand-primary transition-colors" />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-[#012D01]/70 uppercase tracking-widest mb-2">Biography</label>
-                  <textarea name="bio" value={formData.bio} onChange={handleInputChange} required rows={5} placeholder="Enter professional biography and qualifications..." className="w-full bg-[#E3F9F5]/30 border border-[#012D01]/10 rounded-xl py-3 px-4 text-[#012D01] focus:outline-none focus:border-brand-primary transition-colors resize-none" />
+                  <label className="block text-xs font-bold text-green-800/70 uppercase tracking-widest mb-2">Biography</label>
+                  <textarea name="bio" value={formData.bio} onChange={handleInputChange} required rows={5} placeholder="Enter professional biography and qualifications..." className="w-full bg-green-50/30 border border-green-800/10 rounded-xl py-3 px-4 text-green-800 focus:outline-none focus:border-brand-primary transition-colors resize-none" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-[#012D01]/70 uppercase tracking-widest mb-2">Profile Photo</label>
-                  <div className="mt-1 flex items-center justify-center px-6 pt-5 pb-6 border-2 border-[#012D01]/10 border-dashed rounded-xl hover:bg-[#E3F9F5]/30 transition-colors cursor-pointer group">
+                  <label className="block text-xs font-bold text-green-800/70 uppercase tracking-widest mb-2">Profile Photo</label>
+                  <div className="mt-1 flex items-center justify-center px-6 pt-5 pb-6 border-2 border-green-800/10 border-dashed rounded-xl hover:bg-green-50/30 transition-colors cursor-pointer group">
                     <div className="space-y-1 text-center">
-                      <ImageIcon className="mx-auto h-12 w-12 text-[#012D01]/30 group-hover:text-brand-primary transition-colors" />
-                      <div className="flex text-sm text-[#012D01]/70 justify-center"><label className="relative cursor-pointer font-medium text-brand-primary-dark hover:text-brand-primary"><span>Upload a profile photo</span><input type="file" className="sr-only" accept="image/*" /></label></div>
-                      <p className="text-xs text-[#012D01]/50">1:1 Ratio recommended (PNG, JPG)</p>
+                      <ImageIcon className="mx-auto h-12 w-12 text-green-800/30 group-hover:text-brand-primary transition-colors" />
+                      <div className="flex text-sm text-green-800/70 justify-center"><label className="relative cursor-pointer font-medium text-brand-primary-dark hover:text-brand-primary"><span>Upload a profile photo</span><input type="file" className="sr-only" accept="image/*" /></label></div>
+                      <p className="text-xs text-green-800/50">1:1 Ratio recommended (PNG, JPG)</p>
                     </div>
                   </div>
                 </div>
               </form>
             </div>
 
-            <div className="p-6 border-t border-[#012D01]/10 bg-white sticky bottom-0 rounded-b-3xl shrink-0 flex justify-end gap-3 z-20">
-              <button type="button" onClick={closeModal} className="px-6 py-3 rounded-xl font-bold text-[#012D01]/70 hover:bg-[#012D01]/5 transition-colors">Cancel</button>
-              <button type="submit" form="team-form" disabled={saving} className="bg-[#012D01] text-brand-primary hover:bg-brand-primary hover:text-[#012D01] transition-colors px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-[#012D01]/10 disabled:opacity-50 disabled:cursor-not-allowed">
+            <div className="p-6 border-t border-green-800/10 bg-white sticky bottom-0 rounded-b-3xl shrink-0 flex justify-end gap-3 z-20">
+              <button type="button" onClick={closeModal} className="px-6 py-3 rounded-xl font-bold text-green-800/70 hover:bg-green-800/5 transition-colors">Cancel</button>
+              <button type="submit" form="team-form" disabled={saving} className="bg-green-800 text-brand-primary hover:bg-brand-primary hover:text-green-800 transition-colors px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-green-800/10 disabled:opacity-50 disabled:cursor-not-allowed">
                 {saving ? <div className="w-5 h-5 border-2 border-brand-primary/20 border-t-brand-primary rounded-full animate-spin" /> : <Save size={18} />}
                 {currentMember ? 'Save Changes' : 'Add Member'}
               </button>
