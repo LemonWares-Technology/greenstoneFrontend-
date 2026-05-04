@@ -33,28 +33,13 @@ jobs:
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
-      # ==================== DEBUG STEP ====================
-      - name: Test SSH Connection (Debug)
-        run: |
-          echo "${{ secrets.CPANEL_SSH_KEY }}" > /tmp/id_key
-          chmod 600 /tmp/id_key
-          echo "=== Testing SSH connection and shell ==="
-          ssh -i /tmp/id_key \
-              -o StrictHostKeyChecking=no \
-              -o UserKnownHostsFile=/dev/null \
-              -p 22 \
-              ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_HOST }} \
-              "echo '=== CLEAN SHELL TEST SUCCESS ==='; echo 'Shell: $SHELL'; ls -la ~ 2>/dev/null | head -5; exit 0" 2>&1
-        continue-on-error: true
-      # ===================================================
-
       - name: Deploy to cPanel
         uses: Burnett01/rsync-deployments@5.2.1
         with:
-          switches: -avzr --delete --exclude=".htaccess" --exclude="node_modules" --exclude=".git"
+          switches: -avzr --delete --exclude=".htaccess" --exclude="node_modules" --exclude=".git" --chmod=D2755,F644
           path: ./dist/
-          remote_path: /home/greenston/public_html
+          remote_path: /home/greensto/public_html/        # ← FIXED
           remote_host: ${{ secrets.CPANEL_HOST }}
-          remote_user: ${{ secrets.CPANEL_USERNAME }}
+          remote_user: ${{ secrets.CPANEL_USERNAME }}     # Should be "greensto"
           remote_key: ${{ secrets.CPANEL_SSH_KEY }}
           remote_port: 22
