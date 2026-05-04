@@ -38,14 +38,14 @@ jobs:
         run: |
           echo "${{ secrets.CPANEL_SSH_KEY }}" > /tmp/id_key
           chmod 600 /tmp/id_key
-          echo "=== Testing SSH connection and shell cleanliness ==="
+          echo "=== Testing SSH connection and shell ==="
           ssh -i /tmp/id_key \
               -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
               -p 22 \
               ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_HOST }} \
-              "echo '=== CLEAN SHELL TEST SUCCESS ==='; echo 'Current shell: $SHELL'; exit 0" 2>&1
-        continue-on-error: true   # So deployment still runs even if debug fails
+              "echo '=== CLEAN SHELL TEST SUCCESS ==='; echo 'Shell: $SHELL'; ls -la ~ 2>/dev/null | head -5; exit 0" 2>&1
+        continue-on-error: true
       # ===================================================
 
       - name: Deploy to cPanel
@@ -58,4 +58,3 @@ jobs:
           remote_user: ${{ secrets.CPANEL_USERNAME }}
           remote_key: ${{ secrets.CPANEL_SSH_KEY }}
           remote_port: 22
-          rsh: "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
