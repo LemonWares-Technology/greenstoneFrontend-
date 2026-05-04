@@ -37,7 +37,7 @@ jobs:
         uses: Burnett01/rsync-deployments@5.2.1
         with:
           switches: -avzr --delete --exclude=".htaccess"
-          rsh: "ssh -q -p 22"
+          rsh: "ssh -q -o StrictHostKeyChecking=no -p 22"
           path: ./dist/
           remote_path: /home/greenston/public_html
           remote_host: ${{ secrets.CPANEL_HOST }}
