@@ -36,11 +36,9 @@ jobs:
       - name: Deploy to cPanel
         uses: Burnett01/rsync-deployments@5.2.1
         with:
-          # 1. FIX: Removed --rsync-path and the extra SSH commands so jailshell doesn't panic
           switches: -avzr --delete --exclude=".htaccess"
+          rsh: "ssh -q -p 22"
           path: ./dist/
-          # 2. FIX: Main domains in cPanel use public_html, not a named folder.
-          # (Hardcoded to 'jerrypiping' to prevent that hidden space crash from earlie)
           remote_path: /home/greenston/public_html
           remote_host: ${{ secrets.CPANEL_HOST }}
           remote_user: ${{ secrets.CPANEL_USERNAME }}
