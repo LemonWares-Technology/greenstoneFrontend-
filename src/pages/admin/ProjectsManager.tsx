@@ -36,7 +36,7 @@ const AdminProjects: React.FC = () => {
     setLoading(true);
     try {
       const res = await projectService.getAll();
-      setProjects(res.data);
+      setProjects(res?.data || []);
       setError(null);
     } catch (err: unknown) {
       const apiErr = err as { message?: string };

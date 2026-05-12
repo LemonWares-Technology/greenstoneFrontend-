@@ -80,7 +80,7 @@ const Blog: React.FC = () => {
     const fetchBlogs = async () => {
       try {
         const res = await blogService.getAll();
-        setPosts(res.data);
+        setPosts(res?.data || []);
       } catch (err: unknown) {
         const apiErr = err as { message?: string };
         setError(apiErr.message || 'Failed to load blog posts');
@@ -142,7 +142,7 @@ const Blog: React.FC = () => {
         </div>
 
         {/* Cards — 3 equal columns */}
-        {posts.length > 0 ? (
+        {posts && posts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
             {posts.slice(0, 3).map((post, i) => (
               <BlogCard key={post.id} post={post} index={i} />

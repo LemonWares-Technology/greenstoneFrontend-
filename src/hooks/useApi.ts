@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
 interface ApiError {
   message: string;
@@ -26,7 +26,7 @@ interface UseApiReturn<T> extends UseApiState<T> {
  * useEffect(() => { execute(); }, []);
  */
 export function useApi<T>(
-  asyncFn: (...args: unknown[]) => Promise<T>
+  asyncFn: (...args: unknown[]) => Promise<T>,
 ): UseApiReturn<T> {
   const [state, setState] = useState<UseApiState<T>>({
     data: null,
@@ -43,15 +43,15 @@ export function useApi<T>(
         return result;
       } catch (err) {
         const apiErr = err as ApiError;
-        setState((prev) => ({
+        setState((prev: any) => ({
           ...prev,
           loading: false,
-          error: apiErr.message || 'Something went wrong',
+          error: apiErr.message || "Something went wrong",
         }));
         return undefined;
       }
     },
-    [asyncFn]
+    [asyncFn],
   );
 
   const reset = useCallback(() => {
@@ -62,10 +62,13 @@ export function useApi<T>(
     (value: React.SetStateAction<T | null>) => {
       setState((prev) => ({
         ...prev,
-        data: typeof value === 'function' ? (value as (prev: T | null) => T | null)(prev.data) : value,
+        data:
+          typeof value === "function"
+            ? (value as (prev: T | null) => T | null)(prev.data)
+            : value,
       }));
     },
-    []
+    [],
   );
 
   return { ...state, execute, reset, setData };

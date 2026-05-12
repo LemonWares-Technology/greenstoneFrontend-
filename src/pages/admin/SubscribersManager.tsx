@@ -22,7 +22,7 @@ const AdminSubscribers: React.FC = () => {
     setLoading(true);
     try {
       const res = await newsletterService.getAll();
-      setSubscribers(res.data);
+      setSubscribers(res?.data || []);
       setError(null);
     } catch (err: unknown) {
       const apiErr = err as { message?: string };

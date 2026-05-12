@@ -16,7 +16,7 @@ const About = () => {
     const fetchTeam = async () => {
       try {
         const res = await teamService.getAll();
-        setTeamMembers(res.data);
+        setTeamMembers(res?.data || []);
       } catch (err) {
         console.error('Failed to load team members:', err);
       } finally {

@@ -39,7 +39,7 @@ const AdminServices: React.FC = () => {
     setLoading(true);
     try {
       const res = await serviceService.getAll();
-      setServices(res.data);
+      setServices(res?.data || []);
       setError(null);
     } catch (err: unknown) {
       const apiErr = err as { message?: string };

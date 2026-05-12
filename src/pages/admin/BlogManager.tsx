@@ -41,7 +41,7 @@ const AdminBlog: React.FC = () => {
     setLoading(true);
     try {
       const res = await blogService.getAll();
-      setPosts(res.data);
+      setPosts(res?.data || []);
       setError(null);
     } catch (err: unknown) {
       const apiErr = err as { message?: string };

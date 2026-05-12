@@ -34,7 +34,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       try {
         const res = await authService.getMe();
-        setUser(res.data);
+        setUser(res?.data || null);
       } catch {
         // Token expired or invalid — clear it
         localStorage.removeItem('token');
