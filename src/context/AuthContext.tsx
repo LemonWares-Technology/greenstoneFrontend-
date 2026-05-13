@@ -67,6 +67,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return;
       }
 
+      if (user) {
+        setLoading(false);
+        return;
+      }
+
       try {
         const res = await authService.getMe();
         setUser(getUserFromResponse(res));
@@ -81,7 +86,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     verifyToken();
-  }, [token]);
+  }, [token, user]);
 
   const login = useCallback(async (email: string, password: string): Promise<User> => {
     const res = await authService.login(email, password);
