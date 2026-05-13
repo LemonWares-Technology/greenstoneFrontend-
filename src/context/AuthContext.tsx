@@ -25,13 +25,21 @@ type FlexibleUserResponse = ApiResponse<User> & {
   user?: User;
 };
 
+const describeResponse = (response: unknown): string => {
+  if (response && typeof response === 'object') {
+    return Object.keys(response).join(', ') || 'object with no keys';
+  }
+
+  return typeof response;
+};
+
 const getAuthSession = (response: AuthResponse): { token: string; user: User } => {
   const res = response as FlexibleAuthResponse;
   const token = res.token || res.accessToken || res.data?.token || res.data?.accessToken;
   const user = res.user || res.data?.user;
 
   if (!token || !user) {
-    throw new Error('Login succeeded, but the server response was missing authentication data.');
+    throw new Error(`Login succeeded, but the server response was missing authentication data. Response keys: ${describeResponse(response)}.`);
   }
 
   return { token, user };
