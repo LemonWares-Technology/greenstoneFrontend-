@@ -16,7 +16,7 @@ const Team: React.FC = () => {
     const fetchTeam = async () => {
       try {
         const res = await teamService.getAll();
-        setTeamMembers(res.data);
+        setTeamMembers(res?.data || []);
       } catch (err: unknown) {
         const apiErr = err as { message?: string };
         setError(apiErr.message || 'Failed to load team members');
@@ -27,10 +27,10 @@ const Team: React.FC = () => {
     fetchTeam();
   }, []);
 
-  const totalPages = Math.ceil(teamMembers.length / itemsPerPage);
+  const totalPages = Math.ceil((teamMembers?.length || 0) / itemsPerPage);
   const nextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1));
   const prevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 0));
-  const currentMembers = teamMembers.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+  const currentMembers = (teamMembers || []).slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
   if (loading) {
     return (
@@ -91,7 +91,7 @@ const Team: React.FC = () => {
           ))}
         </div>
 
-        {teamMembers.length === 0 && (
+        {(!teamMembers || teamMembers.length === 0) && (
           <div className="text-center py-16 text-[#070707]/60">
             <p className="text-lg font-medium">No team members found.</p>
           </div>

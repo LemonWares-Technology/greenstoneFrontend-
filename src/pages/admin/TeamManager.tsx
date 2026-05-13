@@ -31,7 +31,7 @@ const AdminTeam: React.FC = () => {
     setLoading(true);
     try {
       const res = await teamService.getAll();
-      setTeamMembers(res.data);
+      setTeamMembers(res?.data || []);
       setError(null);
     } catch (err: unknown) {
       const apiErr = err as { message?: string };

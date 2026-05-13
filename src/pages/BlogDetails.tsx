@@ -24,7 +24,7 @@ const BlogDetails = () => {
     setLoading(true);
     blogService
       .getOne(id)
-      .then((res) => setPost(res.data))
+      .then((res) => setPost(res?.data || null))
       .catch(() => setPost(null))
       .finally(() => setLoading(false));
   }, [id]);
