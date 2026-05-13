@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { authService } from '../services/auth';
-import type { User } from '../types';
+import type { ApiResponse, AuthResponse, User } from '../types';
 
 interface AuthContextValue {
   user: User | null;
@@ -12,6 +12,41 @@ interface AuthContextValue {
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
+
+type FlexibleAuthResponse = AuthResponse & {
+  accessToken?: string;
+  data?: Partial<AuthResponse> & {
+    accessToken?: string;
+    user?: User;
+  };
+};
+
+type FlexibleUserResponse = ApiResponse<User> & {
+  user?: User;
+};
+
+const getAuthSession = (response: AuthResponse): { token: string; user: User } => {
+  const res = response as FlexibleAuthResponse;
+  const token = res.token || res.accessToken || res.data?.token || res.data?.accessToken;
+  const user = res.user || res.data?.user;
+
+  if (!token || !user) {
+    throw new Error('Login succeeded, but the server response was missing authentication data.');
+  }
+
+  return { token, user };
+};
+
+const getUserFromResponse = (response: ApiResponse<User>): User => {
+  const res = response as FlexibleUserResponse;
+  const user = res.data || res.user;
+
+  if (!user) {
+    throw new Error('Could not verify the current user.');
+  }
+
+  return user;
+};
 
 export const useAuth = (): AuthContextValue => {
   const ctx = useContext(AuthContext);
@@ -34,7 +69,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       try {
         const res = await authService.getMe();
-        setUser(res.data);
+        setUser(getUserFromResponse(res));
       } catch {
         // Token expired or invalid — clear it
         localStorage.removeItem('token');
@@ -50,10 +85,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = useCallback(async (email: string, password: string): Promise<User> => {
     const res = await authService.login(email, password);
-    localStorage.setItem('token', res.token);
-    setToken(res.token);
-    setUser(res.user);
-    return res.user;
+    const session = getAuthSession(res);
+
+    localStorage.setItem('token', session.token);
+    setUser(session.user);
+    setToken(session.token);
+    return session.user;
   }, []);
 
   const logout = useCallback(() => {
