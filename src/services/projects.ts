@@ -10,12 +10,12 @@ export const projectService = {
     return api.get(`/projects/${id}`);
   },
 
-  create: async (data: ProjectPayload): Promise<ApiResponse<Project>> => {
-    return api.post('/projects', data);
+  create: async (data: FormData | ProjectPayload): Promise<ApiResponse<Project>> => {
+    return api.post('/projects', data, { timeout: 120000 });
   },
 
-  update: async (id: string, data: Partial<ProjectPayload>): Promise<ApiResponse<Project>> => {
-    return api.put(`/projects/${id}`, data);
+  update: async (id: string, data: FormData | Partial<ProjectPayload>): Promise<ApiResponse<Project>> => {
+    return api.put(`/projects/${id}`, data, { timeout: 120000 });
   },
 
   remove: async (id: string): Promise<ApiResponse<null>> => {

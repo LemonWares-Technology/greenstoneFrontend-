@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BedDouble, Layers, MapPin, Tag } from 'lucide-react';
+import { getImageUrl } from '../utils/imageUrl';
 import proj1 from '../assets/project-luxury-apartments.jpg';
 import proj2 from '../assets/project-classic-residence.jpg';
 import proj3 from '../assets/project-duplex-terrace.jpg';
@@ -96,7 +97,7 @@ const Projects = () => {
                 <div className="lg:col-span-5 relative overflow-hidden h-[220px] sm:h-[280px] lg:h-auto">
                   <div className="absolute inset-0">
                     <img
-                      src={project.image}
+                      src={getImageUrl(project.image)}
                       alt=""
                       loading="lazy"
                       className={`w-full h-full object-cover transition-transform duration-[2s] ease-out ${

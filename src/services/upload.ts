@@ -2,12 +2,12 @@ import api from './api';
 import type { ApiResponse } from '../types';
 
 export const uploadService = {
+  /** Standalone POST /api/upload — field name must be `image` per API. */
   uploadFile: async (file: File): Promise<ApiResponse<{ url: string }>> => {
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('image', file);
     return api.post('/upload', formData, {
-      headers: { 'Content-Type': undefined } as Record<string, string | undefined>,
-      timeout: 30000,
+      timeout: 60000,
     }) as Promise<ApiResponse<{ url: string }>>;
   },
 };

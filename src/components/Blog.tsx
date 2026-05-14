@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { blogService } from '../services/blogs';
+import { getImageUrl } from '../utils/imageUrl';
 import LoadingSpinner from './ui/LoadingSpinner';
 import ErrorMessage from './ui/ErrorMessage';
 import type { Blog } from '../types';
@@ -19,7 +20,7 @@ const BlogCard: React.FC<{ post: Blog; index: number }> = ({ post, index }) => (
     <div className="relative rounded-xl overflow-hidden mb-6 aspect-4/3">
       {post.image ? (
         <img
-          src={post.image}
+          src={getImageUrl(post.image)}
           alt={post.title}
           loading="lazy"
           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"

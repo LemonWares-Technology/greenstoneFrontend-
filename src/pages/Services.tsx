@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Faq from '../components/Faq';
 import Contact from '../components/Contact';
+import { getImageUrl } from '../utils/imageUrl';
 import { Building2, KeyRound, ShieldCheck, Landmark, Leaf, ArrowRight } from 'lucide-react';
 import { serviceService } from '../services/services';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
@@ -145,7 +146,7 @@ const Services = () => {
                     <div className="relative group" style={isReversed ? { direction: 'ltr' } : undefined}>
                       <div className="aspect-4/3 rounded-3xl overflow-hidden bg-white/5">
                         <img
-                          src={service.image}
+                          src={getImageUrl(service.image)}
                           alt={service.title}
                           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                         />

@@ -31,6 +31,8 @@ const AdminBlog: React.FC = () => {
   const [currentPost, setCurrentPost] = useState<Blog | null>(null);
   const [sendNewsletter, setSendNewsletter] = useState(false);
   const [formData, setFormData] = useState<BlogFormData>(emptyForm);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [coverFieldKey, setCoverFieldKey] = useState(0);
 
   // Fetch blogs on mount
   useEffect(() => {
@@ -52,6 +54,8 @@ const AdminBlog: React.FC = () => {
   };
 
   const openModal = (post: Blog | null = null) => {
+    setImageFile(null);
+    setCoverFieldKey((k) => k + 1);
     if (post) {
       setCurrentPost(post);
       setFormData({
@@ -75,6 +79,8 @@ const AdminBlog: React.FC = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setCurrentPost(null);
+    setImageFile(null);
+    setCoverFieldKey((k) => k + 1);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -90,23 +96,24 @@ const AdminBlog: React.FC = () => {
     e.preventDefault();
     setSaving(true);
 
-    const payload = {
-      title: formData.title,
-      author: formData.author,
-      role: formData.role,
-      tags: formData.tags.split(',').map((t) => t.trim()).filter(Boolean),
-      image: formData.image,
-      excerpt: formData.excerpt,
-      content: formData.content,
-      ...(sendNewsletter && !currentPost ? { sendNewsletter: true } : {}),
-    };
+    const tags = formData.tags.split(',').map((t) => t.trim()).filter(Boolean);
+    const fd = new FormData();
+    fd.append('title', formData.title);
+    fd.append('author', formData.author);
+    fd.append('role', formData.role);
+    fd.append('tags', JSON.stringify(tags));
+    if (imageFile) fd.append('image', imageFile);
+    else if (formData.image.trim()) fd.append('image', formData.image.trim());
+    fd.append('excerpt', formData.excerpt);
+    fd.append('content', formData.content);
+    if (!currentPost) fd.append('sendNewsletter', String(sendNewsletter));
 
     try {
       if (currentPost) {
-        await blogService.update(currentPost.id, payload);
+        await blogService.update(currentPost.id, fd);
         showToast('Blog post updated successfully!', 'success');
       } else {
-        const res = await blogService.create(payload);
+        const res = await blogService.create(fd);
         showToast(res.message || 'Blog post published!', 'success');
       }
       closeModal();
@@ -265,11 +272,32 @@ const AdminBlog: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <AdminImageUpload
-                    label="Cover Image"
-                    value={formData.image}
-                    onChange={(url) => setFormData((prev) => ({ ...prev, image: url }))}
-                  />
+                  <div className="space-y-3">
+                    <AdminImageUpload
+                      key={`${currentPost?.id ?? 'new'}-${coverFieldKey}`}
+                      label="Cover Image"
+                      value={formData.image}
+                      onChange={(url) => setFormData((prev) => ({ ...prev, image: url }))}
+                      mode="deferred"
+                      onFileChange={setImageFile}
+                    />
+                    <div>
+                      <label className="block text-xs font-bold text-green-800/70 uppercase tracking-widest mb-2">
+                        Or cover image URL
+                      </label>
+                      <input
+                        type="url"
+                        value={formData.image}
+                        onChange={(e) => {
+                          setImageFile(null);
+                          setCoverFieldKey((k) => k + 1);
+                          setFormData((prev) => ({ ...prev, image: e.target.value }));
+                        }}
+                        placeholder="https://…"
+                        className="w-full bg-green-50/50 border border-green-800/10 rounded-xl py-2.5 px-4 text-green-800 text-sm focus:outline-none focus:border-brand-primary transition-colors"
+                      />
+                    </div>
+                  </div>
                   <div>
                     <label className="block text-xs font-bold text-green-800/70 uppercase tracking-widest mb-2">Excerpt</label>
                     <input type="text" name="excerpt" value={formData.excerpt} onChange={handleInputChange} placeholder="Short preview of the blog post..." className="w-full bg-green-50/50 border border-green-800/10 rounded-xl py-3 px-4 text-green-800 focus:outline-none focus:border-brand-primary transition-colors" />

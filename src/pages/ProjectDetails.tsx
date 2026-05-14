@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { getImageUrl } from '../utils/imageUrl';
 import { MapPin, ArrowLeft, Home, Calendar, Percent, CheckCircle } from 'lucide-react';
 import proj1 from '../assets/project-luxury-apartments.jpg';
 import proj2 from '../assets/project-classic-residence.jpg';
@@ -109,7 +110,7 @@ const ProjectDetails = () => {
       {/* Hero Image Header — Navbar overlays */}
       <div className="relative w-full min-h-[50vh]">
         <img 
-          src={project.image} 
+          src={getImageUrl(project.image)} 
           alt={project.name} 
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
@@ -163,7 +164,7 @@ const ProjectDetails = () => {
             <div className="mt-16">
                <h3 className="text-xl font-bold mb-6">Gallery</h3>
                <div className="grid grid-cols-2 gap-4">
-                 <img src={project.image} className="w-full h-48 object-cover rounded-2xl border border-white/5 opacity-80 hover:opacity-100 transition-opacity cursor-pointer" alt="Gallery 1"/>
+                 <img src={getImageUrl(project.image)} className="w-full h-48 object-cover rounded-2xl border border-white/5 opacity-80 hover:opacity-100 transition-opacity cursor-pointer" alt="Gallery 1"/>
                  <img src={DefaultHeroThumb} className="w-full h-48 object-cover rounded-2xl border border-white/5 opacity-80 hover:opacity-100 transition-opacity cursor-pointer" alt="Gallery 2"/>
                </div>
             </div>

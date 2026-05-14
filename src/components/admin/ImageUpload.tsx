@@ -1,6 +1,23 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Image as ImageIcon, Loader2, X } from 'lucide-react';
 import { uploadService } from '../../services/upload';
+
+export const ADMIN_IMAGE_MAX_BYTES = 10 * 1024 * 1024;
+export const ADMIN_IMAGE_ACCEPT =
+  'image/jpeg,image/png,image/webp,image/gif,image/avif,image/svg+xml,.jpg,.jpeg,.png,.webp,.gif,.avif,.svg';
+
+export function validateAdminImageFile(file: File): string | null {
+  if (file.size > ADMIN_IMAGE_MAX_BYTES) {
+    return 'Image must be 10 MB or smaller.';
+  }
+  const ok =
+    file.type.startsWith('image/') ||
+    /\.(jpe?g|png|webp|gif|avif|svg)$/i.test(file.name);
+  if (!ok) {
+    return 'Use JPG, PNG, WebP, GIF, AVIF, or SVG.';
+  }
+  return null;
+}
 
 interface ImageUploadProps {
   value: string;
@@ -9,6 +26,10 @@ interface ImageUploadProps {
   required?: boolean;
   accept?: string;
   hint?: string;
+  /** `immediate` uploads to POST /api/upload. `deferred` keeps the file for multipart resource forms. */
+  mode?: 'immediate' | 'deferred';
+  /** When mode is `deferred`, called with the selected file or null when cleared. */
+  onFileChange?: (file: File | null) => void;
 }
 
 const AdminImageUpload: React.FC<ImageUploadProps> = ({
@@ -16,21 +37,42 @@ const AdminImageUpload: React.FC<ImageUploadProps> = ({
   onChange,
   label = 'Upload Image',
   required = false,
-  accept = 'image/*',
-  hint = 'PNG, JPG, GIF up to 10MB',
+  accept = ADMIN_IMAGE_ACCEPT,
+  hint = 'JPG, PNG, WebP, GIF, AVIF, SVG up to 10 MB',
+  mode = 'immediate',
+  onFileChange,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [dragOver, setDragOver] = useState(false);
+  const [deferredPreview, setDeferredPreview] = useState<string | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (deferredPreview) URL.revokeObjectURL(deferredPreview);
+    };
+  }, [deferredPreview]);
+
+  const displaySrc = mode === 'deferred' && deferredPreview ? deferredPreview : value;
 
   const handleFile = async (file: File | null) => {
     if (!file) return;
-    if (!file.type.startsWith('image/')) {
-      setError('Please select an image file (PNG, JPG, GIF).');
+    const validation = validateAdminImageFile(file);
+    if (validation) {
+      setError(validation);
       return;
     }
     setError(null);
+
+    if (mode === 'deferred') {
+      if (deferredPreview) URL.revokeObjectURL(deferredPreview);
+      const next = URL.createObjectURL(file);
+      setDeferredPreview(next);
+      onFileChange?.(file);
+      return;
+    }
+
     setUploading(true);
     try {
       const res = await uploadService.uploadFile(file);
@@ -43,6 +85,12 @@ const AdminImageUpload: React.FC<ImageUploadProps> = ({
     } finally {
       setUploading(false);
     }
+  };
+
+  const clearDeferred = () => {
+    if (deferredPreview) URL.revokeObjectURL(deferredPreview);
+    setDeferredPreview(null);
+    onFileChange?.(null);
   };
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,6 +113,15 @@ const AdminImageUpload: React.FC<ImageUploadProps> = ({
 
   const onDragLeave = () => setDragOver(false);
 
+  const handleRemove = () => {
+    if (mode === 'deferred') {
+      clearDeferred();
+    }
+    onChange('');
+  };
+
+  const hasPreview = Boolean(displaySrc);
+
   return (
     <div>
       {label && (
@@ -72,9 +129,9 @@ const AdminImageUpload: React.FC<ImageUploadProps> = ({
           {label} {required && '*'}
         </label>
       )}
-      {value ? (
+      {hasPreview ? (
         <div className="relative rounded-xl overflow-hidden border border-green-800/10 bg-green-50/50 h-40">
-          <img src={value} alt="Preview" className="w-full h-full object-cover" />
+          <img src={displaySrc} alt="Preview" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-green-900/0 hover:bg-green-900/20 transition-colors flex items-center justify-center gap-2">
             <button
               type="button"
@@ -86,19 +143,13 @@ const AdminImageUpload: React.FC<ImageUploadProps> = ({
             </button>
             <button
               type="button"
-              onClick={() => onChange('')}
+              onClick={handleRemove}
               className="opacity-0 hover:opacity-100 transition-opacity p-2 rounded-lg bg-red-500/90 text-white"
             >
               <X size={16} />
             </button>
           </div>
-          <input
-            ref={inputRef}
-            type="file"
-            accept={accept}
-            onChange={onInputChange}
-            className="sr-only"
-          />
+          <input ref={inputRef} type="file" accept={accept} onChange={onInputChange} className="sr-only" />
         </div>
       ) : (
         <div
@@ -122,13 +173,7 @@ const AdminImageUpload: React.FC<ImageUploadProps> = ({
             </div>
             <p className="text-xs text-green-800/50">{hint}</p>
           </div>
-          <input
-            ref={inputRef}
-            type="file"
-            accept={accept}
-            onChange={onInputChange}
-            className="sr-only"
-          />
+          <input ref={inputRef} type="file" accept={accept} onChange={onInputChange} className="sr-only" />
         </div>
       )}
       {error && <p className="text-red-500 text-xs mt-1.5 font-medium">{error}</p>}

@@ -10,12 +10,12 @@ export const galleryService = {
     return api.get(`/gallery/${id}`);
   },
 
-  create: async (data: GalleryImagePayload): Promise<ApiResponse<GalleryImage>> => {
-    return api.post('/gallery', data);
+  create: async (data: FormData | GalleryImagePayload): Promise<ApiResponse<GalleryImage>> => {
+    return api.post('/gallery', data, { timeout: 120000 });
   },
 
-  update: async (id: string, data: Partial<GalleryImagePayload>): Promise<ApiResponse<GalleryImage>> => {
-    return api.put(`/gallery/${id}`, data);
+  update: async (id: string, data: FormData | Partial<GalleryImagePayload>): Promise<ApiResponse<GalleryImage>> => {
+    return api.put(`/gallery/${id}`, data, { timeout: 120000 });
   },
 
   remove: async (id: string): Promise<ApiResponse<null>> => {

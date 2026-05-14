@@ -28,3 +28,71 @@ body {
   @apply font-sans antialiased bg-[#0f172a] text-white overflow-x-hidden;
   margin: 0;
 }
+
+.admin-theme {
+  color: #ffffff;
+}
+
+.admin-theme [class~="bg-white"] {
+  background-color: rgb(255 255 255 / 0.06) !important;
+}
+
+.admin-theme [class~="bg-green-50"],
+.admin-theme [class~="bg-green-50/20"],
+.admin-theme [class~="bg-green-50/30"],
+.admin-theme [class~="bg-green-50/50"] {
+  background-color: rgb(255 255 255 / 0.05) !important;
+}
+
+.admin-theme [class~="text-green-800"],
+.admin-theme [class~="text-[green-800]"] {
+  color: #ffffff !important;
+}
+
+.admin-theme [class~="text-green-800/70"] {
+  color: rgb(255 255 255 / 0.7) !important;
+}
+
+.admin-theme [class~="text-green-800/50"],
+.admin-theme [class~="text-[green-800]/50"] {
+  color: rgb(255 255 255 / 0.5) !important;
+}
+
+.admin-theme [class~="text-green-800/40"] {
+  color: rgb(255 255 255 / 0.4) !important;
+}
+
+.admin-theme [class~="text-green-800/30"] {
+  color: rgb(255 255 255 / 0.3) !important;
+}
+
+.admin-theme [class~="border-green-800/5"],
+.admin-theme [class~="border-green-800/10"] {
+  border-color: rgb(255 255 255 / 0.1) !important;
+}
+
+.admin-theme input,
+.admin-theme textarea,
+.admin-theme select,
+.admin-theme [contenteditable="true"] {
+  background-color: rgb(7 7 7 / 0.55) !important;
+  border-color: rgb(255 255 255 / 0.12) !important;
+  color: #ffffff !important;
+}
+
+.admin-theme input::placeholder,
+.admin-theme textarea::placeholder {
+  color: rgb(255 255 255 / 0.32);
+}
+
+.admin-theme thead tr {
+  background-color: rgb(255 255 255 / 0.05) !important;
+}
+
+.admin-theme tbody tr:hover {
+  background-color: rgb(34 197 94 / 0.08) !important;
+}
+
+.admin-theme .rounded-3xl {
+  border-radius: 1rem !important;
+}

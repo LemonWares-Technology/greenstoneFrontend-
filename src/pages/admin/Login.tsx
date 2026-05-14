@@ -51,29 +51,33 @@ const AdminLogin: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-green-800 flex items-center justify-center p-6 font-sans relative overflow-hidden">
-      {/* Background decorations */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-primary/5 rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-brand-primary/5 rounded-full blur-[120px] pointer-events-none" />
+    <div className="min-h-screen bg-[#070707] flex items-center justify-center p-6 font-sans relative overflow-hidden">
+      <div className="absolute inset-0 bg-linear-to-br from-white/[0.06] via-transparent to-brand-primary/[0.06] pointer-events-none" />
+      <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-brand-primary/70 to-transparent pointer-events-none" />
 
       <div className="w-full max-w-md relative z-10">
         {/* Logo */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-brand-primary text-green-800 font-black text-2xl mb-5 shadow-lg shadow-brand-primary/30">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-brand-primary text-[#070707] font-black text-2xl mb-5 shadow-lg shadow-brand-primary/30">
             G
           </div>
-          <h1 className="text-3xl font-light text-white tracking-tight">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <span className="w-8 h-px bg-brand-primary" aria-hidden />
+            <span className="text-xs tracking-[0.35em] uppercase font-bold text-brand-primary">Greenstone</span>
+            <span className="w-8 h-px bg-brand-primary" aria-hidden />
+          </div>
+          <h1 className="text-4xl font-light text-white tracking-tight">
             Admin <span className="font-bold">Console</span>
           </h1>
-          <p className="text-white/40 text-sm mt-2 font-medium">Sign in to manage your content</p>
+          <p className="text-white/55 text-sm mt-3 font-medium">Sign in to manage Greenstone content and operations.</p>
         </div>
 
         {/* Login Form */}
-        <form onSubmit={handleSubmit} className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-10 shadow-2xl">
+        <form onSubmit={handleSubmit} className="bg-white/[0.06] backdrop-blur-xl border border-white/10 rounded-2xl p-8 md:p-10 shadow-2xl">
           
           {/* General Error */}
           {errors.general && (
-            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-2xl text-red-400 text-sm font-medium">
+            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-300 text-sm font-medium">
               {errors.general}
             </div>
           )}
@@ -88,7 +92,7 @@ const AdminLogin: React.FC = () => {
                 value={email}
                 onChange={(e) => { setEmail(e.target.value); setErrors((prev) => ({ ...prev, email: '' })); }}
                 placeholder="admin@greenstoneltd.com"
-                className={`w-full bg-white/5 border ${errors.email ? 'border-red-500/50' : 'border-white/10'} rounded-xl py-3.5 pl-12 pr-4 text-white text-sm focus:outline-none focus:border-brand-primary transition-colors placeholder-white/20`}
+                className={`w-full bg-[#070707]/60 border ${errors.email ? 'border-red-500/50' : 'border-white/10'} rounded-xl py-3.5 pl-12 pr-4 text-white text-sm focus:outline-none focus:border-brand-primary transition-colors placeholder-white/20`}
                 autoComplete="email"
               />
             </div>
@@ -104,8 +108,8 @@ const AdminLogin: React.FC = () => {
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); setErrors((prev) => ({ ...prev, password: '' })); }}
-                placeholder="••••••••"
-                className={`w-full bg-white/5 border ${errors.password ? 'border-red-500/50' : 'border-white/10'} rounded-xl py-3.5 pl-12 pr-12 text-white text-sm focus:outline-none focus:border-brand-primary transition-colors placeholder-white/20`}
+                placeholder="Password"
+                className={`w-full bg-[#070707]/60 border ${errors.password ? 'border-red-500/50' : 'border-white/10'} rounded-xl py-3.5 pl-12 pr-12 text-white text-sm focus:outline-none focus:border-brand-primary transition-colors placeholder-white/20`}
                 autoComplete="current-password"
               />
               <button
@@ -123,10 +127,10 @@ const AdminLogin: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-brand-primary text-green-800 font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-brand-primary/20"
+            className="w-full bg-brand-primary text-[#070707] font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-brand-primary/20"
           >
             {loading ? (
-              <div className="w-5 h-5 border-2 border-green-800/20 border-t-[#012D01] rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-[#070707]/20 border-t-[#070707] rounded-full animate-spin" />
             ) : (
               <>
                 Sign In
@@ -137,7 +141,7 @@ const AdminLogin: React.FC = () => {
         </form>
 
         {/* Footer */}
-        <p className="text-center text-white/20 text-xs mt-8 font-medium">
+        <p className="text-center text-white/30 text-xs mt-8 font-medium">
           © {new Date().getFullYear()} Greenstone Developments Ltd.
         </p>
       </div>

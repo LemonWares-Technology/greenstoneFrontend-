@@ -10,12 +10,12 @@ export const blogService = {
     return api.get(`/blogs/${id}`);
   },
 
-  create: async (data: BlogPayload): Promise<ApiResponse<Blog>> => {
-    return api.post('/blogs', data);
+  create: async (data: FormData | BlogPayload): Promise<ApiResponse<Blog>> => {
+    return api.post('/blogs', data, { timeout: 120000 });
   },
 
-  update: async (id: string, data: Partial<BlogPayload>): Promise<ApiResponse<Blog>> => {
-    return api.put(`/blogs/${id}`, data);
+  update: async (id: string, data: FormData | Partial<BlogPayload>): Promise<ApiResponse<Blog>> => {
+    return api.put(`/blogs/${id}`, data, { timeout: 120000 });
   },
 
   remove: async (id: string): Promise<ApiResponse<null>> => {

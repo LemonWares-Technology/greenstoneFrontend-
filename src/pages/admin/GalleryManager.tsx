@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, X, Image as ImageIcon, Check, Loader2 } from 'lucide-react';
 import { galleryService } from '../../services/gallery';
 import AdminImageUpload from '../../components/admin/ImageUpload';
+import { getImageUrl } from '../../utils/imageUrl';
 import type { GalleryImage } from '../../types';
 
 const categories = ['All', 'Interior', 'Architecture', 'Construction', 'Landscape'];
@@ -19,6 +20,8 @@ const AdminGallery = () => {
     category: 'Interior',
     url: '' as string,
   });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [uploadFieldKey, setUploadFieldKey] = useState(0);
 
   const fetchImages = async () => {
     try {
@@ -33,8 +36,16 @@ const AdminGallery = () => {
 
   useEffect(() => { fetchImages(); }, []);
 
-  const openUploadModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const openUploadModal = () => {
+    setFormData({ title: '', category: 'Interior', url: '' });
+    setImageFile(null);
+    setUploadFieldKey((k) => k + 1);
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setImageFile(null);
+    setIsModalOpen(false);
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -43,19 +54,45 @@ const AdminGallery = () => {
 
   const handleUploadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.url) return;
+    const url = formData.url.trim();
+    if (!imageFile && !url) {
+      alert('Add an image file or paste an image URL.');
+      return;
+    }
     setSaving(true);
     try {
-      const res = await galleryService.create({
-        url: formData.url,
-        title: formData.title || 'Untitled',
-        category: formData.category,
-      });
-      setImages([res.data, ...images]);
+      const body = new FormData();
+      
+      // Add image file or URL
+      if (imageFile) {
+        body.append('image', imageFile);
+        console.log('📤 Uploading file:', imageFile.name, imageFile.type, imageFile.size, 'bytes');
+      } else if (url) {
+        body.append('url', url);
+        console.log('📤 Uploading URL:', url);
+      }
+      
+      // Add other fields
+      body.append('title', formData.title || 'Untitled');
+      body.append('category', formData.category);
+      
+      console.log('📤 FormData contents:');
+      for (const [key, value] of body.entries()) {
+        console.log(`  ${key}:`, value instanceof File ? `File(${value.name})` : value);
+      }
+      
+      await galleryService.create(body);
+      
+      // Refetch the gallery list to get the newly created image
+      await fetchImages();
+      
       closeModal();
       setFormData({ title: '', category: 'Interior', url: '' });
-    } catch {
-      alert('Failed to upload image. Please try again.');
+      setUploadFieldKey((k) => k + 1);
+    } catch (error) {
+      console.error('❌ Upload error:', error);
+      const errorMsg = (error as { message?: string })?.message || 'Failed to upload image. Please try again.';
+      alert(errorMsg);
     } finally {
       setSaving(false);
     }
@@ -164,7 +201,7 @@ const AdminGallery = () => {
                 }`}
               >
                 <img 
-                  src={image.url} 
+                  src={getImageUrl(image.url)} 
                   alt={image.title} 
                   className={`w-full h-full object-cover transition-transform duration-700 ${isSelected ? 'scale-105' : 'group-hover:scale-110'}`} 
                 />
@@ -234,11 +271,27 @@ const AdminGallery = () => {
 
             <form onSubmit={handleUploadSubmit} className="p-6 space-y-6">
               <AdminImageUpload
-                label="Image"
-                value={formData.url}
-                onChange={(url) => setFormData((prev) => ({ ...prev, url }))}
-                required
+                key={uploadFieldKey}
+                label="Image file"
+                value=""
+                onChange={() => {}}
+                mode="deferred"
+                onFileChange={setImageFile}
               />
+              <div>
+                <label className="block text-xs font-bold text-green-800/70 uppercase tracking-widest mb-2">
+                  Or image URL
+                </label>
+                <input
+                  type="url"
+                  name="url"
+                  value={formData.url}
+                  onChange={handleInputChange}
+                  placeholder="https://api-ldsv1.greenstoneng.com/upload/…"
+                  className="w-full bg-green-50/30 border border-green-800/10 rounded-xl py-3 px-4 text-green-800 focus:outline-none focus:border-brand-primary transition-colors text-sm"
+                />
+                <p className="text-xs text-green-800/45 mt-1">Provide a file above or a direct URL (not both required).</p>
+              </div>
 
               <div>
                 <label className="block text-xs font-bold text-green-800/70 uppercase tracking-widest mb-2">Image Title</label>
@@ -276,7 +329,7 @@ const AdminGallery = () => {
                 </button>
                 <button 
                   type="submit"
-                  disabled={saving || !formData.url}
+                  disabled={saving || (!imageFile && !formData.url.trim())}
                   className="bg-green-800 text-brand-primary hover:bg-brand-primary hover:text-green-800 transition-colors px-6 py-3 rounded-xl font-bold shadow-lg shadow-green-800/10 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                   {saving && <Loader2 size={16} className="animate-spin" />}

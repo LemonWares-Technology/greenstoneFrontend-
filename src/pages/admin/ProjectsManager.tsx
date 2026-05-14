@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Search, Edit2, Trash2, X, Save } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Plus, Search, Edit2, Trash2, X, Save, Images } from 'lucide-react';
 import RichTextEditor from '../../components/admin/RichTextEditor';
-import AdminImageUpload from '../../components/admin/ImageUpload';
+import AdminImageUpload, { validateAdminImageFile, ADMIN_IMAGE_ACCEPT } from '../../components/admin/ImageUpload';
 import { projectService } from '../../services/projects';
 import { useToast } from '../../components/ui/Toast';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
@@ -29,6 +29,10 @@ const AdminProjects: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentProject, setCurrentProject] = useState<Project | null>(null);
   const [formData, setFormData] = useState<ProjectFormData>(emptyForm);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [featuredFieldKey, setFeaturedFieldKey] = useState(0);
+  const [galleryItems, setGalleryItems] = useState<{ file: File; url: string }[]>([]);
+  const galleryInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => { fetchProjects(); }, []);
 
@@ -47,6 +51,12 @@ const AdminProjects: React.FC = () => {
   };
 
   const openModal = (project: Project | null = null) => {
+    setImageFile(null);
+    setFeaturedFieldKey((k) => k + 1);
+    setGalleryItems((prev) => {
+      prev.forEach((x) => URL.revokeObjectURL(x.url));
+      return [];
+    });
     if (project) {
       setCurrentProject(project);
       setFormData({
@@ -64,7 +74,16 @@ const AdminProjects: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const closeModal = () => { setIsModalOpen(false); setCurrentProject(null); };
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setCurrentProject(null);
+    setImageFile(null);
+    setFeaturedFieldKey((k) => k + 1);
+    setGalleryItems((prev) => {
+      prev.forEach((x) => URL.revokeObjectURL(x.url));
+      return [];
+    });
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -75,15 +94,60 @@ const AdminProjects: React.FC = () => {
     setFormData((prev) => ({ ...prev, description: content }));
   };
 
+  const addGalleryFiles = (list: FileList | null) => {
+    if (!list?.length) return;
+    const accepted: File[] = [];
+    for (let i = 0; i < list.length; i++) {
+      const file = list[i];
+      const msg = validateAdminImageFile(file);
+      if (msg) {
+        showToast(`${file.name}: ${msg}`, 'error');
+        continue;
+      }
+      accepted.push(file);
+    }
+    if (accepted.length) {
+      setGalleryItems((prev) => [
+        ...prev,
+        ...accepted.map((file) => ({ file, url: URL.createObjectURL(file) })),
+      ]);
+    }
+  };
+
+  const removeGalleryFileAt = (index: number) => {
+    setGalleryItems((prev) => {
+      const row = prev[index];
+      if (row) URL.revokeObjectURL(row.url);
+      return prev.filter((_, i) => i !== index);
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const hasFeatured = Boolean(imageFile || formData.image.trim());
+    if (!currentProject && !hasFeatured) {
+      showToast('Add a featured image file or paste an image URL.', 'error');
+      return;
+    }
+
     setSaving(true);
     try {
+      const fd = new FormData();
+      fd.append('name', formData.name);
+      fd.append('location', formData.location);
+      fd.append('description', formData.description);
+      fd.append('status', formData.status);
+      if (formData.value.trim()) fd.append('value', formData.value.trim());
+      if (imageFile) fd.append('image', imageFile);
+      else if (formData.image.trim()) fd.append('image', formData.image.trim());
+      galleryItems.forEach(({ file }) => fd.append('gallery', file));
+
       if (currentProject) {
-        await projectService.update(currentProject.id, formData);
+        await projectService.update(currentProject.id, fd);
         showToast('Project updated!', 'success');
       } else {
-        await projectService.create(formData);
+        await projectService.create(fd);
         showToast('Project created!', 'success');
       }
       closeModal();
@@ -198,12 +262,79 @@ const AdminProjects: React.FC = () => {
                     <input type="text" name="value" value={formData.value} onChange={handleInputChange} placeholder="e.g., N 3.9 Billion" className="w-full bg-green-50/30 border border-green-800/10 rounded-xl py-3 px-4 text-green-800 focus:outline-none focus:border-brand-primary transition-colors" />
                   </div>
                 </div>
-                <AdminImageUpload
-                  label="Featured Image"
-                  value={formData.image}
-                  onChange={(url) => setFormData((prev) => ({ ...prev, image: url }))}
-                  required
-                />
+                <div className="space-y-3">
+                  <AdminImageUpload
+                    key={`${currentProject?.id ?? 'new'}-${featuredFieldKey}`}
+                    label="Featured image"
+                    value={formData.image}
+                    onChange={(url) => setFormData((prev) => ({ ...prev, image: url }))}
+                    mode="deferred"
+                    onFileChange={setImageFile}
+                  />
+                  <div>
+                    <label className="block text-xs font-bold text-green-800/70 uppercase tracking-widest mb-2">Or featured image URL</label>
+                    <input
+                      type="url"
+                      value={formData.image}
+                      onChange={(e) => {
+                        setImageFile(null);
+                        setFeaturedFieldKey((k) => k + 1);
+                        setFormData((prev) => ({ ...prev, image: e.target.value }));
+                      }}
+                      placeholder="https://api-ldsv1.greenstoneng.com/upload/…"
+                      className="w-full bg-green-50/30 border border-green-800/10 rounded-xl py-3 px-4 text-green-800 text-sm focus:outline-none focus:border-brand-primary transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-green-800/10 bg-green-50/20 p-4 space-y-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div>
+                      <label className="block text-xs font-bold text-green-800/70 uppercase tracking-widest mb-1">Gallery images (optional)</label>
+                      <p className="text-xs text-green-800/50">New files are appended on save (one field per image).</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => galleryInputRef.current?.click()}
+                      className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-green-800/15 bg-white text-green-800 font-bold text-sm hover:border-brand-primary transition-colors shrink-0"
+                    >
+                      <Images size={18} /> Add photos
+                    </button>
+                  </div>
+                  <input
+                    ref={galleryInputRef}
+                    type="file"
+                    accept={ADMIN_IMAGE_ACCEPT}
+                    multiple
+                    className="sr-only"
+                    onChange={(e) => {
+                      addGalleryFiles(e.target.files);
+                      e.target.value = '';
+                    }}
+                  />
+                  {currentProject?.gallery && currentProject.gallery.length > 0 && (
+                    <p className="text-xs text-green-800/55">
+                      Existing gallery on server: {currentProject.gallery.length} image(s). Add more below; removal of old images is not available in this form.
+                    </p>
+                  )}
+                  {galleryItems.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {galleryItems.map((item, idx) => (
+                        <div key={item.url} className="relative w-20 h-20 rounded-xl overflow-hidden border border-green-800/10 group">
+                          <img src={item.url} alt="" className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => removeGalleryFileAt(idx)}
+                            className="absolute inset-0 bg-green-900/60 text-white text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
                 <div>
                   <label className="block text-xs font-bold text-green-800/70 uppercase tracking-widest mb-2">Project Description</label>
                   <RichTextEditor content={formData.description} onChange={handleEditorChange} placeholder="Describe the project scope, amenities, and significance..." />

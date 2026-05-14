@@ -32,6 +32,7 @@ const AdminServices: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentService, setCurrentService] = useState<Service | null>(null);
   const [formData, setFormData] = useState<ServiceFormData>(emptyForm);
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   useEffect(() => { fetchServices(); }, []);
 
@@ -50,6 +51,7 @@ const AdminServices: React.FC = () => {
   };
 
   const openModal = (service: Service | null = null) => {
+    setImageFile(null);
     if (service) {
       setCurrentService(service);
       setFormData({
@@ -66,7 +68,11 @@ const AdminServices: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const closeModal = () => { setIsModalOpen(false); setCurrentService(null); };
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setCurrentService(null);
+    setImageFile(null);
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -77,20 +83,20 @@ const AdminServices: React.FC = () => {
     e.preventDefault();
     setSaving(true);
 
-    const payload = {
-      title: formData.title,
-      description: formData.description,
-      icon: formData.icon,
-      image: formData.image || undefined,
-      highlights: formData.highlights.split(',').map((h) => h.trim()).filter(Boolean),
-    };
+    const highlights = formData.highlights.split(',').map((h) => h.trim()).filter(Boolean);
+    const fd = new FormData();
+    fd.append('title', formData.title);
+    fd.append('description', formData.description);
+    fd.append('icon', formData.icon);
+    fd.append('highlights', JSON.stringify(highlights));
+    if (imageFile) fd.append('image', imageFile);
 
     try {
       if (currentService) {
-        await serviceService.update(currentService.id, payload);
+        await serviceService.update(currentService.id, fd);
         showToast('Service updated successfully!', 'success');
       } else {
-        await serviceService.create(payload);
+        await serviceService.create(fd);
         showToast('Service created!', 'success');
       }
       closeModal();
@@ -225,9 +231,12 @@ const AdminServices: React.FC = () => {
                 </div>
 
                 <AdminImageUpload
+                  key={currentService?.id ?? 'new'}
                   label="Image (optional)"
                   value={formData.image}
                   onChange={(url) => setFormData((prev) => ({ ...prev, image: url }))}
+                  mode="deferred"
+                  onFileChange={setImageFile}
                 />
               </form>
             </div>

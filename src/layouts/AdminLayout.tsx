@@ -12,7 +12,8 @@ import {
   LogOut,
   Menu,
   X,
-  Mail
+  Mail,
+  Home
 } from 'lucide-react';
 
 const AdminLayout: React.FC = () => {
@@ -41,7 +42,7 @@ const AdminLayout: React.FC = () => {
   // Show loading spinner while verifying auth
   if (loading) {
     return (
-      <div className="min-h-screen bg-green-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <LoadingSpinner size="lg" label="Verifying authentication..." />
       </div>
     );
@@ -53,32 +54,39 @@ const AdminLayout: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-green-50 text-green-800 font-sans flex">
+    <div className="min-h-screen bg-[#fafafa] font-sans flex">
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 bg-green-900/30 z-40 lg:hidden backdrop-blur-sm"
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm"
           onClick={closeSidebar}
         />
       )}
 
-      {/* Sidebar - soft green instead of black */}
+      {/* Sidebar - Elegant Black */}
       <aside 
-        className={`fixed lg:sticky top-0 left-0 z-50 h-screen w-64 bg-green-800 text-white transition-transform duration-300 ease-in-out ${
+        className={`fixed lg:sticky top-0 left-0 z-50 h-screen w-72 bg-[#0a0a0a] text-white transition-transform duration-300 ease-in-out ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-        } flex flex-col shadow-xl`}
+        } flex flex-col shadow-2xl`}
       >
-        <div className="h-20 flex items-center justify-between px-6 border-b border-white/10 shrink-0">
-          <div className="font-bold text-xl tracking-tight flex items-center gap-2">
-            <span className="w-8 h-8 rounded bg-brand-primary flex items-center justify-center text-green-800 font-black">G</span>
-            <span>Admin</span>
+        {/* Logo Area */}
+        <div className="h-24 flex items-center justify-between px-8 border-b border-white/5 shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-primary to-[#c5a572] flex items-center justify-center shadow-lg shadow-brand-primary/20">
+              <span className="text-[#0a0a0a] font-black text-lg">G</span>
+            </div>
+            <div>
+              <div className="font-bold text-lg tracking-tight text-white">Greenstone</div>
+              <div className="text-[10px] tracking-widest uppercase text-white/40 font-bold">Admin Console</div>
+            </div>
           </div>
-          <button onClick={closeSidebar} className="lg:hidden text-white/50 hover:text-white">
+          <button onClick={closeSidebar} className="lg:hidden text-white/50 hover:text-white transition-colors">
             <X size={24} />
           </button>
         </div>
 
-        <nav className="flex-1 overflow-y-auto py-6 px-4 flex flex-col gap-2">
+        {/* Navigation */}
+        <nav className="flex-1 overflow-y-auto py-8 px-5 flex flex-col gap-1.5">
           {navItems.map((item) => (
             <NavLink
               key={item.name}
@@ -86,64 +94,90 @@ const AdminLayout: React.FC = () => {
               end={item.path === '/admin'}
               onClick={closeSidebar}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 font-medium ${
+                `flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-200 font-medium group relative overflow-hidden ${
                   isActive 
-                    ? 'bg-brand-primary text-green-800 shadow-lg shadow-brand-primary/20 scale-100' 
-                    : 'text-white/80 hover:bg-white/10 hover:text-white hover:scale-[1.02]'
+                    ? 'bg-brand-primary text-[#0a0a0a] shadow-lg shadow-brand-primary/20' 
+                    : 'text-white/70 hover:bg-white/5 hover:text-white'
                 }`
               }
             >
-              {item.icon}
-              {item.name}
+              {({ isActive }) => (
+                <>
+                  {isActive && (
+                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#0a0a0a] rounded-r-full" />
+                  )}
+                  <span className={isActive ? 'text-[#0a0a0a]' : 'text-white/60 group-hover:text-brand-primary transition-colors'}>
+                    {item.icon}
+                  </span>
+                  <span className="text-sm tracking-wide">{item.name}</span>
+                </>
+              )}
             </NavLink>
           ))}
         </nav>
 
-        <div className="p-4 border-t border-white/10 shrink-0">
+        {/* User Profile & Logout */}
+        <div className="p-5 border-t border-white/5 shrink-0 space-y-3">
+          {/* User Info */}
+          <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 border border-white/5">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-primary to-[#c5a572] flex items-center justify-center font-bold text-[#0a0a0a] shadow-lg">
+              {user?.name?.charAt(0)?.toUpperCase() || 'A'}
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-sm font-bold text-white truncate">{user?.name || 'Admin'}</div>
+              <div className="text-xs text-white/40 truncate">{user?.email || 'admin@greenstone.com'}</div>
+            </div>
+          </div>
+
+          {/* Logout Button */}
           <button 
             onClick={handleLogout}
-            className="flex items-center gap-3 px-4 py-3 rounded-xl w-full text-white/80 hover:bg-red-500/10 hover:text-red-300 transition-colors font-medium"
+            className="flex items-center gap-3 px-5 py-3 rounded-xl w-full text-white/70 hover:bg-red-500/10 hover:text-red-400 transition-all font-medium text-sm group"
           >
-            <LogOut size={20} />
+            <LogOut size={18} className="group-hover:translate-x-0.5 transition-transform" />
             Logout
           </button>
         </div>
       </aside>
 
-      {/* Main Content Area */}
+      {/* Main Content Area - Clean White */}
       <main className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
-        {/* Top Header */}
-        <header className="h-20 bg-white border-b border-green-800/10 flex items-center justify-between px-6 lg:px-10 shrink-0 z-30 shadow-sm relative">
+        {/* Top Header - Minimal & Clean */}
+        <header className="h-20 bg-white border-b border-gray-200/80 flex items-center justify-between px-6 lg:px-10 shrink-0 z-30 shadow-sm">
           <div className="flex items-center gap-4">
             <button 
               onClick={toggleSidebar}
-              className="lg:hidden p-2 rounded-lg text-green-800/70 hover:bg-green-800/5 transition-colors"
+              className="lg:hidden p-2.5 rounded-xl text-gray-600 hover:bg-gray-100 transition-colors"
             >
-              <Menu size={24} />
+              <Menu size={22} />
             </button>
-            <h1 className="text-xl font-bold text-green-800 hidden sm:block">Greenstone Console</h1>
+            <div className="hidden sm:flex items-center gap-3">
+              <div className="w-1.5 h-1.5 rounded-full bg-brand-primary shadow-[0_0_8px_var(--color-brand-primary)]" />
+              <h1 className="text-lg font-light text-gray-900 tracking-tight">
+                Welcome back, <span className="font-bold text-green-800">{user?.name?.split(' ')[0] || 'Admin'}</span>
+              </h1>
+            </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <a 
               href="/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-sm font-bold text-green-800/70 hover:text-brand-primary transition-colors flex items-center gap-2 bg-green-800/5 hover:bg-green-800/10 px-4 py-2 rounded-full"
+              className="text-sm font-bold text-gray-700 hover:text-green-800 transition-colors flex items-center gap-2 bg-gray-50 hover:bg-gray-100 px-5 py-2.5 rounded-full border border-gray-200"
             >
-              View Site
+              <Home size={16} />
+              <span className="hidden sm:inline">View Site</span>
             </a>
-            <div className="w-10 h-10 rounded-full bg-green-800 text-brand-primary flex items-center justify-center font-bold border-2 border-brand-primary shadow-sm">
-              {user?.name?.charAt(0)?.toUpperCase() || 'A'}
-            </div>
           </div>
         </header>
 
-        {/* Page Content scrollable area */}
-        <div className="flex-1 overflow-y-auto p-6 lg:p-10 relative">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-brand-primary/5 rounded-full blur-[100px] pointer-events-none" />
-          <div className="max-w-[1600px] mx-auto min-h-full">
-            <Outlet />
+        {/* Page Content - Clean White Background */}
+        <div className="flex-1 overflow-y-auto bg-[#fafafa]">
+          <div className="p-6 lg:p-10">
+            <div className="max-w-[1600px] mx-auto">
+              <Outlet />
+            </div>
           </div>
         </div>
       </main>

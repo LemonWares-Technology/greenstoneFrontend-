@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
 import { galleryService } from '../services/gallery';
+import { getImageUrl } from '../utils/imageUrl';
 import type { GalleryImage } from '../types';
 
 import proj1 from '../assets/project-luxury-apartments.jpg';
@@ -121,7 +122,7 @@ const GalleryPreview = () => {
               className={`group relative rounded-xl md:rounded-2xl overflow-hidden cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary ${layoutPattern[i] || ''}`}
             >
               <img
-                src={img.url}
+                src={getImageUrl(img.url)}
                 alt={img.title}
                 loading="lazy"
                 className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
@@ -191,7 +192,7 @@ const GalleryPreview = () => {
             </button>
 
             <img
-              src={images[lightboxIndex].url}
+              src={getImageUrl(images[lightboxIndex].url)}
               alt={images[lightboxIndex].title}
               className="max-h-full max-w-full object-contain rounded-xl select-none"
             />

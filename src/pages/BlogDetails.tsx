@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { ArrowLeft, Clock, User, Tag } from 'lucide-react';
 import { blogService } from '../services/blogs';
+import { getImageUrl } from '../utils/imageUrl';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import type { Blog } from '../types';
 import heroBg from '../assets/hero-blog.jpg';
@@ -51,7 +52,7 @@ const BlogDetails = () => {
     );
   }
 
-  const heroImage = post.image || heroBg;
+  const heroImage = getImageUrl(post.image) || heroBg;
 
   return (
     <div className="bg-[#050505] min-h-screen text-white font-sans flex flex-col selection:bg-brand-primary selection:text-black">
