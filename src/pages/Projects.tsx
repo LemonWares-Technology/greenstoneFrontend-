@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { MapPin, Info, ArrowUpRight } from 'lucide-react';
 import { projectService } from '../services/projects';
 import { executiveSummaryService } from '../services/executiveSummary';
+import { getImageUrl } from '../utils/imageUrl';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
@@ -89,7 +90,7 @@ const Projects: React.FC = () => {
                   <div className="w-full h-[280px] overflow-hidden relative">
                     <div className="absolute inset-0 bg-linear-to-t from-[#fcfcfc] via-transparent to-transparent z-10"></div>
                     {proj.image ? (
-                      <img src={proj.image} alt={proj.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-2000" />
+                      <img src={getImageUrl(proj.image)} alt={proj.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-2000" />
                     ) : (
                       <div className="w-full h-full bg-linear-to-br from-brand-primary/20 to-brand-primary/5 flex items-center justify-center">
                         <span className="text-brand-primary/30 text-5xl font-black">{proj.name.charAt(0)}</span>

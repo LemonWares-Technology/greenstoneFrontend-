@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Image as ImageIcon, Loader2, X } from 'lucide-react';
 import { uploadService } from '../../services/upload';
+import { getImageUrl } from '../../utils/imageUrl';
 
 export const ADMIN_IMAGE_MAX_BYTES = 10 * 1024 * 1024;
 export const ADMIN_IMAGE_ACCEPT =
@@ -54,7 +55,7 @@ const AdminImageUpload: React.FC<ImageUploadProps> = ({
     };
   }, [deferredPreview]);
 
-  const displaySrc = mode === 'deferred' && deferredPreview ? deferredPreview : value;
+  const displaySrc = mode === 'deferred' && deferredPreview ? deferredPreview : getImageUrl(value);
 
   const handleFile = async (file: File | null) => {
     if (!file) return;
@@ -130,21 +131,22 @@ const AdminImageUpload: React.FC<ImageUploadProps> = ({
         </label>
       )}
       {hasPreview ? (
-        <div className="relative rounded-xl overflow-hidden border border-green-800/10 bg-green-50/50 h-40">
+        <div className="relative group rounded-xl overflow-hidden border border-green-800/10 bg-green-50/50 h-40">
           <img src={displaySrc} alt="Preview" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-green-900/0 hover:bg-green-900/20 transition-colors flex items-center justify-center gap-2">
+          <div className="absolute inset-0 bg-green-900/0 group-hover:bg-green-900/20 group-focus-within:bg-green-900/20 transition-colors flex items-center justify-center gap-2">
             <button
               type="button"
               onClick={() => inputRef.current?.click()}
               disabled={uploading}
-              className="opacity-0 hover:opacity-100 transition-opacity px-4 py-2 rounded-lg bg-white/90 text-green-800 font-bold text-sm shadow"
+              className="opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity px-4 py-2 rounded-lg bg-white/90 text-green-800 font-bold text-sm shadow"
             >
               {uploading ? <Loader2 size={16} className="animate-spin" /> : 'Change'}
             </button>
             <button
               type="button"
               onClick={handleRemove}
-              className="opacity-0 hover:opacity-100 transition-opacity p-2 rounded-lg bg-red-500/90 text-white"
+              className="opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity p-2 rounded-lg bg-red-500/90 text-white"
+              aria-label="Remove image"
             >
               <X size={16} />
             </button>

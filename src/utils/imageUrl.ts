@@ -10,6 +10,11 @@ export const getImageUrl = (url: string | undefined | null): string => {
   if (url.startsWith('http://') || url.startsWith('https://')) {
     return url;
   }
+
+  // Vite-served local assets already resolve to root-relative paths.
+  if (url.startsWith('/assets/') || url.startsWith('/src/assets/') || url.startsWith('/images/')) {
+    return url;
+  }
   
   // If it's a relative path, prepend the API base URL
   const baseUrl = 'https://api-ldsv1.greenstoneng.com';

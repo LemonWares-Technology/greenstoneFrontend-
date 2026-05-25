@@ -1,12 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, BedDouble, Layers, MapPin, Tag } from 'lucide-react';
+import { projectService } from '../services/projects';
 import { getImageUrl } from '../utils/imageUrl';
+import type { Project } from '../types';
 import proj1 from '../assets/project-luxury-apartments.jpg';
 import proj2 from '../assets/project-classic-residence.jpg';
 import proj3 from '../assets/project-duplex-terrace.jpg';
 
-const projects = [
+type LandingProject = {
+  id: string | number;
+  name: string;
+  image: string;
+  rooms?: number;
+  floors?: number;
+  type: string;
+  price?: string;
+  location: string;
+  description: string;
+};
+
+const fallbackProjects: LandingProject[] = [
   {
     id: 1,
     name: 'F.O Terraces',
@@ -47,6 +61,38 @@ const projects = [
 
 const Projects = () => {
   const [hovered, setHovered] = useState<number | null>(null);
+  const [projects, setProjects] = useState<LandingProject[]>(fallbackProjects);
+
+  useEffect(() => {
+    let mounted = true;
+
+    projectService.getAll()
+      .then((res) => {
+        const apiProjects = (res.data || [])
+          .filter((project: Project) => project.image)
+          .slice(0, 3)
+          .map((project: Project) => ({
+            id: project.id,
+            name: project.name,
+            image: project.image,
+            type: project.status || 'Project',
+            price: project.value,
+            location: project.location,
+            description: project.description,
+          }));
+
+        if (mounted && apiProjects.length > 0) {
+          setProjects(apiProjects);
+        }
+      })
+      .catch(() => {
+        if (mounted) setProjects(fallbackProjects);
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   return (
     <section id="projects" className="relative w-full bg-[#f5f5f0] text-[#070707] py-24 md:py-32 font-sans overflow-hidden">
@@ -142,17 +188,23 @@ const Projects = () => {
                     </p>
 
                     {/* Specs */}
-                    <div className="flex items-center gap-5 mb-6">
-                      <span className="flex items-center gap-1.5 text-sm text-[#070707]/60 font-medium">
-                        <BedDouble size={14} className="text-brand-primary" />
-                        {project.rooms} Bedrooms
-                      </span>
-                      <span className="w-px h-3.5 bg-[#070707]/10" aria-hidden />
-                      <span className="flex items-center gap-1.5 text-sm text-[#070707]/60 font-medium">
-                        <Layers size={14} className="text-brand-primary" />
-                        {project.floors} Floors
-                      </span>
-                    </div>
+                    {(project.rooms || project.floors) && (
+                      <div className="flex items-center gap-5 mb-6">
+                        {project.rooms && (
+                          <span className="flex items-center gap-1.5 text-sm text-[#070707]/60 font-medium">
+                            <BedDouble size={14} className="text-brand-primary" />
+                            {project.rooms} Bedrooms
+                          </span>
+                        )}
+                        {project.rooms && project.floors && <span className="w-px h-3.5 bg-[#070707]/10" aria-hidden />}
+                        {project.floors && (
+                          <span className="flex items-center gap-1.5 text-sm text-[#070707]/60 font-medium">
+                            <Layers size={14} className="text-brand-primary" />
+                            {project.floors} Floors
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   {/* Bottom: price + CTA */}
@@ -162,7 +214,7 @@ const Projects = () => {
                         Estimated Value
                       </span>
                       <span className="text-2xl md:text-3xl font-black text-[#070707] tracking-tight">
-                        {project.price}
+                        {project.price || 'View details'}
                       </span>
                     </div>
                     <Link

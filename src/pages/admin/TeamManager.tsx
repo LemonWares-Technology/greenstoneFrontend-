@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Search, Edit2, Trash2, X, Save, Image as ImageIcon } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, X, Save } from 'lucide-react';
 import { teamService } from '../../services/team';
 import { useToast } from '../../components/ui/Toast';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
@@ -166,16 +166,6 @@ const AdminTeam: React.FC = () => {
                 <div>
                   <label className="block text-xs font-bold text-green-800/70 uppercase tracking-widest mb-2">Biography</label>
                   <textarea name="bio" value={formData.bio} onChange={handleInputChange} required rows={5} placeholder="Enter professional biography and qualifications..." className="w-full bg-green-50/30 border border-green-800/10 rounded-xl py-3 px-4 text-green-800 focus:outline-none focus:border-brand-primary transition-colors resize-none" />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-green-800/70 uppercase tracking-widest mb-2">Profile Photo</label>
-                  <div className="mt-1 flex items-center justify-center px-6 pt-5 pb-6 border-2 border-green-800/10 border-dashed rounded-xl hover:bg-green-50/30 transition-colors cursor-pointer group">
-                    <div className="space-y-1 text-center">
-                      <ImageIcon className="mx-auto h-12 w-12 text-green-800/30 group-hover:text-brand-primary transition-colors" />
-                      <div className="flex text-sm text-green-800/70 justify-center"><label className="relative cursor-pointer font-medium text-brand-primary-dark hover:text-brand-primary"><span>Upload a profile photo</span><input type="file" className="sr-only" accept="image/*" /></label></div>
-                      <p className="text-xs text-green-800/50">1:1 Ratio recommended (PNG, JPG)</p>
-                    </div>
-                  </div>
                 </div>
               </form>
             </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, X, Image as ImageIcon, Check, Loader2 } from 'lucide-react';
+import { Plus, Trash2, X, Image as ImageIcon, Check, Loader2, Pencil } from 'lucide-react';
 import { galleryService } from '../../services/gallery';
 import AdminImageUpload from '../../components/admin/ImageUpload';
 import { getImageUrl } from '../../utils/imageUrl';
@@ -12,6 +12,7 @@ const AdminGallery = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingImage, setEditingImage] = useState<GalleryImage | null>(null);
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
@@ -37,13 +38,26 @@ const AdminGallery = () => {
   useEffect(() => { fetchImages(); }, []);
 
   const openUploadModal = () => {
+    setEditingImage(null);
     setFormData({ title: '', category: 'Interior', url: '' });
+    setImageFile(null);
+    setUploadFieldKey((k) => k + 1);
+    setIsModalOpen(true);
+  };
+  const openEditModal = (image: GalleryImage) => {
+    setEditingImage(image);
+    setFormData({
+      title: image.title || '',
+      category: image.category || 'Interior',
+      url: image.url || '',
+    });
     setImageFile(null);
     setUploadFieldKey((k) => k + 1);
     setIsModalOpen(true);
   };
   const closeModal = () => {
     setImageFile(null);
+    setEditingImage(null);
     setIsModalOpen(false);
   };
 
@@ -52,10 +66,10 @@ const AdminGallery = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleUploadSubmit = async (e: React.FormEvent) => {
+  const handleGallerySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const url = formData.url.trim();
-    if (!imageFile && !url) {
+    if (!editingImage && !imageFile && !url) {
       alert('Add an image file or paste an image URL.');
       return;
     }
@@ -81,7 +95,11 @@ const AdminGallery = () => {
         console.log(`  ${key}:`, value instanceof File ? `File(${value.name})` : value);
       }
       
-      await galleryService.create(body);
+      if (editingImage) {
+        await galleryService.update(editingImage.id, body);
+      } else {
+        await galleryService.create(body);
+      }
       
       // Refetch the gallery list to get the newly created image
       await fetchImages();
@@ -221,13 +239,24 @@ const AdminGallery = () => {
                   <Check size={14} className={isSelected ? 'block' : 'hidden'} />
                 </button>
 
-                {/* Single Delete (Top Right) */}
+                {/* Card Actions */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    openEditModal(image);
+                  }}
+                  className="absolute top-4 right-14 p-2 bg-white/90 text-green-800 rounded-lg hover:bg-brand-primary opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                  aria-label={`Edit ${image.title}`}
+                >
+                  <Pencil size={16} />
+                </button>
                 <button 
                   onClick={(e) => {
                     e.stopPropagation();
                     deleteSingle(image.id);
                   }}
                   className="absolute top-4 right-4 p-2 bg-red-500/80 text-white rounded-lg hover:bg-red-500 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                  aria-label={`Delete ${image.title}`}
                 >
                   <Trash2 size={16} />
                 </button>
@@ -256,24 +285,24 @@ const AdminGallery = () => {
         )}
       </div>
 
-      {/* Upload Modal */}
+      {/* Upload/Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="fixed inset-0 bg-green-800/40 backdrop-blur-sm" onClick={closeModal}></div>
           
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg relative z-10 animate-in zoom-in-95 duration-200">
             <div className="flex items-center justify-between p-6 border-b border-green-800/10">
-              <h2 className="text-xl font-bold text-green-800">Upload Image</h2>
+              <h2 className="text-xl font-bold text-green-800">{editingImage ? 'Update Image' : 'Upload Image'}</h2>
               <button onClick={closeModal} className="p-2 rounded-full text-green-800/50 hover:bg-green-50">
                 <X size={20} />
               </button>
             </div>
 
-            <form onSubmit={handleUploadSubmit} className="p-6 space-y-6">
+            <form onSubmit={handleGallerySubmit} className="p-6 space-y-6">
               <AdminImageUpload
                 key={uploadFieldKey}
-                label="Image file"
-                value=""
+                label={editingImage ? 'Replace image file' : 'Image file'}
+                value={editingImage ? formData.url : ''}
                 onChange={() => {}}
                 mode="deferred"
                 onFileChange={setImageFile}
@@ -290,7 +319,9 @@ const AdminGallery = () => {
                   placeholder="https://api-ldsv1.greenstoneng.com/upload/…"
                   className="w-full bg-green-50/30 border border-green-800/10 rounded-xl py-3 px-4 text-green-800 focus:outline-none focus:border-brand-primary transition-colors text-sm"
                 />
-                <p className="text-xs text-green-800/45 mt-1">Provide a file above or a direct URL (not both required).</p>
+                <p className="text-xs text-green-800/45 mt-1">
+                  {editingImage ? 'Leave the current URL as-is to keep the existing image, or choose a new file above.' : 'Provide a file above or a direct URL.'}
+                </p>
               </div>
 
               <div>
@@ -333,7 +364,7 @@ const AdminGallery = () => {
                   className="bg-green-800 text-brand-primary hover:bg-brand-primary hover:text-green-800 transition-colors px-6 py-3 rounded-xl font-bold shadow-lg shadow-green-800/10 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                   {saving && <Loader2 size={16} className="animate-spin" />}
-                  {saving ? 'Saving...' : 'Save Image'}
+                  {saving ? 'Saving...' : editingImage ? 'Update Image' : 'Save Image'}
                 </button>
               </div>
             </form>

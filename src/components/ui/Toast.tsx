@@ -31,9 +31,9 @@ const iconMap: Record<ToastType, React.ReactNode> = {
 };
 
 const colorMap: Record<ToastType, string> = {
-  success: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400',
-  error: 'bg-red-500/10 border-red-500/30 text-red-400',
-  info: 'bg-blue-500/10 border-blue-500/30 text-blue-400',
+  success: 'bg-[#062018] border-emerald-400/40 text-emerald-300',
+  error: 'bg-[#260b0b] border-red-400/40 text-red-300',
+  info: 'bg-[#071a2f] border-blue-400/40 text-blue-300',
 };
 
 const iconColorMap: Record<ToastType, string> = {
@@ -77,10 +77,11 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             <span className={`mt-0.5 shrink-0 ${iconColorMap[toast.type]}`}>
               {iconMap[toast.type]}
             </span>
-            <p className="text-sm font-medium text-white/90 flex-1">{toast.message}</p>
+            <p className="text-sm font-semibold text-white flex-1 leading-5">{toast.message}</p>
             <button
               onClick={() => removeToast(toast.id)}
-              className="text-white/30 hover:text-white/60 transition-colors shrink-0 mt-0.5"
+              className="text-white/60 hover:text-white transition-colors shrink-0 mt-0.5"
+              aria-label="Dismiss notification"
             >
               <X size={14} />
             </button>

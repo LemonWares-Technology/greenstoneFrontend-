@@ -2,15 +2,42 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { projectService } from '../services/projects';
 import { getImageUrl } from '../utils/imageUrl';
+import type { Project } from '../types';
 import { MapPin, ArrowLeft, Home, Calendar, Percent, CheckCircle } from 'lucide-react';
 import proj1 from '../assets/project-luxury-apartments.jpg';
 import proj2 from '../assets/project-classic-residence.jpg';
 import proj3 from '../assets/project-duplex-terrace.jpg';
 import DefaultHeroThumb from '../assets/hero-modern-villa-dusk.jpg';
 
-// Reusing our global project array as the "database"
-const allProjects = [
+type DetailProject = {
+  id: string | number;
+  name: string;
+  location: string;
+  description: string;
+  fullDesc: string;
+  status: string;
+  value?: string;
+  type: string;
+  image: string;
+  gallery?: string[];
+};
+
+const toDetailProject = (project: Project): DetailProject => ({
+  id: project.id,
+  name: project.name,
+  location: project.location,
+  description: project.description,
+  fullDesc: project.description,
+  status: project.status,
+  value: project.value,
+  type: 'Project',
+  image: project.image,
+  gallery: project.gallery,
+});
+
+const allProjects: DetailProject[] = [
   {
     id: 1,
     name: 'GREEN COURT RESIDENCE',
@@ -81,15 +108,57 @@ const allProjects = [
 
 const ProjectDetails = () => {
   const { id } = useParams();
-  const [project, setProject] = useState(null);
+  const [project, setProject] = useState<DetailProject | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // In a real app we'd fetch from an API. Here we just find from our array.
-    const numericId = parseInt(id, 10);
-    const foundProject = allProjects.find(p => p.id === numericId);
-    setProject(foundProject);
-    window.scrollTo(0, 0); // Scroll to top on load
+    let mounted = true;
+    window.scrollTo(0, 0);
+
+    const loadProject = async () => {
+      setLoading(true);
+
+      const localProject = allProjects.find((p) => String(p.id) === String(id));
+      if (localProject) {
+        if (mounted) {
+          setProject(localProject);
+          setLoading(false);
+        }
+        return;
+      }
+
+      if (!id) {
+        if (mounted) {
+          setProject(null);
+          setLoading(false);
+        }
+        return;
+      }
+
+      try {
+        const res = await projectService.getOne(id);
+        if (mounted) setProject(toDetailProject(res.data));
+      } catch {
+        if (mounted) setProject(null);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+
+    loadProject();
+
+    return () => {
+      mounted = false;
+    };
   }, [id]);
+
+  if (loading) {
+    return (
+      <div className="bg-[#050505] min-h-screen text-white font-sans flex flex-col items-center justify-center">
+        <div className="w-10 h-10 border-2 border-brand-primary/30 border-t-brand-primary rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   if (!project) {
     return (
@@ -103,6 +172,7 @@ const ProjectDetails = () => {
   }
 
   const isCompleted = project.status.toLowerCase().includes('completed') && parseInt(project.status) === 100;
+  const galleryImages = project.gallery?.length ? [project.image, ...project.gallery] : [project.image, DefaultHeroThumb];
 
   return (
     <div className="bg-[#050505] min-h-screen text-white font-sans flex flex-col selection:bg-brand-primary selection:text-black">
@@ -164,8 +234,14 @@ const ProjectDetails = () => {
             <div className="mt-16">
                <h3 className="text-xl font-bold mb-6">Gallery</h3>
                <div className="grid grid-cols-2 gap-4">
-                 <img src={getImageUrl(project.image)} className="w-full h-48 object-cover rounded-2xl border border-white/5 opacity-80 hover:opacity-100 transition-opacity cursor-pointer" alt="Gallery 1"/>
-                 <img src={DefaultHeroThumb} className="w-full h-48 object-cover rounded-2xl border border-white/5 opacity-80 hover:opacity-100 transition-opacity cursor-pointer" alt="Gallery 2"/>
+                 {galleryImages.slice(0, 4).map((image, index) => (
+                   <img
+                     key={`${image}-${index}`}
+                     src={getImageUrl(image)}
+                     className="w-full h-48 object-cover rounded-2xl border border-white/5 opacity-80 hover:opacity-100 transition-opacity cursor-pointer"
+                     alt={`${project.name} gallery ${index + 1}`}
+                   />
+                 ))}
                </div>
             </div>
           </div>

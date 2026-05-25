@@ -272,7 +272,7 @@ const AdminBlog: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-3">
+                  <div>
                     <AdminImageUpload
                       key={`${currentPost?.id ?? 'new'}-${coverFieldKey}`}
                       label="Cover Image"
@@ -282,9 +282,6 @@ const AdminBlog: React.FC = () => {
                       onFileChange={setImageFile}
                     />
                     <div>
-                      <label className="block text-xs font-bold text-green-800/70 uppercase tracking-widest mb-2">
-                        Or cover image URL
-                      </label>
                       <input
                         type="url"
                         value={formData.image}
