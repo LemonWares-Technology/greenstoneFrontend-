@@ -82,12 +82,16 @@ export interface BlogPayload {
 }
 
 // ─── Team ────────────────────────────────────────────────
+// Drafts are only visible in the admin area — the public site receives published members only.
+export type TeamStatus = 'DRAFT' | 'PUBLISHED';
+
 export interface TeamMember {
   id: string;
   name: string;
   role: string;
   bio: string;
   order?: number;
+  status?: TeamStatus;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -97,6 +101,7 @@ export interface TeamMemberPayload {
   role: string;
   bio: string;
   order?: number;
+  status?: TeamStatus;
 }
 
 // ─── Lead ────────────────────────────────────────────────
